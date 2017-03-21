@@ -28,24 +28,25 @@
         android:id="@+id/txt_Password_Login"
         android:layout_alignParentEnd="true" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/txt_Email_Login"
+        android:layout_below="@+id/lbl_Email_Login"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
     <Button
         android:text="Registration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="btnRegistration_Click"
         android:id="@+id/btn_Registration_Login"
+        android:layout_marginBottom="37dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp" />
-
-    <Button
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="btnLogin_Click"
-        android:id="@+id/btn_Login"
-        android:layout_below="@+id/txt_Password_Login"
-        android:layout_alignStart="@+id/btn_Registration" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:text="Password:"
@@ -55,12 +56,13 @@
         android:layout_below="@+id/txt_Email_Login"
         android:layout_alignParentStart="true" />
 
-    <EditText
+    <Button
+        android:text="Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/txt_Email_Login"
-        android:layout_below="@+id/lbl_Email_Login"
-        android:layout_alignParentStart="true" />
+        android:onClick="btnLogin_Click"
+        android:id="@+id/btn_Login"
+        android:layout_below="@+id/txt_Password_Login"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

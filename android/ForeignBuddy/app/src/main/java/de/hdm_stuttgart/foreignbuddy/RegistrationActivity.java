@@ -33,7 +33,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void btnRegistration_Click(View v) {
         final ProgressDialog progressDialog = ProgressDialog.show(RegistrationActivity.this, "Please wait...", "Processing...", true);
-        (firebaseAuth.createUserWithEmailAndPassword(txt_Email_Registration.getText().toString(), txt_Password_Registration.getText().toString())).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        (firebaseAuth.createUserWithEmailAndPassword(txt_Email_Registration.getText().toString(), txt_Password_Registration.getText().toString()))
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
