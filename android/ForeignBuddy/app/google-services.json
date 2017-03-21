@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "475151692074",
+    "firebase_url": "https://foreignbuddy-c12f2.firebaseio.com",
+    "project_id": "foreignbuddy-c12f2",
+    "storage_bucket": "foreignbuddy-c12f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475151692074:android:e61b30135dc624d7",
+        "android_client_info": {
+          "package_name": "hdm_stuttgart.de.foreignbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "475151692074-dkfi0a3pslv40523t6rsov5e4md2ibtk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hdm_stuttgart.de.foreignbuddy",
+            "certificate_hash": "a7e4021fd4471d9faa0a0988e7ce5637e990de5f"
+          }
+        },
+        {
+          "client_id": "475151692074-384oimimiqg3kl681egc4umdm9e4guq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlZON2_JDndLVkKXWzlquDvNHaZCE9VNc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "475151692074-384oimimiqg3kl681egc4umdm9e4guq9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
