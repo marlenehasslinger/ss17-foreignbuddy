@@ -1,4 +1,4 @@
-package hdm_stuttgart.de.foreignbuddy;
+package de.hdm_stuttgart.foreignbuddy;
 
 import org.junit.Test;
 

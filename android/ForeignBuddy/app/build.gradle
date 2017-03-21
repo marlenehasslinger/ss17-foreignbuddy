@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "24.0.3"
     defaultConfig {
-        applicationId "hdm_stuttgart.de.foreignbuddy"
+        applicationId "de.hdm_stuttgart.foreignbuddy"
         minSdkVersion 22
         targetSdkVersion 25
         versionCode 1
@@ -24,11 +24,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:design:25.3.0'
-    compile 'com.google.firebase:firebase-auth:9.6.1'
+    compile 'com.android.support:appcompat-v7:25.3.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.firebase:firebase-auth:9.0.2'
 }
-
-
 apply plugin: 'com.google.gms.google-services'

@@ -1,4 +1,4 @@
-package hdm_stuttgart.de.foreignbuddy;
+package de.hdm_stuttgart.foreignbuddy;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("hdm_stuttgart.de.foreignbuddy", appContext.getPackageName());
+        assertEquals("de.hdm_stuttgart.foreignbuddy", appContext.getPackageName());
     }
 }
