@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ForeignBuddy</string>
+    <string name="facebook_application_id" translatable="false">403468840033024</string>
+    <string name="welcomeStartScreen">Welcome</string>
+
+
 </resources>

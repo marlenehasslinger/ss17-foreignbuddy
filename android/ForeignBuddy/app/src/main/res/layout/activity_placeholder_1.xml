@@ -26,4 +26,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="17dp"
         android:id="@+id/lbl_Welcome_first" />
+
+    <Button
+        android:text="Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lbl_Welcome_first"
+        android:layout_alignEnd="@+id/lbl_Welcome_first"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="17dp"
+        android:id="@+id/btn_logout"
+        android:onClick="btnLogoutClick" />
 </RelativeLayout>

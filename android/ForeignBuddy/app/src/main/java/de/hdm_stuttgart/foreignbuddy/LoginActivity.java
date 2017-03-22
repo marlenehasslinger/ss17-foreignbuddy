@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,7 +31,20 @@ public class LoginActivity extends AppCompatActivity {
 
         txt_Email_Login = (EditText) findViewById(R.id.txt_Email_Login);
         txt_Password_Login = (EditText) findViewById(R.id.txt_Password_Login);
-        firebaseAuth = FirebaseAuth.getInstance();
+        /* firebaseAuth = FirebaseAuth.getInstance();
+
+        startActivityForResult(AuthUI.getInstance()
+        .createSignInIntentBuilder()
+        .setProviders(
+                AuthUI.FACEBOOK_PROVIDER,
+                AuthUI.GOOGLE_PROVIDER,
+                AuthUI.EMAIL_PROVIDER
+        )
+        .build(), 1); */
+
+
+
+
 
     }
 

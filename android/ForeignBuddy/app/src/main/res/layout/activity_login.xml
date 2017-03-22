@@ -42,7 +42,7 @@
         android:text="Registration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="btnRegistration_Click"
+        android:onClick="btnRegistration_Click (LoginActivity)"
         android:id="@+id/btn_Registration_Login"
         android:layout_marginBottom="37dp"
         android:layout_alignParentBottom="true"
