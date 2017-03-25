@@ -17,13 +17,14 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         if(firebaseAuth.getCurrentUser() != null) {
 
             Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
 
-            Intent i =  new Intent(StartActivity.this, Placeholder_1Activity.class);
+            Intent i =  new Intent(StartActivity.this, MyProfilActivity.class);
             i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
             startActivity(i);
 
@@ -56,7 +57,7 @@ public class StartActivity extends AppCompatActivity {
                 //user logged in
                 Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
 
-                Intent i =  new Intent(StartActivity.this, Placeholder_1Activity.class);
+                Intent i =  new Intent(StartActivity.this, MyProfilActivity.class);
                 i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
                 startActivity(i);
 
