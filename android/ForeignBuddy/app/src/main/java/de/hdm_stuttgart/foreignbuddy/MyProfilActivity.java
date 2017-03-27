@@ -55,18 +55,6 @@ public class MyProfilActivity extends AppCompatActivity {
 
     }
 
-    public void btnLogoutClick(View v){
-        AuthUI.getInstance()
-                .signOut(this) //beendet aktuelle aktivität
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("AUTH", "User logged out");
-                        finish();
-                    }
-                });
-
-    }
 
 
 }
