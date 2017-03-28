@@ -17,7 +17,7 @@
 
 
     <Button
-        android:text="Logout"
+        android:text="profil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_navigation"
