@@ -13,12 +13,15 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class MyProfilActivity extends AppCompatActivity{
 
     final ChatsFragment chat = new ChatsFragment();
     final ProfilFragment profil = new ProfilFragment();
     final MatchesFragment matches = new MatchesFragment();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

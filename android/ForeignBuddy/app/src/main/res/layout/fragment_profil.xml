@@ -7,13 +7,32 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:text="MyProfil"
+
+    <Button
+        android:id="@+id/btn_uploadPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textView" />
+        android:layout_marginBottom="92dp"
+        android:text="Upload Photo" />
+
+    <Button
+        android:id="@+id/btn_choosePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_uploadPhoto"
+        android:layout_alignStart="@+id/btn_uploadPhoto"
+        android:text="Choose Photo" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
+        android:layout_above="@+id/btn_choosePhoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="65dp"
+        android:id="@+id/imageView" />
 
 
     <Button
