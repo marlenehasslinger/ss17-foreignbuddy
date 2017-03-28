@@ -45,6 +45,7 @@ public class StartActivity extends AppCompatActivity {
                     )
                     .build(), RC_SIGN_IN);
         }
+
     }
 
     @Override
