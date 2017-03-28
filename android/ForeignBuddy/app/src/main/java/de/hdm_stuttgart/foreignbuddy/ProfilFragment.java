@@ -5,15 +5,104 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 
-public class ProfilFragment extends Fragment {
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.IOException;
+
+
+import static android.app.Activity.RESULT_OK;
+
+public class ProfilFragment extends Fragment implements View.OnClickListener{
+
+     /*
+    String FIREBASE_URL;
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    */
+
+
+    private static final int PICK_IMAGE_REQUEST = 234;
+    private Button btn_choosePhoto, btn_uploadPhoto;
+    private ImageView imageView;
+    private Uri filepath;
+
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profil, container, false);
+        View view = inflater.inflate(R.layout.fragment_profil, container, false);
+
+        imageView = (ImageView) view.findViewById(R.id.imageView);
+        btn_choosePhoto = (Button) view.findViewById(R.id.btn_choosePhoto);
+       btn_uploadPhoto = (Button) view.findViewById(R.id.btn_uploadPhoto);
+        btn_choosePhoto.setOnClickListener(this);
+        btn_uploadPhoto.setOnClickListener(this);
+        return view;
+
+        /* FIREBASE_URL = "https://foreignbuddy-7b4d5.firebaseio.com/";
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+
+        StorageReference imagesRef = storageRef.child("images");
+        */
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+            filepath = data.getData();
+
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
+                imageView.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void showFileChooser(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST );
+
+
+
+    }
+
+
+    @Override
+    public void onClick(View view){
+        if (view == btn_choosePhoto){
+            showFileChooser();
+        } else if (view == btn_uploadPhoto){
+
+        }
+
+    }
+
 }

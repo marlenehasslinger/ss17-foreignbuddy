@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "920698927886-o8llrld9l5ip13m8ptfb4rma6v5nujke.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.hdm_stuttgart.foreignbuddy",
+            "certificate_hash": "1e732f46e43302b098bce79cc08292e3f7200077"
+          }
+        },
+        {
           "client_id": "920698927886-nh8s0iq5cvuh884c3gsa5cbibile60hg.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920698927886-nh8s0iq5cvuh884c3gsa5cbibile60hg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
