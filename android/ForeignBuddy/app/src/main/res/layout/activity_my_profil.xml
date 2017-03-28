@@ -18,13 +18,9 @@
         app:itemTextColor="@drawable/nav_item_color_state"
         app:menu="@menu/bottom_navigation_main" />
 
-    <fragment
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="de.hdm_stuttgart.foreignbuddy.ChatsFragment"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/fragment"
-        tools:layout="@layout/fragment_chats" />
-
+        android:id="@+id/fragment"/>
 
 </RelativeLayout>
