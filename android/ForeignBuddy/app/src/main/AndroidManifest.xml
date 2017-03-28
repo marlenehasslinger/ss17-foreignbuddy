@@ -20,6 +20,8 @@
         <activity
             android:name=".MyProfilActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".ChatActivity"/>
     </application>
 
 </manifest>

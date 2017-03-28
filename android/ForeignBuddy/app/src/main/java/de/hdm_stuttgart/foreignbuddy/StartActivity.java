@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+
 
 public class StartActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private static final int RC_SIGN_IN = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +44,7 @@ public class StartActivity extends AppCompatActivity {
                             AuthUI.EMAIL_PROVIDER
                     )
                     .build(), RC_SIGN_IN);
-
-
         }
-
-
     }
 
     @Override

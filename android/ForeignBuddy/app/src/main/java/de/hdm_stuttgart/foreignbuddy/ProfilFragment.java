@@ -3,7 +3,9 @@ package de.hdm_stuttgart.foreignbuddy;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.*;
 
@@ -29,7 +31,7 @@ import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfilFragment extends Fragment implements View.OnClickListener{
+public class ProfilFragment extends Fragment implements View.OnClickListener {
 
      /*
     String FIREBASE_URL;
@@ -44,7 +46,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener{
     private Uri filepath;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -52,7 +53,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener{
 
         imageView = (ImageView) view.findViewById(R.id.imageView);
         btn_choosePhoto = (Button) view.findViewById(R.id.btn_choosePhoto);
-       btn_uploadPhoto = (Button) view.findViewById(R.id.btn_uploadPhoto);
+        btn_uploadPhoto = (Button) view.findViewById(R.id.btn_uploadPhoto);
         btn_choosePhoto.setOnClickListener(this);
         btn_uploadPhoto.setOnClickListener(this);
         return view;
@@ -70,7 +71,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filepath = data.getData();
 
 
@@ -84,25 +85,35 @@ public class ProfilFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void showFileChooser(){
+    private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST );
-
+        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST);
 
 
     }
 
 
     @Override
-    public void onClick(View view){
-        if (view == btn_choosePhoto){
+    public void onClick(View view) {
+        if (view == btn_choosePhoto) {
             showFileChooser();
-        } else if (view == btn_uploadPhoto){
+        } else if (view == btn_uploadPhoto) {
 
         }
-
     }
+
+    /*public void btnLogoutClick(View v){
+        AuthUI.getInstance()
+                .signOut(MyProfilActivity) //beendet aktuelle aktivität
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("AUTH", "User logged out");
+                        finish();
+                    }
+                });
+    }*/
 
 }
