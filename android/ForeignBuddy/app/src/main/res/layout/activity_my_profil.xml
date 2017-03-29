@@ -8,6 +8,12 @@
     tools:context="de.hdm_stuttgart.foreignbuddy.MyProfilActivity">
 
 
+    <FrameLayout
+        android:id="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"/>
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -17,11 +23,6 @@
         app:itemIconTint="@drawable/nav_item_color_state"
         app:itemTextColor="@drawable/nav_item_color_state"
         app:menu="@menu/bottom_navigation_main" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment"/>
 
 
 </RelativeLayout>
