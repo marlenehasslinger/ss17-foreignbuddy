@@ -1,5 +1,7 @@
 package de.hdm_stuttgart.foreignbuddy;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,27 +21,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 
 
 import static android.app.Activity.RESULT_OK;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ProfilFragment extends Fragment implements View.OnClickListener {
 
-     /*
-    String FIREBASE_URL;
-    FirebaseStorage storage;
-    StorageReference storageRef;
-    */
-
-
+    private StorageReference storageReference;
     private static final int PICK_IMAGE_REQUEST = 234;
     private Button btn_choosePhoto, btn_uploadPhoto;
     private ImageView imageView;
@@ -56,14 +58,11 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         btn_uploadPhoto = (Button) view.findViewById(R.id.btn_uploadPhoto);
         btn_choosePhoto.setOnClickListener(this);
         btn_uploadPhoto.setOnClickListener(this);
+
+
+       storageReference = FirebaseStorage.getInstance().getReference();
+
         return view;
-
-        /* FIREBASE_URL = "https://foreignbuddy-7b4d5.firebaseio.com/";
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference();
-
-        StorageReference imagesRef = storageRef.child("images");
-        */
     }
 
     @Override
@@ -85,6 +84,48 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+
+    private void uploadFile(){
+
+        if(filepath != null) {
+
+           final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext()); //?
+            progressDialog.setTitle("Uploading");
+            progressDialog.show();
+
+
+            StorageReference riversRef = storageReference.child("images/profile.jpg");
+            riversRef.putFile(filepath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "File Uploaded", Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                           progressDialog.dismiss();
+
+                            Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                        }
+                    })
+            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                }
+            })
+
+
+            ;
+        } else {
+            //display error toast !!TODO
+        }
+    }
+
     private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -100,7 +141,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         if (view == btn_choosePhoto) {
             showFileChooser();
         } else if (view == btn_uploadPhoto) {
-
+            uploadFile();
         }
     }
 
