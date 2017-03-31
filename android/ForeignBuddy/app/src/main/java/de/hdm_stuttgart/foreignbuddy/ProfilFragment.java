@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -145,8 +146,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /*public void btnLogoutClick(View v){
-        AuthUI.getInstance()
+    public void btnLogoutClick(View v){
+       /* AuthUI.getInstance()
                 .signOut(MyProfilActivity) //beendet aktuelle aktivität
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -154,7 +155,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                         Log.d("AUTH", "User logged out");
                         finish();
                     }
-                });
-    }*/
+                });*/
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(getActivity(), LogInActivity.class);
+        startActivity(i);
+    }
 
 }
