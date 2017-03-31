@@ -27,12 +27,26 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     // FirebaseListAdapter
+<<<<<<< HEAD
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.google.firebase:firebase-core:9.6.0'
     compile 'com.google.firebase:firebase-auth:9.6.0'
     compile 'com.google.firebase:firebase-database:9.6.0'
     compile 'com.google.android.gms:play-services-auth:9.6.0'
     compile 'com.google.firebase:firebase-storage:9.6.0'
+=======
+    /*compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.google.firebase:firebase-core:9.6.1'
+    compile 'com.google.firebase:firebase-database:9.6.1'
+    compile 'com.google.android.gms:play-services-auth:10.0.1'
+    compile 'com.google.firebase:firebase-storage:10.0.1'*/
+    compile 'com.google.firebase:firebase-auth:10.2.1'
+    compile 'com.google.firebase:firebase-core:10.2.1'
+    compile 'com.google.firebase:firebase-database:10.2.1'
+    compile 'com.google.android.gms:play-services-auth:10.2.1'
+    compile 'com.google.firebase:firebase-storage:10.2.1'
+>>>>>>> 7d596dd520360e8e1b14a21a8d66a7accf1105e2
     compile 'com.firebaseui:firebase-ui-auth:0.5.3'
     compile 'com.firebaseui:firebase-ui:0.4.1'
     compile 'com.android.support:design:25.3.0'

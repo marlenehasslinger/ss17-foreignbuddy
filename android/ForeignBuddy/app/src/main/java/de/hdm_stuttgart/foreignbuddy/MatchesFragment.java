@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +37,9 @@ public class MatchesFragment extends Fragment {
         matches.add(new User("Marc-Julian Fleck", "Weinstadt", "English"));
         matches.add(new User("Max Mustermann", "Stuttgart", "English"));
         matches.add(new User("John Doe", "Stuttgart", "English"));
-        matches.add(new User("Ansger Gerlicher","Stuttgart", "English"));
+        matches.add(new User("Ansgar Gerlicher","Stuttgart", "English"));
 
         ArrayAdapter<User> matchesAdapter = new UserListAdapter();
-
         listView.setAdapter(matchesAdapter);
 
         return view;

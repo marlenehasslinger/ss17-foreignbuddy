@@ -40,10 +40,10 @@
         android:id="@+id/txt_language_matches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/txt_location_matches"
-        android:layout_marginEnd="11dp"
-        android:text="Englisch" />
+        android:text="Englisch"
+        android:layout_marginStart="10dp"
+        android:layout_alignTop="@+id/img_location_matches"
+        android:layout_toEndOf="@+id/img_location_matches" />
 
     <ImageView
         android:id="@+id/img_location_matches"
@@ -57,5 +57,17 @@
         android:maxWidth="15dp"
         android:nestedScrollingEnabled="false"
         app:srcCompat="@drawable/location" />
+
+    <Button
+        android:id="@+id/btn_chat_matches"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text="Chat"
+        android:layout_marginEnd="11dp"
+        android:layout_alignBaseline="@+id/txt_name_matches"
+        android:layout_alignBottom="@+id/txt_name_matches"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
