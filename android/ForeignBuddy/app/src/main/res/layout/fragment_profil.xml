@@ -12,10 +12,10 @@
         android:id="@+id/btn_uploadPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="46dp"
+        android:text="Upload Photo"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="92dp"
-        android:text="Upload Photo" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/btn_choosePhoto"
@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/user_male"
         android:id="@+id/imageView"
-        android:maxHeight="250dp"
-        android:maxWidth="250dp"
+        android:maxHeight="200dp"
+        android:maxWidth="200dp"
         android:adjustViewBounds="true"
         android:layout_marginTop="23dp"
         android:layout_below="@+id/btn_LogOut"
@@ -47,5 +47,13 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp" />
+
+    <Button
+        android:id="@+id/btn_takePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take Photo"
+        android:layout_above="@+id/btn_choosePhoto"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
