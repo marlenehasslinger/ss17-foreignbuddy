@@ -3,11 +3,16 @@ package de.hdm_stuttgart.foreignbuddy;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.*;
@@ -35,6 +40,10 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import android.Manifest;
+
+
+
 import java.io.File;
 import java.io.IOException;
 
@@ -47,10 +56,14 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     private StorageReference storageReference;
     private static final int PICK_IMAGE_REQUEST = 234;
     static final int CAM_REQUEST =1;
+    static final int CAMERA_REQUEST_CODE = 10;
+    static final int WRITE_EXTERNAL_REQUEST_CODE = 20;
     private Button btn_choosePhoto, btn_uploadPhoto, btn_takePhoto;
     private ImageView imageView;
     private Uri filepath;
 
+
+    File folder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,7 +82,26 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
        storageReference = FirebaseStorage.getInstance().getReference();
 
+
+
+        if(folder!=null){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(filepath.getPath());
+            imageView.setImageBitmap(myBitmap);
+
+        }
+
+
+
+
+
         return view;
+
+
+
+
+
+
     }
 
     @Override
@@ -89,12 +121,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 e.printStackTrace();
             }
 
-        } else if (requestCode ==CAM_REQUEST && resultCode == RESULT_OK){
-            String path ="sdcard/ForeignBuddy/profilepic.jpg";
+        } else  if (requestCode ==CAM_REQUEST){
+            String path ="sdcard/ForeignBuddyPhotos/profilepic.jpg";
             imageView.setImageDrawable(Drawable.createFromPath(path));
             filepath = Uri.fromFile(new File(path));
 
-        }
+}
 
     }
 
@@ -115,7 +147,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            Log.d("photo", "sucess");
+                            Log.d("photo", "success");
+                            Toast.makeText(getActivity(),"File Uploaded!",Toast.LENGTH_SHORT).show();
+
+
+
+                            //  Toast.makeText(getApplicationContext(), "File Uploaded", Toast.LENGTH_LONG).show();
 
                             //     progressDialog.dismiss();
                           //  Toast.makeText(getApplicationContext(), "File Uploaded", Toast.LENGTH_LONG).show();
@@ -162,24 +199,86 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     }
 
     public void takePhoto(){
+
+        if( ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED) {
+
+            Log.d("Camera", "Camera Permission granted");
+
+            if( ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED) {
+
+            invokeCamera();
+            } else {
+
+                Log.d("Camera", "Write External Permission denied");
+                String [] permissionRequested = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissionRequested, WRITE_EXTERNAL_REQUEST_CODE);
+
+            }
+
+        } else {
+
+            Log.d("Camera", "Camera Permission denied");
+
+            String [] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
+            requestPermissions(permissionRequested, WRITE_EXTERNAL_REQUEST_CODE);
+
+            invokeCamera();
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode==CAMERA_REQUEST_CODE){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                invokeCamera();
+            } else {
+
+                Log.d("Camera", "Camera Permission denied still");
+
+
+            }
+        }
+
+        if(requestCode==WRITE_EXTERNAL_REQUEST_CODE){
+            if(grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                invokeCamera();
+            } else {
+
+                Log.d("Camera", "Write External Permission denied still");
+
+
+            }
+        }
+
+    }
+
+    private void invokeCamera() {
         Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = getFile();
         camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(camera_Intent, CAM_REQUEST);
-
     }
+
 
     private File getFile() {
 
-        File folder = new File("sdcard/ForeignBuddy");
+        folder = new File("sdcard/ForeignBuddyPhotos");
 
-        if(!folder.exists()){
+        if(folder == null){
             folder.mkdir();
         }
 
         File image_file = new File(folder, "profilepic.jpg");
         return image_file;
     }
+
+
 
 
     @Override
