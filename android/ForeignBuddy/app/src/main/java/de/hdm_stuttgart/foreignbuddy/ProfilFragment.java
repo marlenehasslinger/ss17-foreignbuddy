@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -62,6 +63,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     private Uri filepath;
 
 
+    File folder;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -79,7 +82,26 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
        storageReference = FirebaseStorage.getInstance().getReference();
 
+
+
+        if(folder!=null){
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(filepath.getPath());
+            imageView.setImageBitmap(myBitmap);
+
+        }
+
+
+
+
+
         return view;
+
+
+
+
+
+
     }
 
     @Override
@@ -128,6 +150,11 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                             Log.d("photo", "success");
+                            Toast.makeText(getActivity(),"File Uploaded!",Toast.LENGTH_SHORT).show();
+
+
+
+                            //  Toast.makeText(getApplicationContext(), "File Uploaded", Toast.LENGTH_LONG).show();
 
                             //     progressDialog.dismiss();
                           //  Toast.makeText(getApplicationContext(), "File Uploaded", Toast.LENGTH_LONG).show();
@@ -237,17 +264,15 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = getFile();
         camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-
-
         startActivityForResult(camera_Intent, CAM_REQUEST);
     }
 
 
     private File getFile() {
 
-        File folder = new File("sdcard/ForeignBuddyPhotos");
+        folder = new File("sdcard/ForeignBuddyPhotos");
 
-        if(!folder.exists()){
+        if(folder == null){
             folder.mkdir();
         }
 
