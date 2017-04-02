@@ -31,6 +31,7 @@ public class StartActivity extends AppCompatActivity {
             startActivity(i);
 
 
+
         } else {
 
             //startActivityForResult ist ein Intent, der dann als Result gibt ob User authenticated ist
