@@ -3,15 +3,28 @@ package de.hdm_stuttgart.foreignbuddy;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+
+
+import de.hdm_stuttgart.foreignbuddy.Users.User;
+
+
+
 
 
 public class StartActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private static final int RC_SIGN_IN = 0;
+
 
 
     @Override
@@ -69,5 +82,6 @@ public class StartActivity extends AppCompatActivity {
         }
 
     }
+
 
 }

@@ -23,10 +23,13 @@ public class LogInActivity extends AppCompatActivity {
     private EditText txt_email_login;
     private EditText txt_password_login;
     private Button btn_login_login;
+    private Button btn_passwordRequest;
 
     //Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class LogInActivity extends AppCompatActivity {
         txt_email_login = (EditText) findViewById(R.id.txt_email_login);
         txt_password_login = (EditText) findViewById(R.id.txt_password_login);
         btn_login_login = (Button) findViewById(R.id.btn_login_login);
+        btn_passwordRequest = (Button) findViewById(R.id.btn_passwordRequest);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -76,6 +81,14 @@ public class LogInActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void btn_passwordRequest_clicked(View v){
+
+        
+        //TODO
+
+    }
+
 
     @Override
     public void onStart() {

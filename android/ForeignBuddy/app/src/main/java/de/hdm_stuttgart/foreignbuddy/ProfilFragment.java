@@ -25,7 +25,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -60,6 +62,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     static final int CAMERA_REQUEST_CODE = 10;
     static final int WRITE_EXTERNAL_REQUEST_CODE = 20;
     private Button btn_choosePhoto, btn_uploadPhoto, btn_takePhoto, btn_logOut;
+    private TextView txt_userName;
     private ImageView imageView;
     private Uri filepath;
     private StorageReference riversRef;
@@ -87,6 +90,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         btn_uploadPhoto = (Button) view.findViewById(R.id.btn_uploadPhoto);
         btn_takePhoto = (Button) view.findViewById(R.id.btn_takePhoto);
         btn_logOut = (Button) view.findViewById(R.id.btn_LogOut);
+        txt_userName = (TextView) view.findViewById(R.id.txt_userName);
+
 
 
         btn_choosePhoto.setOnClickListener(this);
@@ -101,6 +106,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
 
+
+        txt_userName.setText(usernameFromEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
 
         //Set current profile photo
 
@@ -117,7 +124,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     }
 
-
+    private String usernameFromEmail(String email) {
+        if (email.contains("@")) {
+            return email.split("@")[0];
+        } else {
+            return email;
+        }
+    }
 
     private void downloadProfilePhoto() {
         try {
