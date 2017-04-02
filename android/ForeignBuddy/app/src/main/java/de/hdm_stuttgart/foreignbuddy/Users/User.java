@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.foreignbuddy;
+package de.hdm_stuttgart.foreignbuddy.Users;
 
 /**
  * Created by Marc-JulianFleck on 29.03.17.
@@ -7,17 +7,25 @@ package de.hdm_stuttgart.foreignbuddy;
 public class User {
 
     private String name;
-    private String location;
+    private String surname;
+    private String nickname;
+    private String email;
     private String language;
+    private String location;
+    //nativeLanguage
+    //lastLocation
+    //interests
+    //languages
 
+    //Constucture
     public User (String name, String location, String language) {
-        super();
-
         this.name = name;
         this.location = location;
         this.language = language;
     }
 
+
+    //Getter and Setter
     public String getName() {
         return name;
     }

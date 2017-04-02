@@ -176,8 +176,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 }
 
-
-
     }
 
 
