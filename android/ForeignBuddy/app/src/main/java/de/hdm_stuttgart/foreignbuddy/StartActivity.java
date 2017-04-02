@@ -39,7 +39,7 @@ public class StartActivity extends AppCompatActivity {
 
             Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
 
-            Intent i =  new Intent(StartActivity.this, MyProfilActivity.class);
+            Intent i =  new Intent(StartActivity.this, MainActivity.class);
             i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
             startActivity(i);
 
@@ -70,7 +70,7 @@ public class StartActivity extends AppCompatActivity {
                 //user logged in
                 Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
 
-                Intent i =  new Intent(StartActivity.this, MyProfilActivity.class);
+                Intent i =  new Intent(StartActivity.this, MainActivity.class);
                 i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
                 startActivity(i);
 

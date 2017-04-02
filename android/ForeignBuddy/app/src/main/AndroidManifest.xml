@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MyProfilActivity"
+            android:name=".MainActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".StartActivity" />
