@@ -11,7 +11,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity{
 
     final ChatsFragment chat = new ChatsFragment();
-    final MyProfileFragment profil = new MyProfileFragment();
+    final ProfilFragment profil = new ProfilFragment();
     final MatchesFragment matches = new MatchesFragment();
 
 
