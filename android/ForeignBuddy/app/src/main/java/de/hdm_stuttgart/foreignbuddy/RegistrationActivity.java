@@ -3,15 +3,11 @@ package de.hdm_stuttgart.foreignbuddy;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 import de.hdm_stuttgart.foreignbuddy.Users.User;
@@ -20,7 +16,7 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 
 
-public class StartActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private static final int RC_SIGN_IN = 0;
@@ -30,22 +26,29 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_registration);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+
+        /*
+
+        //Wird schon in LogIn Activity geprüft
 
         if(firebaseAuth.getCurrentUser() != null) {
 
             Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
 
-            Intent i =  new Intent(StartActivity.this, MainActivity.class);
+            Intent i =  new Intent(RegistrationActivity.this, MainActivity.class);
             i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
             startActivity(i);
 
 
 
         } else {
+
+            */
 
             //startActivityForResult ist ein Intent, der dann als Result gibt ob User authenticated ist
             // oder nicht. Das Result wird dann unten wiederverwendet um zu checken ob user authenticated ist
@@ -60,7 +63,7 @@ public class StartActivity extends AppCompatActivity {
                     .build(), RC_SIGN_IN);
         }
 
-    }
+   // }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -70,9 +73,12 @@ public class StartActivity extends AppCompatActivity {
                 //user logged in
                 Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
 
-                Intent i =  new Intent(StartActivity.this, MainActivity.class);
+                Intent i =  new Intent(RegistrationActivity.this, MainActivity.class);
                 i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
                 startActivity(i);
+
+                addUserToDatabase();
+
 
             } else {
                 //User not authenticated
@@ -82,6 +88,23 @@ public class StartActivity extends AppCompatActivity {
         }
 
     }
+
+    public void addUserToDatabase(){
+
+        User user = new User(firebaseAuth.getInstance().getCurrentUser().getUid());
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .setValue(user);
+
+
+    }
+
+
+
+
+
 
 
 }

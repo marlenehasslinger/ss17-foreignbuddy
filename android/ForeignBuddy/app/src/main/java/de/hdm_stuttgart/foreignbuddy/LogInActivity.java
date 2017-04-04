@@ -90,7 +90,7 @@ public class LogInActivity extends AppCompatActivity {
 
     public  void btn_register_clicked(View v) {
         Log.d("Auth", "onAuthStateChanged:register:");
-        Intent i =  new Intent(LogInActivity.this, RegisterActivity.class);
+        Intent i =  new Intent(LogInActivity.this, RegistrationActivity.class);
         startActivity(i);
     }
 
