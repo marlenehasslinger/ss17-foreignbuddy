@@ -6,13 +6,21 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.*;
@@ -50,6 +58,8 @@ import android.Manifest;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 import static android.app.Activity.RESULT_OK;
@@ -63,21 +73,27 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     static final int WRITE_EXTERNAL_REQUEST_CODE = 20;
     private Button btn_choosePhoto, btn_uploadPhoto, btn_takePhoto, btn_logOut;
     private TextView txt_userName;
+    private TextView txt_location_profil;
     private ImageView imageView;
     private Uri filepath;
     private StorageReference riversRef;
     private Uri downloadUri;
-
     private FirebaseAuth firebaseAuth;
-
     private File localFile = null;
-
     ProgressDialog progressDialog;
-
-
     private String uploadName;
-
     private File folder;
+
+    //Toolbar
+    Toolbar toolbar;
+
+    // GPS Start
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private static final int LOCATION_REQUEST_CODE = 22;
+    Geocoder geocoder;
+    List<Address> addresses;
+    //GPS End
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,6 +107,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         btn_takePhoto = (Button) view.findViewById(R.id.btn_takePhoto);
         btn_logOut = (Button) view.findViewById(R.id.btn_LogOut);
         txt_userName = (TextView) view.findViewById(R.id.txt_userName);
+        txt_location_profil = (TextView) view.findViewById(R.id.txt_location_user);
 
 
 
@@ -119,10 +136,88 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         }
 
+        //Start GPS
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                try {
+                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    String address = addresses.get(0).getAddressLine(0);
+                    String city = addresses.get(0).getLocality();
+                    //String state = addresses.get(0).getAdminArea();
+                    //String country = addresses.get(0).getCountryName();
+                    //String postalCode = addresses.get(0).getPostalCode();
+                    //String knownName = addresses.get(0).getFeatureName();
+                    txt_location_profil.setText(address + ", " + city);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+        getLocation();
+        //GPS END
 
         return view;
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle("MyProfil");
+        toolbar.setTitleTextColor(Color.WHITE);
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.toolbar_profil_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    //GPS functions Start
+    private void getLocation(){
+
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                ==PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+
+            locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+
+
+        } else {
+
+            Log.d("Permission", "Camera External or Write External Permission Permission denied");
+            String [] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+            requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
+
+
+        }
+    }
+    //GPS Functions END
 
     private String usernameFromEmail(String email) {
         if (email.contains("@")) {
@@ -162,9 +257,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -186,11 +278,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             String path ="sdcard/ForeignBuddyPhotos/profilepic.jpg";
             imageView.setImageDrawable(Drawable.createFromPath(path));
             filepath = Uri.fromFile(new File(path));
-
-}
-
     }
 
+    }
 
     private void uploadFile(){
 
@@ -308,14 +398,18 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             } else {
 
                 Log.d("Permissions", "Camera Permission denied still");
-
-
             }
         }
 
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                getLocation();
+            } else {
+                Log.d("Permissions", "Location Permissions denied still");
+            }
+        }
 
-
-/*
+        /*
         if(requestCode==WRITE_EXTERNAL_REQUEST_CODE){
             if(grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 invokeCamera();
@@ -325,10 +419,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
             }
-        }
-
-        */
-
+        }*/
     }
 
     private void invokeCamera() {
@@ -339,7 +430,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(camera_Intent, CAM_REQUEST);
     }
-
 
     private File getFile() {
 
@@ -353,9 +443,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         File image_file = new File(folder, "profilepic.jpg");
         return image_file;
     }
-
-
-
 
     @Override
     public void onClick(View view) {
