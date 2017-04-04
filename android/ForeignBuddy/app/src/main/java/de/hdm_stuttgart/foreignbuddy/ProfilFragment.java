@@ -251,36 +251,51 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     public void takePhoto(){
 
-        if( ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED) {
+        if( ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
 
-            Log.d("Permission", "Camera Permission granted");
-
-            if( ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED) {
-
-                Log.d("Permission", "Write External Permission Permission granted");
-
+            Log.d("Permission", "Camera + Write External Permission granted");
             invokeCamera();
-            } else {
 
-                Log.d("Permission", "Write External Permission denied");
-                String [] permissionRequested = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                requestPermissions(permissionRequested, WRITE_EXTERNAL_REQUEST_CODE);
+        }    else {
 
-            }
-
-        } else {
-
-            Log.d("Permission", "Camera Permission denied");
-
+            Log.d("Permission", "Camera External or Write External Permission Permission denied");
             String [] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
             requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
-            requestPermissions(permissionRequested, WRITE_EXTERNAL_REQUEST_CODE);
 
-            invokeCamera();
+
+
 
         }
+
+        /*
+
+        else if (!(ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)){
+
+                Log.d("Permission", "Camera External Permission denied");
+                String [] permissionRequested = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
+
+
+
+
+        }
+
+
+        else if (!(ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)){
+
+            Log.d("Permission", "Write External Permission denied");
+
+            String [] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            requestPermissions(permissionRequested, WRITE_EXTERNAL_REQUEST_CODE);
+
+        }
+
+        */
     }
 
     @Override
@@ -288,7 +303,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if(requestCode==CAMERA_REQUEST_CODE){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 invokeCamera();
             } else {
 
@@ -298,6 +313,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             }
         }
 
+
+
+/*
         if(requestCode==WRITE_EXTERNAL_REQUEST_CODE){
             if(grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 invokeCamera();
@@ -308,6 +326,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
             }
         }
+
+        */
 
     }
 
