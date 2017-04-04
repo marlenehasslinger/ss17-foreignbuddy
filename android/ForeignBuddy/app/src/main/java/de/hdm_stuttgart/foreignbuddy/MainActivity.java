@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity{
 
     final ChatsFragment chat = new ChatsFragment();
@@ -19,6 +22,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragment, chat);
@@ -48,10 +52,10 @@ public class MainActivity extends AppCompatActivity{
                     case R.id.action_matches:
                         //Toast.makeText(MainActivity.this, "Matches clicked", Toast.LENGTH_SHORT).show();
 
-                        FragmentTransaction t3 = getSupportFragmentManager().beginTransaction();
-                        t3.replace(R.id.fragment, matches);
-                        t3.addToBackStack(null);
-                        t3.commit();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment, matches);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
                         break;
                 }
                 return true;

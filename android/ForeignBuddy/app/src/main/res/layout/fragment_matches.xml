@@ -6,28 +6,20 @@
     tools:context="de.hdm_stuttgart.foreignbuddy.MatchesFragment">
 
 
-    <Button
-        android:id="@+id/btn_setName_matches"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_matches"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set Name"
-        android:onClick="btn_setName_matchesClicked"/>
-
-    <EditText
-        android:id="@+id/txt_setName_matches"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/list_matches"
-        android:layout_marginStart="16dp"
-        android:layout_toEndOf="@+id/btn_setName_matches"
-        android:ems="10"
-        android:inputType="textPersonName" />
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_alignParentTop="true" />
 
     <ListView
         android:id="@+id/list_matches"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn_setName_matches" />
+        android:layout_below="@+id/toolbar_matches" />
 
 </RelativeLayout>

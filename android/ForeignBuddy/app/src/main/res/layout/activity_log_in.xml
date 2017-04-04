@@ -37,19 +37,32 @@
         android:onClick="btn_login_login_clicked"
         android:layout_below="@+id/txt_password_login"
         android:layout_alignEnd="@+id/txt_password_login"
-        android:layout_marginTop="23dp" />
+        android:layout_marginTop="23dp"
+        android:layout_alignStart="@+id/txt_password_login" />
 
     <Button
         android:id="@+id/btn_passwordRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/btn_login_login"
-        android:layout_below="@+id/btn_login_login"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="77dp"
         android:background="#FFFFFFFF"
         android:onClick="btn_passwordRequest_clicked"
-        android:text="Forgot your password?" />
+        android:text="Forgot your password?"
+        android:layout_below="@+id/btn_login_login"
+        android:layout_alignStart="@+id/btn_login_login"
+        android:layout_alignEnd="@+id/btn_login_login" />
+
+    <Button
+        android:id="@+id/btn_register_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btn_login_login"
+        android:layout_alignStart="@+id/btn_login_login"
+        android:layout_below="@+id/btn_login_login"
+        android:layout_marginTop="11dp"
+        android:background="#FFFFFFFF"
+        android:onClick="btn_register_clicked"
+        android:text="Register Now" />
 
 
 </RelativeLayout>

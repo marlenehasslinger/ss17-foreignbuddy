@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +31,6 @@ public class LogInActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +43,9 @@ public class LogInActivity extends AppCompatActivity {
         btn_passwordRequest = (Button) findViewById(R.id.btn_passwordRequest);
 
 
-
         mAuth = FirebaseAuth.getInstance();
+
+        //Checks if user already signed in.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -83,10 +84,14 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void btn_passwordRequest_clicked(View v){
-
-        
         //TODO
 
+    }
+
+    public  void btn_register_clicked(View v) {
+        Log.d("Auth", "onAuthStateChanged:register:");
+        Intent i =  new Intent(LogInActivity.this, RegisterActivity.class);
+        startActivity(i);
     }
 
 

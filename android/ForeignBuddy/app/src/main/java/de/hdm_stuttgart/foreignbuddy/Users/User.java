@@ -1,52 +1,36 @@
 package de.hdm_stuttgart.foreignbuddy.Users;
 
+import com.google.firebase.auth.FirebaseAuth;
+import java.util.ArrayList;
+
 /**
  * Created by Marc-JulianFleck on 29.03.17.
  */
 
 public class User {
 
-    private String name;
-    private String surname;
-    private String nickname;
-    private String email;
-    private String language;
-    private String location;
-    //nativeLanguage
-    //lastLocation
-    //interests
-    //languages
+    public String userID;
+    public String username;
+    public String email;
+    public String nativeLanguage;
+    public String location;
+    //private Location lastLocation = null;
+    //private Boolean[] interests;
+
+    public User() {
+
+    }
 
     //Constucture
-    public User (String name, String location, String language) {
-        this.name = name;
-        this.location = location;
-        this.language = language;
-    }
-
-
-    //Getter and Setter
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
+    public User (String userID, String username, String email, String nativeLanguage, String location) {
+        this.userID = userID;
+        this.username = username;
+        this.email = email;
+        this.nativeLanguage = nativeLanguage;
         this.location = location;
     }
 
-    public String getLanguage() {
-        return language;
-    }
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
+
+
 }
