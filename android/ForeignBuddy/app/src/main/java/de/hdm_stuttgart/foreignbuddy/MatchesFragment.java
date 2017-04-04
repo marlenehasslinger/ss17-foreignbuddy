@@ -1,11 +1,20 @@
 package de.hdm_stuttgart.foreignbuddy;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +32,20 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import android.Manifest;
+
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 
 public class MatchesFragment extends Fragment {
 
     List<User> matches;
+    ListView listView;
     Toolbar toolbar;
     private DatabaseReference mDatabase;
+
 
 
     @Override
@@ -40,6 +55,18 @@ public class MatchesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_matches, container, false);
 
         matches = new ArrayList<>();
+
+        listView = (ListView) view.findViewById(R.id.list_matches);
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_matches);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle("Matches");
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").addListenerForSingleValueEvent(
@@ -57,22 +84,8 @@ public class MatchesFragment extends Fragment {
                 }
         );
 
-        ListView listView = (ListView) view.findViewById(R.id.list_matches);
-
-        matches = new ArrayList<>();
         ArrayAdapter<User> matchesAdapter = new UserListAdapter();
         listView.setAdapter(matchesAdapter);
-
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_matches);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle("Matches");
-
 
         /*User user = new User(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                 "Mayou", FirebaseAuth.getInstance().getCurrentUser().getEmail(), "English", "Stuttgart");

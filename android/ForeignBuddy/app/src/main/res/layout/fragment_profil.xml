@@ -7,7 +7,14 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_profil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_alignParentTop="true" />
 
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -84,6 +91,25 @@
         android:layout_alignBaseline="@+id/txt_userName"
         android:layout_alignBottom="@+id/txt_userName"
         android:layout_alignStart="@+id/btn_takePhoto" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView5"
+        android:layout_alignStart="@+id/textView5"
+        android:layout_below="@+id/textView5"
+        android:layout_marginTop="8dp"
+        android:text="Location:" />
+
+    <TextView
+        android:id="@+id/txt_location_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btn_uploadPhoto"
+        android:layout_alignStart="@+id/txt_userName"
+        android:layout_alignTop="@+id/textView"
+        android:text="Location" />
 
 
 </RelativeLayout>
