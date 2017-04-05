@@ -9,9 +9,8 @@
         android:title="Settings"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_profil"
+        android:id="@+id/tb_logout_profil"
         android:enabled="true"
-        android:icon="@drawable/ic_profil"
         android:title="Logout"
         app:showAsAction="collapseActionView"/>
 
