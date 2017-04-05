@@ -15,11 +15,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +64,8 @@ import java.util.List;
 import java.util.Locale;
 
 
+import android.content.Context;
+
 import static android.app.Activity.RESULT_OK;
 
 public class ProfilFragment extends Fragment implements View.OnClickListener {
@@ -71,7 +75,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     static final int CAM_REQUEST =1;
     static final int CAMERA_REQUEST_CODE = 10;
     static final int WRITE_EXTERNAL_REQUEST_CODE = 20;
-    private Button btn_choosePhoto, btn_uploadPhoto, btn_takePhoto, btn_logOut;
+    private Button btn_choosePhoto, btn_takePhoto, btn_logOut;
     private TextView txt_userName;
     private TextView txt_location_profil;
     private ImageView imageView;
@@ -95,6 +99,14 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     List<Address> addresses;
     //GPS End
 
+
+    //Für Fileprovider
+    File fileWritten;
+    private static final String APP_TAG = "CAMERA_TEST_APP";
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -103,7 +115,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         imageView = (ImageView) view.findViewById(R.id.imageView);
 
         btn_choosePhoto = (Button) view.findViewById(R.id.btn_choosePhoto);
-        btn_uploadPhoto = (Button) view.findViewById(R.id.btn_uploadPhoto);
         btn_takePhoto = (Button) view.findViewById(R.id.btn_takePhoto);
         btn_logOut = (Button) view.findViewById(R.id.btn_LogOut);
         txt_userName = (TextView) view.findViewById(R.id.txt_userName);
@@ -112,7 +123,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
         btn_choosePhoto.setOnClickListener(this);
-        btn_uploadPhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
         btn_logOut.setOnClickListener(this);
 
@@ -269,18 +279,33 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
                 imageView.setImageBitmap(bitmap);
+                uploadFile();
+
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-        } else  if (requestCode ==CAM_REQUEST){
-            String path ="sdcard/ForeignBuddyPhotos/profilepic.jpg";
-            imageView.setImageDrawable(Drawable.createFromPath(path));
-            filepath = Uri.fromFile(new File(path));
-    }
+        } else  if (requestCode ==CAM_REQUEST) {
+
+            if (resultCode == RESULT_OK) {
+                Bitmap takenImage = BitmapFactory.decodeFile(fileWritten.getAbsolutePath());
+                // Load the taken image into a preview
+                imageView.setImageBitmap(takenImage);
+                filepath = Uri.fromFile(fileWritten);
+                uploadFile();
+
+
+
+            } else { // Result was a failure
+                Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
 
     }
+
+
 
     private void uploadFile(){
 
@@ -288,7 +313,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
 
-            //riversRef = storageReference.child("images/" + uploadName); --nach oben verschoben
             riversRef.putFile(filepath)
 
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -344,6 +368,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         if( ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)==
                 PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED) {
 
             Log.d("Permission", "Camera + Write External Permission granted");
@@ -352,7 +378,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         }    else {
 
             Log.d("Permission", "Camera External or Write External Permission Permission denied");
-            String [] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            String [] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
             requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
 
 
@@ -360,32 +386,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         }
 
-        /*
 
-        else if (!(ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)){
-
-                Log.d("Permission", "Camera External Permission denied");
-                String [] permissionRequested = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
-
-
-
-
-        }
-
-
-        else if (!(ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)){
-
-            Log.d("Permission", "Write External Permission denied");
-
-            String [] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            requestPermissions(permissionRequested, WRITE_EXTERNAL_REQUEST_CODE);
-
-        }
-
-        */
     }
 
     @Override
@@ -393,7 +394,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if(requestCode==CAMERA_REQUEST_CODE){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 invokeCamera();
             } else {
 
@@ -409,47 +410,60 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             }
         }
 
-        /*
-        if(requestCode==WRITE_EXTERNAL_REQUEST_CODE){
-            if(grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                invokeCamera();
-            } else {
-
-                Log.d("Permissions", "Write External Permission denied still");
-
-
-            }
-        }*/
     }
+
+    public String photoFileName = "photo.jpg";
+
 
     private void invokeCamera() {
 
+
+
         Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Log.d("Camera", "Camera started");
-        File file = getFile();
-        camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
         startActivityForResult(camera_Intent, CAM_REQUEST);
     }
 
-    private File getFile() {
 
-        folder = new File("sdcard/ForeignBuddyPhotos");
 
-        if(folder == null){
-            folder.mkdir();
-            Log.d("Files", "'ForeignBuddyPhotos' folder was created");
+    public Uri getPhotoFileUri(String fileName) {
+        // Only continue if the SD Card is mounted
+        if (isExternalStorageAvailable()) {
+            // Get safe storage directory for photos
+            // Use `getExternalFilesDir` on Context to access package-specific directories.
+            // This way, we don't need to request external read/write runtime permissions.
+            File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
+            // getExternalFilesDir() + "/Pictures" should match the declaration in fileprovider.xml paths
+            File file = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" +System.currentTimeMillis()+".png");
+            //store file to load later
+            fileWritten = file;
+            // wrap File object into a content provider. NOTE: authority here should match authority in manifest declaration
+            // Create the storage directory if it does not exist
+            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+                Log.d(APP_TAG, "failed to create directory");
+            }
+            // Return the file target for the photo based on filename
+            //File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+            // wrap File object into a content provider
+            // required for API >= 24
+            Uri fileuri = FileProvider.getUriForFile(getActivity(), "com.codepath.fileprovider", file);
+            return fileuri;
         }
-
-        File image_file = new File(folder, "profilepic.jpg");
-        return image_file;
+        return null;
     }
+
+    // Returns true if external storage for photos is available
+    private boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        return state.equals(Environment.MEDIA_MOUNTED);
+    }
+
 
     @Override
     public void onClick(View view) {
         if (view == btn_choosePhoto) {
             showFileChooser();
-        } else if (view == btn_uploadPhoto) {
-            uploadFile();
         } else if (view == btn_takePhoto){
             takePhoto();
         } else if (view == btn_logOut){
