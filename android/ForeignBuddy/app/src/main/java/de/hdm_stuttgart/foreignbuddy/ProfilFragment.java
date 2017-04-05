@@ -3,6 +3,7 @@ package de.hdm_stuttgart.foreignbuddy;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -22,6 +23,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -75,7 +77,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     static final int CAM_REQUEST =1;
     static final int CAMERA_REQUEST_CODE = 10;
     static final int WRITE_EXTERNAL_REQUEST_CODE = 20;
-    private Button btn_choosePhoto, btn_takePhoto, btn_logOut;
+    private Button btn_choosePhoto, btn_takePhoto;
     private TextView txt_userName;
     private TextView txt_location_profil;
     private ImageView imageView;
@@ -116,7 +118,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         btn_choosePhoto = (Button) view.findViewById(R.id.btn_choosePhoto);
         btn_takePhoto = (Button) view.findViewById(R.id.btn_takePhoto);
-        btn_logOut = (Button) view.findViewById(R.id.btn_LogOut);
         txt_userName = (TextView) view.findViewById(R.id.txt_userName);
         txt_location_profil = (TextView) view.findViewById(R.id.txt_location_user);
 
@@ -124,7 +125,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
-        btn_logOut.setOnClickListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -154,13 +154,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             public void onLocationChanged(Location location) {
                 try {
                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    String address = addresses.get(0).getAddressLine(0);
+                    //String address = addresses.get(0).getAddressLine(0);
                     String city = addresses.get(0).getLocality();
                     //String state = addresses.get(0).getAdminArea();
                     //String country = addresses.get(0).getCountryName();
                     //String postalCode = addresses.get(0).getPostalCode();
                     //String knownName = addresses.get(0).getFeatureName();
-                    txt_location_profil.setText(address + ", " + city);
+                    txt_location_profil.setText("in " + city);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -195,17 +195,29 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle("MyProfil");
+        String userMail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        toolbar.setTitle(userMail);
         toolbar.setTitleTextColor(Color.WHITE);
         setHasOptionsMenu(true);
-
     }
 
+    //Toolbar functions Starts
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.toolbar_profil_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.tb_logout_profil:
+                askForLogout();
+                break;
+        }
+        return true;
+    }
+    //Toolbar functions END
 
     //GPS functions Start
     private void getLocation(){
@@ -304,8 +316,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         }
 
     }
-
-
 
     private void uploadFile(){
 
@@ -416,16 +426,11 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
     private void invokeCamera() {
-
-
-
         Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Log.d("Camera", "Camera started");
         camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
         startActivityForResult(camera_Intent, CAM_REQUEST);
     }
-
-
 
     public Uri getPhotoFileUri(String fileName) {
         // Only continue if the SD Card is mounted
@@ -459,20 +464,35 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         return state.equals(Environment.MEDIA_MOUNTED);
     }
 
-
     @Override
     public void onClick(View view) {
         if (view == btn_choosePhoto) {
             showFileChooser();
         } else if (view == btn_takePhoto){
             takePhoto();
-        } else if (view == btn_logOut){
-            logout();
-
         }
     }
 
-    public void logout(){
+    //Logout function Start
+    private void askForLogout(){
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Sign Out")
+                .setMessage("Are you sure you want to Sign Out?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        logout();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                /*.setIcon(android.R.drawable.ic_dialog_alert)*/ // Set own Icon!
+                .show();
+    }
+
+    private void logout(){
 
         FirebaseAuth.getInstance().signOut();
         Log.d("Auth", FirebaseAuth.getInstance().getCurrentUser() + "is logged out");
@@ -481,5 +501,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
     }
+    //Logout function END
 
 }
