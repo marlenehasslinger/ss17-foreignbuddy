@@ -1,5 +1,6 @@
 package de.hdm_stuttgart.foreignbuddy;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class LogInActivity extends AppCompatActivity {
     private EditText txt_password_login;
     private Button btn_login_login;
     private Button btn_passwordRequest;
+    private ProgressDialog progressDialog;
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -64,18 +66,23 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void btn_login_login_clicked(View v) {
+
+        progressDialog = ProgressDialog.show(this, "Loading...", "Please wait...", true);
+
         mAuth.signInWithEmailAndPassword(txt_email_login.getText().toString(), txt_password_login.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("Auth", "signInWithEmail:onComplete:" + task.isSuccessful());
+                        progressDialog.dismiss();
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
+                            progressDialog.dismiss();
                             Log.w("Auth", "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LogInActivity.this, "Failed", //TODO Massage
+                            Toast.makeText(LogInActivity.this, "Something didn't work", //TODO Massage
                                     Toast.LENGTH_SHORT).show();
                         }
 
