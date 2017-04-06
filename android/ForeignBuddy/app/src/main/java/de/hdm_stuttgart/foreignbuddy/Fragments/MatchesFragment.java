@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.foreignbuddy;
+package de.hdm_stuttgart.foreignbuddy.Fragments;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -36,6 +36,7 @@ import java.util.Locale;
 
 import android.Manifest;
 
+import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 

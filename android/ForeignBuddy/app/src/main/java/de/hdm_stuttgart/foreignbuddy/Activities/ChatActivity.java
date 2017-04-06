@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.foreignbuddy;
+package de.hdm_stuttgart.foreignbuddy.Activities;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
+import de.hdm_stuttgart.foreignbuddy.R;
 
 
 public class ChatActivity extends AppCompatActivity {

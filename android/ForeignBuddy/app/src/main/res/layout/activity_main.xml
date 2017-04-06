@@ -5,7 +5,7 @@
     android:id="@+id/activity_my_profil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.hdm_stuttgart.foreignbuddy.MainActivity">
+    tools:context="de.hdm_stuttgart.foreignbuddy.Activities.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment"

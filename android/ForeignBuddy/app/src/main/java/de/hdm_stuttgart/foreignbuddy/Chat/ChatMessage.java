@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.foreignbuddy;
+package de.hdm_stuttgart.foreignbuddy.Chat;
 
 import android.text.format.DateFormat;
 import android.view.View;

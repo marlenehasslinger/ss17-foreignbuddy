@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LogInActivity">
+        <activity android:name=".Activities.LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,10 +31,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".Activities.ChatActivity" />
+        <activity android:name=".Activities.RegistrationActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

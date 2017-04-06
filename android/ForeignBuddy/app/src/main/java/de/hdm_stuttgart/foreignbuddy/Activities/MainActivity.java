@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.foreignbuddy;
+package de.hdm_stuttgart.foreignbuddy.Activities;
 
 
 import android.support.annotation.NonNull;
@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
+import de.hdm_stuttgart.foreignbuddy.Fragments.MatchesFragment;
+import de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment;
+import de.hdm_stuttgart.foreignbuddy.R;
 
 public class MainActivity extends AppCompatActivity{
 

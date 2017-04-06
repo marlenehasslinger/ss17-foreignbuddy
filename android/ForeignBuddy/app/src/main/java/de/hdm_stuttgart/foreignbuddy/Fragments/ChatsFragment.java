@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.foreignbuddy;
+package de.hdm_stuttgart.foreignbuddy.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,16 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.database.FirebaseDatabase;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import static android.R.id.list;
+import de.hdm_stuttgart.foreignbuddy.Chat.ContactChat;
+import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
+import de.hdm_stuttgart.foreignbuddy.R;
 
 
 public class ChatsFragment extends Fragment {
