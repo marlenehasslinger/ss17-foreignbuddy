@@ -16,7 +16,6 @@ public class User {
     public String username;
     public String email;
     public String location;
-    //private Location lastLocation = null;
     //private Boolean[] interests;
 
 

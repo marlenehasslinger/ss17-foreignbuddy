@@ -416,7 +416,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 getLocation();
             } else {
-                Log.d("Permissions", "Location Permissions denied still");
+                Log.d("Permissions", "Locations Permissions denied still");
             }
         }
 
