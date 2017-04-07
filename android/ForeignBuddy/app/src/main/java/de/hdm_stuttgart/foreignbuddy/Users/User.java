@@ -1,5 +1,7 @@
 package de.hdm_stuttgart.foreignbuddy.Users;
 
+import android.location.Location;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -15,18 +17,11 @@ public class User {
     public String userID;
     public String username;
     public String email;
-    public String location;
-    //private Boolean[] interests;
+    public Double latitude;
+    public Double longitude;
 
 
     //Constucture
-    public User (String userID, String username, String email, String nativeLanguage, String location) {
-        this.userID = userID;
-        this.username = username;
-        this.email = email;
-        this.nativeLanguage = nativeLanguage;
-        this.location = location;
-    }
 
     public User(String userID) {
         this.userID = userID;
@@ -55,9 +50,7 @@ public class User {
         return nativeLanguage;
     }
 
-    public String getLocation() {
-        return location;
-    }
+
 
 
     //Setters
@@ -77,10 +70,6 @@ public class User {
     }
 
     public String nativeLanguage;
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
     public static User getOwnUser(){
         return new User();

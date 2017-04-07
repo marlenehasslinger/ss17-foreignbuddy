@@ -32,31 +32,31 @@
         android:id="@+id/txt_location_matches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stuttgart (5km)"
         android:layout_alignBottom="@+id/img_user"
-        android:layout_alignStart="@+id/txt_name_matches" />
+        android:layout_alignStart="@+id/txt_name_matches"
+        android:text="no Location" />
 
     <TextView
         android:id="@+id/txt_language_matches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Englisch"
-        android:layout_marginStart="10dp"
-        android:layout_alignTop="@+id/img_location_matches"
-        android:layout_toEndOf="@+id/img_location_matches" />
+        android:text="Spanish"
+        android:layout_alignBaseline="@+id/txt_name_matches"
+        android:layout_alignBottom="@+id/txt_name_matches"
+        android:layout_toEndOf="@+id/txt_name_matches"
+        android:layout_marginStart="15dp" />
 
     <ImageView
         android:id="@+id/img_location_matches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/txt_location_matches"
-        android:layout_marginStart="7dp"
-        android:layout_toEndOf="@+id/txt_location_matches"
         android:adjustViewBounds="true"
         android:maxHeight="15dp"
         android:maxWidth="15dp"
         android:nestedScrollingEnabled="false"
-        app:srcCompat="@drawable/location" />
+        app:srcCompat="@drawable/location"
+        android:layout_below="@+id/txt_name_matches"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/btn_chat_matches"

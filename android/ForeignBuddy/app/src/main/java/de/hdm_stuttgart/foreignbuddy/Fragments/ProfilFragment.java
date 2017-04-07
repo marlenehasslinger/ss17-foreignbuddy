@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -150,6 +151,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                     //String postalCode = addresses.get(0).getPostalCode();
                     //String knownName = addresses.get(0).getFeatureName();
                     txt_location_profil.setText("in " + city);
+                    FirebaseDatabase.getInstance().getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("latitude").setValue(location.getLatitude());
+                    FirebaseDatabase.getInstance().getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("longitude").setValue(location.getLongitude());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -412,7 +419,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     }
 
     public String photoFileName = "photo.jpg";
-
 
     private void invokeCamera() {
         Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
