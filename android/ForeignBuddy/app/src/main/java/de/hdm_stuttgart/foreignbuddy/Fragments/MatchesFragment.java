@@ -1,8 +1,10 @@
 package de.hdm_stuttgart.foreignbuddy.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -32,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,6 +51,12 @@ public class MatchesFragment extends Fragment {
     private ListView listView;
     private Toolbar toolbar;
     private DatabaseReference mDatabase;
+    private ProgressDialog progressDialog;
+
+    //Start Location Varaibles
+    private Geocoder geocoder;
+    private List<Address> addresses;
+    //END Location Variables
 
 
 
@@ -59,27 +68,29 @@ public class MatchesFragment extends Fragment {
 
         matches = new ArrayList<>();
         listView = (ListView) view.findViewById(R.id.list_matches);
-
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").child("v2CWwLpvORPke4q6niplUx8QXrx2").addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        for (int i = 0; i < 10; i++){
-                            matches.add(user);
-                        }
-                        matches.add(user);
-                        ArrayAdapter<User> matchesAdapter = new UserListAdapter();
-                        listView.setAdapter(matchesAdapter);
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+        progressDialog = ProgressDialog.show(getActivity(), "Loading Matches...", "Please wait...", true);
+        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    }
+                Iterable<DataSnapshot> allUsers = dataSnapshot.getChildren();
+                for (DataSnapshot child : allUsers) {
+                    User user = child.getValue(User.class);
+                    matches.add(user);
                 }
-        );
+                ArrayAdapter<User> matchesAdapter = new UserListAdapter();
+                listView.setAdapter(matchesAdapter);
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         return view;
     }
@@ -109,16 +120,22 @@ public class MatchesFragment extends Fragment {
             }
 
             User currentUser = matches.get(position);
+            /*try {
+                addresses = geocoder.getFromLocation(currentUser.latitude, currentUser.longitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+
+
 
             ImageView img_user = (ImageView) view. findViewById(R.id.img_user);
             TextView name = (TextView) view.findViewById(R.id.txt_name_matches);
             TextView location = (TextView) view.findViewById(R.id.txt_location_matches);
             TextView language = (TextView) view.findViewById(R.id.txt_language_matches);
 
-
             name.setText(currentUser.username);
+            //location.setText(addresses.get(0).getLocality());
             language.setText(currentUser.nativeLanguage);
-
 
             return view;
         }
