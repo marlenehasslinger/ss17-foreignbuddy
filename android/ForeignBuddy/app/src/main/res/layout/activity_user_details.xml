@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context="de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity">
 
     <CheckBox
@@ -44,14 +46,14 @@
         android:id="@+id/text_userName"
         android:layout_width="373dp"
         android:layout_height="52dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Choose username  "
-        tools:layout_editor_absoluteX="19dp"
-        tools:layout_editor_absoluteY="16dp"
-        android:layout_marginTop="45dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="45dp"
+        android:ems="10"
+        android:hint="Choose username"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <TextView
         android:id="@+id/textView"

@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -30,6 +31,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +40,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -56,7 +62,10 @@ import java.util.Locale;
 
 
 import de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity;
+import de.hdm_stuttgart.foreignbuddy.Activities.MainActivity;
+import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -97,6 +106,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     private static final String APP_TAG = "CAMERA_TEST_APP";
 
 
+    private User myUser;
+    private DatabaseReference mDatabase;
 
 
     @Override
@@ -105,14 +116,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_profil, container, false);
 
         imageView = (ImageView) view.findViewById(R.id.imageView);
-
         btn_choosePhoto = (Button) view.findViewById(R.id.btn_choosePhoto);
         btn_takePhoto = (Button) view.findViewById(R.id.btn_takePhoto);
         txt_userName = (TextView) view.findViewById(R.id.txt_userName);
         txt_location_profil = (TextView) view.findViewById(R.id.txt_location_user);
-
-
-
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
 
@@ -123,17 +130,31 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
 
+        //Database MyUser
+        progressDialog = ProgressDialog.show(getActivity(), "Loading Profil...", "Please wait...", true);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                myUser = dataSnapshot.getValue(User.class);
+                txt_userName.setText(myUser.username);
+                toolbar.setTitle(myUser.username);
+                progressDialog.dismiss();
+            }
 
-        txt_userName.setText(usernameFromEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         //Set current profile photo
-
         try {
             downloadProfilePhoto();
             } catch (Exception e){
             imageView.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
-
         }
 
         //Start GPS
@@ -191,8 +212,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        String userMail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        toolbar.setTitle(userMail);
         toolbar.setTitleTextColor(Color.WHITE);
         setHasOptionsMenu(true);
     }
@@ -210,6 +229,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             case R.id.tb_logout_profil:
                 askForLogout();
                 break;
+            case R.id.tb_settings_profile:
+                Intent i = new Intent(getActivity(), UserDetailsActivity.class);
+                startActivity(i);
         }
         return true;
     }
@@ -224,6 +246,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                         Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
 
             locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+            
 
 
         } else {
