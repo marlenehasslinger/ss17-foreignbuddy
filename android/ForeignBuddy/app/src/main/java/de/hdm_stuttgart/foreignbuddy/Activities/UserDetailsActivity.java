@@ -70,16 +70,9 @@ public class UserDetailsActivity extends AppCompatActivity {
                 .getReference()
                 .child("users")
                 .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("Username")
+                .child("username")
                 .setValue(userName.getText().toString());
 
-
-        FirebaseDatabase.getInstance()
-                .getReference()
-                .child("users")
-                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("email")
-                .setValue(firebaseAuth.getInstance().getCurrentUser().getEmail());
 
         FirebaseDatabase.getInstance()
                 .getReference()
@@ -100,7 +93,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .child("NativeLanguage")
                     .setValue("English");
         }
-        if(rB_native_German.isEnabled()){
+        else if(rB_native_German.isEnabled()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
@@ -118,7 +111,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .child("NativeLanguage")
                     .setValue("French");
         }
-        if(rB_native_Spanish.isEnabled()){
+        else if(rB_native_Spanish.isEnabled()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
@@ -130,7 +123,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
 
     //Für languages
-        if(cB_English.isEnabled()){
+        if(cB_English.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
@@ -140,7 +133,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .child("Language1")
                     .setValue("English");
         }
-        if(cB_German.isEnabled()){
+        if(cB_German.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
@@ -151,7 +144,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
                     .setValue("German");
         }
-        if(cB_French.isEnabled()){
+        if(cB_French.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
@@ -163,7 +156,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .setValue("French");
         }
 
-        if(cB_Spanish.isEnabled()){
+        if(cB_Spanish.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
