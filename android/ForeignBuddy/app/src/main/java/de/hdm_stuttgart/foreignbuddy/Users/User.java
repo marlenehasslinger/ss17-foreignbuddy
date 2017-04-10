@@ -17,6 +17,9 @@ public class User {
     public String userID;
     public String username;
     public String email;
+    public String nativeLanguage;
+    public String language;
+
     public Double latitude;
     public Double longitude;
 
@@ -50,6 +53,11 @@ public class User {
         return nativeLanguage;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+
 
 
 
@@ -65,11 +73,15 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public void setNativeLanguage(String nativeLanguage) {
         this.nativeLanguage = nativeLanguage;
     }
 
-    public String nativeLanguage;
+    public void setLanguage(String Language) {
+        this.language = Language;
+    }
+
 
     public static User getOwnUser(){
         return new User();

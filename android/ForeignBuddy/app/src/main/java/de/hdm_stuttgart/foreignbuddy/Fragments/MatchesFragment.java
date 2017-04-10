@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,13 +28,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +59,26 @@ public class MatchesFragment extends Fragment {
     private Toolbar toolbar;
     private DatabaseReference mDatabase;
     private ProgressDialog progressDialog;
+    private File localFileProfilePhoto = null;
+
 
     //Start Location Varaibles
     private Geocoder geocoder;
     private List<Address> addresses;
     //END Location Variables
+
+
+    //Für Profilbilddownload
+    private StorageReference riversRef;
+    private StorageReference storageReference;
+    private String uploadName;
+
+
+    //Für Listenelement
+    ImageView img_user;
+    TextView name;
+    TextView location;
+    TextView language;
 
 
 
@@ -65,6 +87,11 @@ public class MatchesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_matches, container, false);
+
+        //Für Profilbilder
+        storageReference = FirebaseStorage.getInstance().getReference();
+        riversRef = storageReference.child("images/" + uploadName);
+
 
         matches = new ArrayList<>();
         listView = (ListView) view.findViewById(R.id.list_matches);
@@ -104,9 +131,9 @@ public class MatchesFragment extends Fragment {
         toolbar.setTitle("Matches");
     }
 
-    private class UserListAdapter extends ArrayAdapter<User>{
+    private class UserListAdapter extends ArrayAdapter<User> {
 
-        public UserListAdapter(){
+        public UserListAdapter() {
             super(getActivity(), R.layout.matches, matches);
         }
 
@@ -126,18 +153,66 @@ public class MatchesFragment extends Fragment {
                 e.printStackTrace();
             }*/
 
+            //For Profilephoto
 
 
-            ImageView img_user = (ImageView) view. findViewById(R.id.img_user);
-            TextView name = (TextView) view.findViewById(R.id.txt_name_matches);
-            TextView location = (TextView) view.findViewById(R.id.txt_location_matches);
-            TextView language = (TextView) view.findViewById(R.id.txt_language_matches);
+
+            uploadName = currentUser.email + "_profilePhoto";
+
+            img_user = (ImageView) view.findViewById(R.id.img_user);
+            name = (TextView) view.findViewById(R.id.txt_name_matches);
+            location = (TextView) view.findViewById(R.id.txt_location_matches);
+            language = (TextView) view.findViewById(R.id.txt_language_matches);
 
             name.setText(currentUser.username);
             //location.setText(addresses.get(0).getLocality());
             language.setText(currentUser.nativeLanguage);
 
+            downloadProfilePhoto(uploadName);
+
+
             return view;
+
         }
+
+
+
+
     }
-}
+
+    private void downloadProfilePhoto (String uploadName) {
+        try {
+            localFileProfilePhoto = File.createTempFile("images", uploadName);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        riversRef.getFile(localFileProfilePhoto)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+
+                        img_user.setImageDrawable(Drawable.createFromPath(localFileProfilePhoto.getPath()));
+
+
+                        Log.d("Download", "Profil photo successfully downloaded");
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+
+                Log.d("Download", "Profil photo download failed");
+            }
+        });
+    }
+
+
+
+    }
+
+
+

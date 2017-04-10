@@ -238,6 +238,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     //GPS Functions END
 
     private String usernameFromEmail(String email) {
+
         if (email.contains("@")) {
             return email.split("@")[0];
         } else {

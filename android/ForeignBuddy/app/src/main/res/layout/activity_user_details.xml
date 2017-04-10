@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity">
+
+    <CheckBox
+        android:id="@+id/cB_English"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="English"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="320dp"
+        android:layout_below="@+id/cB_French"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:id="@+id/cB_German"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="German"
+        android:layout_below="@+id/cB_Spanish"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:id="@+id/cB_French"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="French"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:id="@+id/cB_Spanish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spanish"
+        android:layout_below="@+id/cB_English"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/text_userName"
+        android:layout_width="373dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Choose username  "
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_marginTop="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What is your native language?"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="98dp"
+        android:layout_marginTop="29dp"
+        android:layout_below="@+id/text_userName"
+        android:layout_alignParentStart="true" />
+
+
+    <RadioGroup
+        android:id="@+id/radioNativeLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:id="@+id/rB_native_English"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/radioNativeLanguage"
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="25dp"
+            android:layout_weight="1"
+            android:text="English"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="144dp" />
+
+        <RadioButton
+            android:id="@+id/rB_native_Spanish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Spanish"
+            tools:layout_editor_absoluteX="100dp"
+            tools:layout_editor_absoluteY="184dp" />
+
+        <RadioButton
+            android:id="@+id/rB_native_German"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/rB_native_Spanish"
+            android:layout_alignBottom="@+id/rB_native_Spanish"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:text="German"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="184dp" />
+
+        <RadioButton
+            android:id="@+id/rB_native_French"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/textView"
+            android:layout_alignTop="@+id/rB_native_English"
+            android:layout_weight="1"
+            android:text="French"
+            tools:layout_editor_absoluteX="100dp"
+            tools:layout_editor_absoluteY="144dp" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Which languages would you like to improve?"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="262dp"
+        android:layout_below="@+id/radioNativeLanguage"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="34dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btn_next_clicked"
+        android:text="next"
+        tools:layout_editor_absoluteX="83dp"
+        tools:layout_editor_absoluteY="704dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp" />
+
+
+</RelativeLayout>

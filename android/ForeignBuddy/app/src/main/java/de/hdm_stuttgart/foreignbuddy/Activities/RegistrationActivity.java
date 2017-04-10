@@ -78,8 +78,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
                 startActivity(i);
 
-                addUserToDatabase();
+               // addUserToDatabase();
 
+
+                Intent intent =  new Intent(RegistrationActivity.this, UserDetailsActivity.class);
+                startActivity(intent);
 
             } else {
                 //User not authenticated
@@ -90,6 +93,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+    /*
     public void addUserToDatabase(){
 
         User user = new User(firebaseAuth.getInstance().getCurrentUser().getUid());
@@ -101,6 +105,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     }
+
+    */
 
 
 
