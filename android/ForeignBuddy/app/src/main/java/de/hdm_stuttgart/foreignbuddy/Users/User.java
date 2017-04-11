@@ -79,9 +79,7 @@ public class User {
         this.nativeLanguage = nativeLanguage;
     }
 
-    public void setLanguage(String Language) {
-        this.language = Language;
-    }
+    public void setLanguage(String Language) { this.language = Language; }
 
 
     public static User getOwnUser(){

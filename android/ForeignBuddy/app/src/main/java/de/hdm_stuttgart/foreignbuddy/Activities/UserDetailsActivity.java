@@ -3,7 +3,6 @@ package de.hdm_stuttgart.foreignbuddy.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,9 +19,9 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 public class UserDetailsActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
-    EditText userName;
-    CheckBox cB_English, cB_German, cB_French, cB_Spanish;
-    RadioButton rB_native_English, rB_native_German, rB_native_French, rB_native_Spanish;
+    private EditText userName;
+    private RadioButton rB_English, rB_German, rB_French, rB_Spanish;
+    private RadioButton rB_native_English, rB_native_German, rB_native_French, rB_native_Spanish;
 
 
     private ArrayList<String> languages = new ArrayList<String>();
@@ -37,10 +36,10 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         userName = (EditText) findViewById(R.id.text_userName);
 
-        cB_English = (CheckBox) findViewById(R.id.cB_English);
-        cB_French = (CheckBox) findViewById(R.id.cB_French);
-        cB_German = (CheckBox) findViewById(R.id.cB_German);
-        cB_Spanish = (CheckBox) findViewById(R.id.cB_Spanish);
+        rB_English = (RadioButton) findViewById(R.id.rB_English);
+        rB_French = (RadioButton) findViewById(R.id.rB_French);
+        rB_German = (RadioButton) findViewById(R.id.rB_German);
+        rB_Spanish = (RadioButton) findViewById(R.id.rB_Spanish);
 
         rB_native_English = (RadioButton) findViewById(R.id.rB_native_English);
         rB_native_French = (RadioButton) findViewById(R.id.rB_native_French);
@@ -123,47 +122,41 @@ public class UserDetailsActivity extends AppCompatActivity {
 
 
     //Für languages
-        if(cB_English.isChecked()){
+        if(rB_English.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("languages")
-                    .child("language1")
+                    .child("language")
                     .setValue("English");
         }
-        if(cB_German.isChecked()){
+        if(rB_German.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("languages")
-                    .child("language2")
-
+                    .child("language")
                     .setValue("German");
         }
-        if(cB_French.isChecked()){
+        if(rB_French.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("languages")
-                    .child("language3")
-
+                    .child("language")
                     .setValue("French");
         }
 
-        if(cB_Spanish.isChecked()){
+        if(rB_Spanish.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("languages")
-                    .child("language4")
+                    .child("language")
                     .setValue("Spanish");
         }
 

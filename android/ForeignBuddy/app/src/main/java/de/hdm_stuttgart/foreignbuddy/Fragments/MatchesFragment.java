@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -54,6 +55,8 @@ import java.util.Locale;
 import android.Manifest;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
+import de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity;
+import de.hdm_stuttgart.foreignbuddy.Activities.RegistrationActivity;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
@@ -105,12 +108,6 @@ public class MatchesFragment extends Fragment  {
         //Für Profilbilder
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
-
-
-
-
-
-
         matches = new ArrayList<>();
         listView = (ListView) view.findViewById(R.id.list_matches);
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -121,6 +118,7 @@ public class MatchesFragment extends Fragment  {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+
                 Iterable<DataSnapshot> allUsers = dataSnapshot.getChildren();
                 for (DataSnapshot child : allUsers) {
                     User user = child.getValue(User.class);
@@ -128,6 +126,7 @@ public class MatchesFragment extends Fragment  {
                 }
                 ArrayAdapter<User> matchesAdapter = new UserListAdapter();
                 listView.setAdapter(matchesAdapter);
+
                 progressDialog.dismiss();
             }
 
@@ -139,6 +138,10 @@ public class MatchesFragment extends Fragment  {
 
         return view;
     }
+
+
+
+
 
     @Override
     public void onStart() {
@@ -155,6 +158,12 @@ public class MatchesFragment extends Fragment  {
             super(getActivity(), R.layout.matches, matches);
         }
 
+
+
+
+
+
+
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -162,6 +171,7 @@ public class MatchesFragment extends Fragment  {
             View view = convertView;
             final User currentUser = matches.get(position);
             UserId = currentUser.getUserID();
+
 
             if (convertView == null) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.matches, parent, false);
@@ -179,6 +189,11 @@ public class MatchesFragment extends Fragment  {
                     }
                 });
             }
+
+
+
+
+
 
             /*try {
                 addresses = geocoder.getFromLocation(currentUser.latitude, currentUser.longitude, 1);

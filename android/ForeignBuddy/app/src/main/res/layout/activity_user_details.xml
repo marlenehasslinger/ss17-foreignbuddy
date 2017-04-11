@@ -7,40 +7,49 @@
     android:paddingRight="16dp"
     tools:context="de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity">
 
-    <CheckBox
-        android:id="@+id/cB_English"
+    <RadioGroup
+        android:id="@+id/radioLanguages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="English"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="320dp"
-        android:layout_below="@+id/cB_French"
-        android:layout_alignParentStart="true" />
-
-    <CheckBox
-        android:id="@+id/cB_German"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="German"
-        android:layout_below="@+id/cB_Spanish"
-        android:layout_alignParentStart="true" />
-
-    <CheckBox
-        android:id="@+id/cB_French"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="French"
-        android:layout_marginTop="25dp"
         android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
 
-    <CheckBox
-        android:id="@+id/cB_Spanish"
+        <RadioButton
+            android:id="@+id/rB_French"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView2"
+            android:layout_marginTop="25dp"
+            android:text="French" />
+
+        <RadioButton
+            android:id="@+id/rB_English"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/rB_French"
+            android:text="English"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="320dp" />
+
+        <RadioButton
+            android:id="@+id/rB_German"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/rB_Spanish"
+            android:text="German" />
+
+        <RadioButton
+        android:id="@+id/rB_Spanish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Spanish"
         android:layout_below="@+id/cB_English"
         android:layout_alignParentStart="true" />
+
+    </RadioGroup>
 
     <EditText
         android:id="@+id/text_userName"
