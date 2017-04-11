@@ -13,6 +13,9 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
 import de.hdm_stuttgart.foreignbuddy.R;
 
@@ -40,12 +43,15 @@ public class ChatActivity extends AppCompatActivity {
                 // of ChatMessage to the Firebase database
                 FirebaseDatabase.getInstance()
                         .getReference()
-                        .push()
-                        .setValue(new ChatMessage(EnterText.getText().toString(),
+                        .child("chats")
+                        .child("297439274722937492349")
+                        .child(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date().getTime()))
+                        .setValue(new ChatMessage(EnterText.getText().toString(),"Magge"))
+                        /*.setValue(new ChatMessage(EnterText.getText().toString(),
                                 FirebaseAuth.getInstance()
                                         .getCurrentUser()
                                         .getDisplayName())
-                        );
+                        )*/;
 
                 // Clear the input
                 EnterText.setText("");
