@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -18,16 +19,16 @@ public class ChatMessage {
 
     private String messageText;
     private String messageUser;
-    private long messageTime;
+    private String messageTime;
+    private String messageUserID;
 
-    public ChatMessage(String messageText, String messageUser) {
+    public ChatMessage(String messageText, String messageUser, String messageUserID) {
         this.messageText = messageText;
         this.messageUser = messageUser;
-
+        this.messageUserID = messageUserID;
         // Initialize to current time
-        messageTime = new Date().getTime();
+        messageTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date().getTime()).toString();
     }
-
 
     public ChatMessage(){
 
@@ -49,12 +50,20 @@ public class ChatMessage {
         this.messageUser = messageUser;
     }
 
-    public long getMessageTime() {
+    public String getMessageTime() {
         return messageTime;
     }
 
-    public void setMessageTime(long messageTime) {
+    public void setMessageTime(String messageTime) {
         this.messageTime = messageTime;
+    }
+
+    public String getMessageUserID() {
+        return messageUserID;
+    }
+
+    public void setMessageUserID(String messageUserID) {
+        this.messageUserID = messageUserID;
     }
 
 

@@ -160,17 +160,20 @@ public class MatchesFragment extends Fragment  {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
             View view = convertView;
-            User currentUser = matches.get(position);
+            final User currentUser = matches.get(position);
+            UserId = currentUser.getUserID();
 
             if (convertView == null) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.matches, parent, false);
                 btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
+                btn_chat.setTag(UserId);
                 btn_chat.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         Intent intent = new Intent(getActivity(), ChatActivity.class);
-                        intent.putExtra("UserID", UserId);
+                        String uid = v.getTag().toString();
+                        intent.putExtra("UserID", uid);
                         startActivity(intent);
 
                     }
@@ -185,8 +188,6 @@ public class MatchesFragment extends Fragment  {
 
             //For Profilephoto
 
-
-            UserId = currentUser.getUserID();
 
             uploadName = currentUser.email + "_profilePhoto";
           //  downloadProfilePhoto(uploadName);
