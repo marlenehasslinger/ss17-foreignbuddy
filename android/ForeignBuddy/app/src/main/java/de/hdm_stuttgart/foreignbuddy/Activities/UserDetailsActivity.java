@@ -84,40 +84,40 @@ public class UserDetailsActivity extends AppCompatActivity {
 
 
         //Für native language
-        if(rB_native_English.isEnabled()){
+        if(rB_native_English.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("NativeLanguage")
+                    .child("mativeLanguage")
                     .setValue("English");
         }
-        else if(rB_native_German.isEnabled()){
+        else if(rB_native_German.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("NativeLanguage")
+                    .child("nativeLanguage")
                     .setValue("German");
         }
-        if(rB_native_French.isEnabled()){
+        if(rB_native_French.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("NativeLanguage")
+                    .child("nativeLanguage")
                     .setValue("French");
         }
-        else if(rB_native_Spanish.isEnabled()){
+        else if(rB_native_Spanish.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("NativeLanguage")
+                    .child("nativeLanguage")
                     .setValue("Spanish");
         }
 
@@ -129,8 +129,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("Languages")
-                    .child("Language1")
+                    .child("languages")
+                    .child("language1")
                     .setValue("English");
         }
         if(cB_German.isChecked()){
@@ -139,8 +139,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("Languages")
-                    .child("Language2")
+                    .child("languages")
+                    .child("language2")
 
                     .setValue("German");
         }
@@ -150,8 +150,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("Languages")
-                    .child("Language3")
+                    .child("languages")
+                    .child("language3")
 
                     .setValue("French");
         }
@@ -162,8 +162,8 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("Languages")
-                    .child("Language4")
+                    .child("languages")
+                    .child("language4")
                     .setValue("Spanish");
         }
 

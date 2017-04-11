@@ -39,13 +39,15 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText EnterText = (EditText)findViewById(R.id.EnterText);
 
+               // String userID = getIntent().getStringExtra("UserID")
+
                 // Read the input field and push a new instance
                 // of ChatMessage to the Firebase database
                 FirebaseDatabase.getInstance()
                         .getReference()
                         .child("chats")
                         .child(FirebaseAuth.getInstance()
-                                .getCurrentUser().getUid() +"_"+ getIntent().getStringExtra("UserId")
+                                .getCurrentUser().getUid() +"_"+ getIntent().getStringExtra("UserID")
                         )
                         .child(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date().getTime()))
                         .setValue(new ChatMessage(EnterText.getText().toString(), FirebaseAuth.getInstance()
@@ -73,7 +75,7 @@ public class ChatActivity extends AppCompatActivity {
                 R.layout.message, FirebaseDatabase.getInstance().getReference()
                 .child("chats").
                 child(FirebaseAuth.getInstance()
-                        .getCurrentUser().getUid() +"_"+ getIntent().getStringExtra("UserId"))
+                        .getCurrentUser().getUid() +"_"+ getIntent().getStringExtra("UserID"))
 
         )
 

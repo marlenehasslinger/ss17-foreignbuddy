@@ -153,6 +153,8 @@ public class MatchesFragment extends Fragment  {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
             View view = convertView;
+            User currentUser = matches.get(position);
+
             if (convertView == null) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.matches, parent, false);
                 btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
@@ -168,7 +170,6 @@ public class MatchesFragment extends Fragment  {
                 });
             }
 
-            User currentUser = matches.get(position);
             /*try {
                 addresses = geocoder.getFromLocation(currentUser.latitude, currentUser.longitude, 1);
             } catch (IOException e) {
@@ -178,6 +179,7 @@ public class MatchesFragment extends Fragment  {
             //For Profilephoto
 
 
+            UserId = currentUser.getUserID();
 
             uploadName = currentUser.email + "_profilePhoto";
 
@@ -194,8 +196,6 @@ public class MatchesFragment extends Fragment  {
             language.setText(currentUser.nativeLanguage);
 
             downloadProfilePhoto(uploadName);
-
-            UserId = currentUser.getUserID();
 
 
 
