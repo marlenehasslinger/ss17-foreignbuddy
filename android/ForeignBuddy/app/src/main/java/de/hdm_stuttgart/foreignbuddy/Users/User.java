@@ -19,6 +19,7 @@ public class User {
     public String email;
     public String nativeLanguage;
     public String language;
+    public String urlProfilephoto;
 
     public Double latitude;
     public Double longitude;

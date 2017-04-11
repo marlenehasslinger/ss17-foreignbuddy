@@ -196,8 +196,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onProviderDisabled(String provider) {
-                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(i);
+               /* Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);*/
             }
         };
         getLocation();
@@ -355,8 +355,15 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                                 progressDialog.dismiss();
 
                             downloadUri = taskSnapshot.getDownloadUrl();
+
+                            mDatabase.child("users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child("urlProfilephoto")
+                                    .setValue(downloadUri.toString());
                             Picasso.with(getContext()).load(downloadUri).into(imageView);
                             Log.d("Picasso", "Set Photo with Picasso successful");
+
+
 
                         }
                     })
