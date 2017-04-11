@@ -44,9 +44,12 @@ public class ChatActivity extends AppCompatActivity {
                 FirebaseDatabase.getInstance()
                         .getReference()
                         .child("chats")
-                        .child("297439274722937492349")
+                        .child(FirebaseAuth.getInstance()
+                                .getCurrentUser().getUid() +"_"+ getIntent().getStringExtra("UserId")
+                        )
                         .child(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date().getTime()))
-                        .setValue(new ChatMessage(EnterText.getText().toString(),"Magge"))
+                        .setValue(new ChatMessage(EnterText.getText().toString(), FirebaseAuth.getInstance()
+                                .getCurrentUser().getUid()))
                         /*.setValue(new ChatMessage(EnterText.getText().toString(),
                                 FirebaseAuth.getInstance()
                                         .getCurrentUser()
@@ -67,7 +70,19 @@ public class ChatActivity extends AppCompatActivity {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference()) {
+                R.layout.message, FirebaseDatabase.getInstance().getReference()
+                .child("chats").
+                child(FirebaseAuth.getInstance()
+                        .getCurrentUser().getUid() +"_"+ getIntent().getStringExtra("UserId"))
+
+        )
+
+
+
+
+
+
+        {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 // Get references to the views of message.xml

@@ -2,6 +2,7 @@ package de.hdm_stuttgart.foreignbuddy.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,11 +50,12 @@ import java.util.Locale;
 
 import android.Manifest;
 
+import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 
-public class MatchesFragment extends Fragment {
+public class MatchesFragment extends Fragment  {
 
     private List<User> matches;
     private ListView listView;
@@ -60,6 +63,9 @@ public class MatchesFragment extends Fragment {
     private DatabaseReference mDatabase;
     private ProgressDialog progressDialog;
     private File localFileProfilePhoto = null;
+
+
+    String UserId;
 
 
     //Start Location Varaibles
@@ -79,6 +85,7 @@ public class MatchesFragment extends Fragment {
     TextView name;
     TextView location;
     TextView language;
+    Button btn_chat;
 
 
 
@@ -91,6 +98,10 @@ public class MatchesFragment extends Fragment {
         //Für Profilbilder
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
+
+
+
+
 
 
         matches = new ArrayList<>();
@@ -144,6 +155,17 @@ public class MatchesFragment extends Fragment {
             View view = convertView;
             if (convertView == null) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.matches, parent, false);
+                btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
+                btn_chat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(getActivity(), ChatActivity.class);
+                        intent.putExtra("UserID", UserId);
+                        startActivity(intent);
+
+                    }
+                });
             }
 
             User currentUser = matches.get(position);
@@ -164,11 +186,18 @@ public class MatchesFragment extends Fragment {
             location = (TextView) view.findViewById(R.id.txt_location_matches);
             language = (TextView) view.findViewById(R.id.txt_language_matches);
 
+
+
+
             name.setText(currentUser.username);
             //location.setText(addresses.get(0).getLocality());
             language.setText(currentUser.nativeLanguage);
 
             downloadProfilePhoto(uploadName);
+
+            UserId = currentUser.getUserID();
+
+
 
 
             return view;
@@ -179,6 +208,22 @@ public class MatchesFragment extends Fragment {
 
 
     }
+
+
+    /*
+    @Override
+    public void onClick(View view) {
+        if (view == btn_chat) {
+
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra("UserID", UserId);
+            startActivity(intent);
+
+        }
+    }
+
+    */
+
 
     private void downloadProfilePhoto (String uploadName) {
         try {
