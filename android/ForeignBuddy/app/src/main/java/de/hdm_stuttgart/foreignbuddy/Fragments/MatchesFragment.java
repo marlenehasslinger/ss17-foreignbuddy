@@ -159,14 +159,11 @@ public class MatchesFragment extends Fragment  {
             }*/
 
             //For Profilephoto
-
-
             uploadName = currentUser.email + "_profilePhoto";
-          //  downloadProfilePhoto(uploadName);
 
-            img_user = (ImageView) view.findViewById(R.id.img_user_conversations);
-            name = (TextView) view.findViewById(R.id.txt_name_conversations);
-            location = (TextView) view.findViewById(R.id.txt_lastMessage_conversation);
+            img_user = (ImageView) view.findViewById(R.id.img_user_matches);
+            name = (TextView) view.findViewById(R.id.txt_name_matches);
+            location = (TextView) view.findViewById(R.id.txt_location_matches);
             language = (TextView) view.findViewById(R.id.txt_language_matches);
 
 

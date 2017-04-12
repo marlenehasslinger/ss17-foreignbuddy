@@ -5,7 +5,7 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/img_user_conversations"
+        android:id="@+id/img_user_conversation"
         android:src="@drawable/user_male"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -18,22 +18,22 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:id="@+id/txt_name_conversations"
+        android:id="@+id/txt_name_conversation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Max Mustermann"
         android:textStyle="bold"
-        android:layout_alignTop="@+id/img_user_conversations"
-        android:layout_toEndOf="@+id/img_user_conversations"
+        android:layout_alignTop="@+id/img_user_conversation"
+        android:layout_toEndOf="@+id/img_user_conversation"
         android:layout_marginTop="13dp" />
 
     <TextView
-        android:id="@+id/txt_lastMessage_conversation"
+        android:id="@+id/txt_lastMassage_conversation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/img_user_conversations"
-        android:layout_alignStart="@+id/txt_name_conversations"
+        android:layout_alignBottom="@+id/img_user_conversation"
+        android:layout_alignStart="@+id/txt_name_conversation"
         android:text="no Location" />
 
 

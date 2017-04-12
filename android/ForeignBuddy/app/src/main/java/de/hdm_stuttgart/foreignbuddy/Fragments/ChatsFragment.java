@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,19 +21,18 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
-import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 
 
 public class ChatsFragment extends Fragment {
@@ -46,6 +44,9 @@ public class ChatsFragment extends Fragment {
     private TextView name;
     private TextView lastMessage;
     private Toolbar toolbar;
+    private ArrayList<ImageView> img_user;
+    private int counterImg_user;
+    private int counterImg_user2;
 
 
 
@@ -56,6 +57,9 @@ public class ChatsFragment extends Fragment {
 
         chatOverview = (ListView)view.findViewById(R.id.ChatsOverview);
         conversations = new ArrayList<>();
+        img_user = new ArrayList<>();
+        counterImg_user = 0;
+        counterImg_user2 = 0;
 
         progressDialog = ProgressDialog.show(getActivity(), "Loading Conversations...", "Please wait...", true);
         FirebaseDatabase.getInstance().getReference()
@@ -96,7 +100,6 @@ public class ChatsFragment extends Fragment {
                     intent.putExtra("UserID", conversation.UserID);
                     intent.putExtra("Username", conversation.username);
                     startActivity(intent);
-
                 }
         });
 
@@ -154,13 +157,35 @@ public class ChatsFragment extends Fragment {
             }
 
             //img_user = (ImageView) view.findViewById(R.id.img_user_conversations);
-            name = (TextView) view.findViewById(R.id.txt_name_conversations);
-            lastMessage = (TextView) view.findViewById(R.id.txt_lastMessage_conversation);
+            img_user.add((ImageView) view.findViewById(R.id.img_user_conversation));
+            name = (TextView) view.findViewById(R.id.txt_name_conversation);
+            lastMessage = (TextView) view.findViewById(R.id.txt_lastMassage_conversation);
 
 
             name.setText(currentConversation.username);
             lastMessage.setText("Testsuidhfs");
 
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(currentConversation.UserID)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User currentUser = dataSnapshot.getValue(User.class);
+                    Picasso.with(getActivity()).
+                            load(currentUser.urlProfilephoto)
+                            .placeholder(R.drawable.user_male)
+                            .error(R.drawable.user_male)
+                            .into(img_user.get(counterImg_user2));
+                    counterImg_user2++;
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            counterImg_user++;
             return view;
 
         }
