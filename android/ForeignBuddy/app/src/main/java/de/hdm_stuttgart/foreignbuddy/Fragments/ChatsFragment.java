@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
@@ -86,16 +87,17 @@ public class ChatsFragment extends Fragment {
         //displayContactChat();
 
         chatOverview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //Object listItem = list.getItemAtPosition(position);
 
-                Intent intent = new Intent(getActivity(),ChatActivity.class);
-                Conversation conversation = conversations.get(position);
-                startActivity(intent);
-                intent.putExtra("UserID", conversation.UserID);
-                intent.putExtra("Username", conversation.username);
-            }
+                    Intent intent = new Intent(getActivity(),ChatActivity.class);
+                    Conversation conversation = conversations.get(position);
+                    intent.putExtra("UserID", conversation.UserID);
+                    intent.putExtra("Username", conversation.username);
+                    startActivity(intent);
+
+                }
         });
 
         return view;
