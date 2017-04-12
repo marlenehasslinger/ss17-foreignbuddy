@@ -11,16 +11,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
+import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
@@ -31,7 +28,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private FirebaseListAdapter<ChatMessage> adapter;
     private String conversationID;
-    private DatabaseReference mDatabase;
     private User myUser;
     private Toolbar toolbar;
 
@@ -60,7 +56,7 @@ public class ChatActivity extends AppCompatActivity {
                 .child(myUser.userID)
                 .child("conversations")
                 .child(conversationID)
-                .setValue(getIntent().getStringExtra("Username"));
+                .setValue(new Conversation(getIntent().getStringExtra("UserID"),getIntent().getStringExtra("Username")));
 
         SendButton.setOnClickListener(new View.OnClickListener() {
             @Override
