@@ -24,6 +24,7 @@ import java.util.Date;
 import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
 import de.hdm_stuttgart.foreignbuddy.Fragments.MatchesFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.Users.MyUser;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 
@@ -31,7 +32,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private FirebaseListAdapter<ChatMessage> adapter;
-    private String conversationID = "7483982hfhhf982hhrjf_djhfu9849rjn";
+    private String conversationID;
     private DatabaseReference mDatabase;
     private User myUser;
 
@@ -41,27 +42,11 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        FloatingActionButton SendButton =
-                (FloatingActionButton)findViewById(R.id.SendButton);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users")
-                .child(FirebaseAuth.getInstance()
-                .getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                myUser = dataSnapshot.getValue(User.class);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        FloatingActionButton SendButton = (FloatingActionButton)findViewById(R.id.SendButton);
 
-            }
-        });
+        myUser = MyUser.getMyUser();
 
-
-
-
-        int c = FirebaseAuth.getInstance().getCurrentUser().getUid().compareTo(getIntent().getStringExtra("UserID"));
+        int c = myUser.userID.compareTo(getIntent().getStringExtra("UserID"));
         if (c > 0) {
             conversationID = FirebaseAuth.getInstance()
                     .getCurrentUser().getUid() + "_" + getIntent().getStringExtra("UserID");

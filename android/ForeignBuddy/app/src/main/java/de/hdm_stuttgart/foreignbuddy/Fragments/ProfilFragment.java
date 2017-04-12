@@ -65,6 +65,7 @@ import de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity;
 import de.hdm_stuttgart.foreignbuddy.Activities.MainActivity;
 import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.Users.MyUser;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 import static android.app.Activity.RESULT_OK;
@@ -136,26 +137,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
 
-        //Database MyUser
-        progressDialog = ProgressDialog.show(getActivity(), "Loading Profil...", "Please wait...", true);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                myUser = dataSnapshot.getValue(User.class);
-                txt_userName.setText(myUser.username);
-                toolbar.setTitle(myUser.username);
-                progressDialog.dismiss();
-                txt_nativeLanguage.setText(myUser.getNativeLanguage());
-                txt_languages.setText(myUser.getLanguage());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        myUser = MyUser.getMyUser();
+        txt_userName.setText(myUser.username);
+        txt_nativeLanguage.setText(myUser.getNativeLanguage());
+        txt_languages.setText(myUser.getLanguage());
 
         //Set current profile photo
         try {
@@ -221,6 +206,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle(myUser.username);
         setHasOptionsMenu(true);
     }
 

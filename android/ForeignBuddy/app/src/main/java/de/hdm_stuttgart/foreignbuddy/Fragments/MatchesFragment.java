@@ -96,9 +96,6 @@ public class MatchesFragment extends Fragment  {
     Button btn_chat;
 
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -158,12 +155,6 @@ public class MatchesFragment extends Fragment  {
             super(getActivity(), R.layout.matches, matches);
         }
 
-
-
-
-
-
-
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -189,11 +180,6 @@ public class MatchesFragment extends Fragment  {
                     }
                 });
             }
-
-
-
-
-
 
             /*try {
                 addresses = geocoder.getFromLocation(currentUser.latitude, currentUser.longitude, 1);
@@ -228,10 +214,6 @@ public class MatchesFragment extends Fragment  {
             return view;
 
         }
-
-
-
-
     }
 
 
@@ -248,44 +230,7 @@ public class MatchesFragment extends Fragment  {
     }
 
     */
-
-    /*
-
-    private void downloadProfilePhoto (String uploadName) {
-        try {
-            localFileProfilePhoto = File.createTempFile("images", uploadName);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        riversRef.getFile(localFileProfilePhoto)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-
-                        img_user.setImageDrawable(Drawable.createFromPath(localFileProfilePhoto.getPath()));
-
-
-                        Log.d("Download", "Profil photo successfully downloaded");
-
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-                Log.d("Download", "Profil photo download failed");
-            }
-        });
-    }
-
-
-    */
-
-
-    }
+}
 
 
 
