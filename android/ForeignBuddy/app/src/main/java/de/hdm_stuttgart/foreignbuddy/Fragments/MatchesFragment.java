@@ -167,14 +167,15 @@ public class MatchesFragment extends Fragment  {
             if (convertView == null) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.matches, parent, false);
                 btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
-                btn_chat.setTag(UserId);
+                btn_chat.setTag(currentUser);
                 btn_chat.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         Intent intent = new Intent(getActivity(), ChatActivity.class);
-                        String uid = v.getTag().toString();
-                        intent.putExtra("UserID", uid);
+                        User user = (User) v.getTag();
+                        intent.putExtra("UserID", user.userID);
+                        intent.putExtra("Username", user.username);
                         startActivity(intent);
 
                     }

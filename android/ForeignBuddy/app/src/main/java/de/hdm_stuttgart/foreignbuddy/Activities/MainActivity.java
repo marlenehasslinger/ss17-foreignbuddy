@@ -13,7 +13,7 @@ import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
 import de.hdm_stuttgart.foreignbuddy.Fragments.MatchesFragment;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
-import de.hdm_stuttgart.foreignbuddy.Users.MyUser;
+import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         progressDialog = ProgressDialog.show(this, "Loading Profil...", "Please wait...", true);
-        MyUser.downloadMyUser(progressDialog);
+        UserHelper.downloadMyUser(progressDialog);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragment, chat);

@@ -13,9 +13,10 @@ import com.google.firebase.database.ValueEventListener;
  * Created by Marc-Julian Fleck on 12.04.17.
  */
 
-public class MyUser {
+public class UserHelper {
 
     private static User myUser = null;
+    private static User resolvedUser;
 
     public static User getMyUser() {
         return myUser;
@@ -37,6 +38,24 @@ public class MyUser {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+    public static User resolveUserID(String uid) {
+
+        FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                resolvedUser = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        return resolvedUser;
     }
 
 }

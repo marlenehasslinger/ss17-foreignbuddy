@@ -1,30 +1,28 @@
 package de.hdm_stuttgart.foreignbuddy.Activities;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
-import de.hdm_stuttgart.foreignbuddy.Fragments.MatchesFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
-import de.hdm_stuttgart.foreignbuddy.Users.MyUser;
+import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 
@@ -35,6 +33,7 @@ public class ChatActivity extends AppCompatActivity {
     private String conversationID;
     private DatabaseReference mDatabase;
     private User myUser;
+    private Toolbar toolbar;
 
 
     @Override
@@ -44,7 +43,7 @@ public class ChatActivity extends AppCompatActivity {
 
         FloatingActionButton SendButton = (FloatingActionButton)findViewById(R.id.SendButton);
 
-        myUser = MyUser.getMyUser();
+        myUser = UserHelper.getMyUser();
 
         int c = myUser.userID.compareTo(getIntent().getStringExtra("UserID"));
         if (c > 0) {
@@ -54,6 +53,14 @@ public class ChatActivity extends AppCompatActivity {
             conversationID = getIntent().getStringExtra("UserID") + "_" + FirebaseAuth.getInstance()
                     .getCurrentUser().getUid();
         }
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(myUser.userID)
+                .child("conversations")
+                .child(conversationID)
+                .setValue(getIntent().getStringExtra("Username"));
 
         SendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +76,7 @@ public class ChatActivity extends AppCompatActivity {
                         .child(conversationID)
                         .child(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date().getTime()))
                         .setValue(new ChatMessage(EnterText.getText().toString(), myUser.username
-                                ,FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                                ,myUser.userID));
 
                 // Clear the input
                 EnterText.setText("");
@@ -79,6 +86,20 @@ public class ChatActivity extends AppCompatActivity {
         displayChatMessages();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        toolbar = (Toolbar) this.findViewById(R.id.toolbar_conversation);
+        toolbar.setTitle(getIntent().getStringExtra("Username"));
+        this.setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+    }
 
     private void displayChatMessages() {
 
@@ -105,6 +126,12 @@ public class ChatActivity extends AppCompatActivity {
         };
 
         listOfMessages.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }
