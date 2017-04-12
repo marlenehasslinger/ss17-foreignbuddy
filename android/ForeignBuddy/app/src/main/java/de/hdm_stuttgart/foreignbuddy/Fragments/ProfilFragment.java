@@ -103,7 +103,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
     private User myUser;
-    private DatabaseReference mDatabase;
+    DatabaseReference mDatabase;
+
 
 
     @Override
@@ -124,6 +125,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         btn_takePhoto.setOnClickListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         uploadName = firebaseAuth.getCurrentUser().getEmail() + "_profilePhoto";
 
@@ -322,9 +324,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
 
-            riversRef.putFile(filepath)
-
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
