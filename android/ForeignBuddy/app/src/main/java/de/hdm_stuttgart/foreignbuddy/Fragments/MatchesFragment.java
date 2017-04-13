@@ -36,6 +36,7 @@ import java.util.Locale;
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
+import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 
 
 public class MatchesFragment extends Fragment  {
@@ -48,6 +49,7 @@ public class MatchesFragment extends Fragment  {
 
 
     String UserId;
+    private User myUser;
 
 
     //Start Location Varaibles
@@ -83,6 +85,7 @@ public class MatchesFragment extends Fragment  {
         listView = (ListView) view.findViewById(R.id.list_matches);
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        myUser = UserHelper.getMyUser();
 
         progressDialog = ProgressDialog.show(getActivity(), "Loading Matches...", "Please wait...", true);
         mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -147,7 +150,6 @@ public class MatchesFragment extends Fragment  {
                         intent.putExtra("UserID", user.userID);
                         intent.putExtra("Username", user.username);
                         startActivity(intent);
-
                     }
                 });
             }
@@ -168,7 +170,14 @@ public class MatchesFragment extends Fragment  {
 
 
             name.setText(currentUser.username);
-            //location.setText(addresses.get(0).getLocality());
+
+            if (currentUser.latitude == null && currentUser.longitude == null) {
+                location.setText("- Km");
+            } else {
+                double entfernung = UserHelper.distanceInKm(myUser.latitude, myUser.longitude
+                        , currentUser.latitude, currentUser.longitude);
+                location.setText(Double.toString(entfernung) + " Km");
+            }
             language.setText(currentUser.nativeLanguage);
 
 

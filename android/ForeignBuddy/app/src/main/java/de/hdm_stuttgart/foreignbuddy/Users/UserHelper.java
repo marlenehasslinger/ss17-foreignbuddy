@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 public class UserHelper {
 
     private static User myUser = null;
-    private static User resolvedUser;
+    private static User resolvedUser = null;
 
     public static User getMyUser() {
         return myUser;
@@ -40,7 +40,7 @@ public class UserHelper {
         });
     }
 
-    public static User resolveUserID(String uid) {
+    public static void resolveUserID(String uid) {
 
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
@@ -54,8 +54,23 @@ public class UserHelper {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-        return resolvedUser;
     }
 
+    public static User getResolvedUser() {return resolvedUser;}
+
+    public static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
+        final int radius = 6371;
+
+        double lat = Math.toRadians(lat2 - lat1);
+        double lon = Math.toRadians(lon2- lon1);
+
+        double a = Math.sin(lat / 2) * Math.sin(lat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(lon / 2) * Math.sin(lon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = radius * c;
+
+        double result =  Math.abs(d);
+        result = Math.round(100.0 * result) / 100.0;
+
+        return result;
+    }
 }

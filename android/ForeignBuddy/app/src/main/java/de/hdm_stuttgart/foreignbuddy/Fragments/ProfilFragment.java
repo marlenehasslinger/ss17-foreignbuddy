@@ -15,6 +15,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -153,19 +154,20 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             public void onLocationChanged(Location location) {
                 try {
                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    //String address = addresses.get(0).getAddressLine(0);
-                    String city = addresses.get(0).getLocality();
-                    //String state = addresses.get(0).getAdminArea();
-                    //String country = addresses.get(0).getCountryName();
-                    //String postalCode = addresses.get(0).getPostalCode();
-                    //String knownName = addresses.get(0).getFeatureName();
-                    txt_location_profil.setText("in " + city);
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("latitude").setValue(location.getLatitude());
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("longitude").setValue(location.getLongitude());
+                    if (addresses.size() > 0) {
+                        String city = addresses.get(0).getLocality();
+                        txt_location_profil.setText("in " + city);
+                        FirebaseDatabase.getInstance().getReference().child("users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child("latitude").setValue(location.getLatitude());
+                        FirebaseDatabase.getInstance().getReference().child("users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child("longitude").setValue(location.getLongitude());
+                        FirebaseDatabase.getInstance().getReference().child("users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child("lastKnownCity").setValue(city);
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -184,10 +186,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onProviderDisabled(String provider) {
-               /* Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(i);*/
+               showSettingsAlertForGPS();
             }
         };
+        txt_location_profil.setText(myUser.lastKnownCity);
         getLocation();
         //GPS END
 
@@ -234,21 +236,43 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
 
-            locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
-            
-
-
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         } else {
-
             Log.d("Permission", "Camera External or Write External Permission Permission denied");
             String [] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
             requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
-
-
         }
     }
-    //GPS Functions END
 
+    private void showSettingsAlertForGPS() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS is off");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+    }
+
+    //GPS Functions END
 
     private void downloadProfilePhoto() {
         try {

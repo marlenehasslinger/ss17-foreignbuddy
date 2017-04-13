@@ -20,7 +20,7 @@ public class User {
     public String nativeLanguage;
     public String language;
     public String urlProfilephoto;
-
+    public String lastKnownCity;
     public Double latitude;
     public Double longitude;
 
@@ -31,11 +31,7 @@ public class User {
         this.userID = userID;
     }
 
-
-    public User (){
-
-    }
-
+    public User (){}
 
     //Getters
     public String getUserID() {
@@ -57,10 +53,6 @@ public class User {
     public String getLanguage() {
         return language;
     }
-
-
-
-
 
     //Setters
     public void setUserID(String userID) {
