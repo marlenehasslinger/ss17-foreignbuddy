@@ -152,7 +152,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                         txt_userName.setText(myUser.username);
                         txt_nativeLanguage.setText(myUser.getNativeLanguage());
                         txt_languages.setText(myUser.getLanguage());
-                        txt_location_profil.setText(myUser.lastKnownCity);
                         toolbar.setTitle(myUser.username);
                     }
 
@@ -187,6 +186,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         toolbar.setTitle("");
         setHasOptionsMenu(true);
         //END TOOLBAR
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLocation();
     }
 
     //Toolbar functions Starts
@@ -230,11 +235,15 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                     }
                     if (l != null) {
                         onLocationChanged(l);
+                    } else {
+                        //txt_location_profil.setText(myUser.lastKnownCity);
+                        showSettingsAlertForGPS();
                     }
                 } else {
                     onLocationChanged(l);
                 }
             } else {
+                //txt_location_profil.setText(myUser.lastKnownCity);
                 showSettingsAlertForGPS();
             }
 
@@ -271,6 +280,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 dialog.cancel();
             }
         });
+
+        alertDialog.show();
     }
 
     @Override
