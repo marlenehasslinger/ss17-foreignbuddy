@@ -13,13 +13,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.R;
-import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 
@@ -39,9 +42,26 @@ public class ChatActivity extends AppCompatActivity {
 
         FloatingActionButton SendButton = (FloatingActionButton)findViewById(R.id.SendButton);
 
-        myUser = UserHelper.getMyUser();
+        FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        myUser = dataSnapshot.getValue(User.class);
+                    }
 
-        int c = myUser.userID.compareTo(getIntent().getStringExtra("UserID"));
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        int c = FirebaseAuth.
+                getInstance()
+                .getCurrentUser()
+                .getUid()
+                .compareTo(getIntent().getStringExtra("UserID"));
         if (c > 0) {
             conversationID = FirebaseAuth.getInstance()
                     .getCurrentUser().getUid() + "_" + getIntent().getStringExtra("UserID");
@@ -53,7 +73,7 @@ public class ChatActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance()
                 .getReference()
                 .child("users")
-                .child(myUser.userID)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("conversations")
                 .child(conversationID)
                 .setValue(new Conversation(getIntent().getStringExtra("UserID"),getIntent().getStringExtra("Username")));

@@ -1,35 +1,26 @@
 package de.hdm_stuttgart.foreignbuddy.Activities;
 
-
-import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-
 import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
 import de.hdm_stuttgart.foreignbuddy.Fragments.MatchesFragment;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
-import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 
 public class MainActivity extends AppCompatActivity{
 
     final ChatsFragment chat = new ChatsFragment();
     final ProfilFragment profil = new ProfilFragment();
     final MatchesFragment matches = new MatchesFragment();
-    ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        progressDialog = ProgressDialog.show(this, "Loading Profil...", "Please wait...", true);
-        UserHelper.downloadMyUser(progressDialog);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragment, chat);

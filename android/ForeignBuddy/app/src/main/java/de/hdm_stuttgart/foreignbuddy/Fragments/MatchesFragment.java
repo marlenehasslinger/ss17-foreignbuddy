@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,6 @@ import java.util.Locale;
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
-import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 
 
 public class MatchesFragment extends Fragment  {
@@ -85,13 +85,27 @@ public class MatchesFragment extends Fragment  {
         listView = (ListView) view.findViewById(R.id.list_matches);
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        myUser = UserHelper.getMyUser();
+
+        //START GET CURRENT USER
+        mDatabase.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        myUser = dataSnapshot.getValue(User.class);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+        //END GET CURRENT USER
 
         progressDialog = ProgressDialog.show(getActivity(), "Loading Matches...", "Please wait...", true);
         mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
 
                 Iterable<DataSnapshot> allUsers = dataSnapshot.getChildren();
                 for (DataSnapshot child : allUsers) {
@@ -174,7 +188,7 @@ public class MatchesFragment extends Fragment  {
             if (currentUser.latitude == null && currentUser.longitude == null) {
                 location.setText("- Km");
             } else {
-                double entfernung = UserHelper.distanceInKm(myUser.latitude, myUser.longitude
+                double entfernung = distanceInKm(myUser.latitude, myUser.longitude
                         , currentUser.latitude, currentUser.longitude);
                 location.setText(Double.toString(entfernung) + " Km");
             }
@@ -191,6 +205,22 @@ public class MatchesFragment extends Fragment  {
             return view;
 
         }
+    }
+
+    private static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
+        final int radius = 6371;
+
+        double lat = Math.toRadians(lat2 - lat1);
+        double lon = Math.toRadians(lon2- lon1);
+
+        double a = Math.sin(lat / 2) * Math.sin(lat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(lon / 2) * Math.sin(lon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = radius * c;
+
+        double result =  Math.abs(d);
+        result = Math.round(100.0 * result) / 100.0;
+
+        return result;
     }
 
 }

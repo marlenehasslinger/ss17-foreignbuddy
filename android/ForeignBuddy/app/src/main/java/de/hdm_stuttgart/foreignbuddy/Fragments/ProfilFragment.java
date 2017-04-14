@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,7 +26,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.*;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
@@ -34,18 +34,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
 import android.Manifest;
 
 
@@ -59,12 +60,11 @@ import java.util.Locale;
 import de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity;
 import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
 import de.hdm_stuttgart.foreignbuddy.R;
-import de.hdm_stuttgart.foreignbuddy.Users.UserHelper;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfilFragment extends Fragment implements View.OnClickListener {
+public class ProfilFragment extends Fragment implements View.OnClickListener, LocationListener {
 
     private StorageReference storageReference;
     private static final int PICK_IMAGE_REQUEST = 234;
@@ -93,17 +93,19 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private static final int LOCATION_REQUEST_CODE = 22;
+    private String provider;
     Geocoder geocoder;
     List<Address> addresses;
     //GPS End
+
+
+    User myUser;
 
 
     //Für Fileprovider
     File fileWritten;
     private static final String APP_TAG = "CAMERA_TEST_APP";
 
-
-    private User myUser;
     DatabaseReference mDatabase;
 
 
@@ -113,6 +115,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profil, container, false);
 
+        //START WIDGETS
         imageView = (ImageView) view.findViewById(R.id.imageView);
         btn_choosePhoto = (Button) view.findViewById(R.id.btn_choosePhoto);
         btn_takePhoto = (Button) view.findViewById(R.id.btn_takePhoto);
@@ -120,23 +123,39 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         txt_location_profil = (TextView) view.findViewById(R.id.txt_location_user);
         txt_languages = (TextView) view.findViewById(R.id.txt_languages);
         txt_nativeLanguage = (TextView) view.findViewById(R.id.txt_nativeLanguage);
+        //END WIDGETS
 
-
+        //START BUTTON LISTENER
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
+        //END BUTTON LISTENER
 
+        //START FIREBASE INSTANCES
         firebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        //END FIREBASE INSTANCES
 
         uploadName = firebaseAuth.getCurrentUser().getEmail() + "_profilePhoto";
 
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
 
-        myUser = UserHelper.getMyUser();
-        txt_userName.setText(myUser.username);
-        txt_nativeLanguage.setText(myUser.getNativeLanguage());
-        txt_languages.setText(myUser.getLanguage());
+        mDatabase.child("users")
+                .child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        myUser = dataSnapshot.getValue(User.class);
+                        txt_userName.setText(myUser.username);
+                        txt_nativeLanguage.setText(myUser.getNativeLanguage());
+                        txt_languages.setText(myUser.getLanguage());
+                        txt_location_profil.setText(myUser.lastKnownCity);
+                        toolbar.setTitle(myUser.username);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
 
         //Set current profile photo
         try {
@@ -146,52 +165,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
 
-        //Start GPS
-        geocoder = new Geocoder(getActivity(), Locale.getDefault());
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                try {
-                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    if (addresses.size() > 0) {
-                        String city = addresses.get(0).getLocality();
-                        txt_location_profil.setText("in " + city);
-                        FirebaseDatabase.getInstance().getReference().child("users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .child("latitude").setValue(location.getLatitude());
-                        FirebaseDatabase.getInstance().getReference().child("users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .child("longitude").setValue(location.getLongitude());
-                        FirebaseDatabase.getInstance().getReference().child("users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .child("lastKnownCity").setValue(city);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-               showSettingsAlertForGPS();
-            }
-        };
-        txt_location_profil.setText(myUser.lastKnownCity);
+        //Start LOCATION
         getLocation();
-        //GPS END
+        //END LOCATION
 
         return view;
 
@@ -200,11 +176,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+        //START TOOLBAR
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle(myUser.username);
+        toolbar.setTitle("");
         setHasOptionsMenu(true);
+        //END TOOLBAR
     }
 
     //Toolbar functions Starts
@@ -235,8 +213,18 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 ==PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                Criteria criteria = new Criteria();
+                provider = locationManager.getBestProvider(criteria, false);
+                geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                locationManager.requestLocationUpdates(provider, 0, 0, this);
+                //locationManager.requestSingleUpdate(provider,this,null);
+            } else {
+                showSettingsAlertForGPS();
+            }
 
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         } else {
             Log.d("Permission", "Camera External or Write External Permission Permission denied");
             String [] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
@@ -270,6 +258,44 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 dialog.cancel();
             }
         });
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        try {
+            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addresses.size() > 0) {
+                String city = addresses.get(0).getLocality();
+                txt_location_profil.setText("in " + city);
+                FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("latitude").setValue(location.getLatitude());
+                FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("longitude").setValue(location.getLongitude());
+                FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("lastKnownCity").setValue(city);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     //GPS Functions END

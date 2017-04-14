@@ -49,7 +49,6 @@ public class ChatsFragment extends Fragment {
     private int counterImg_user2;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,8 +70,8 @@ public class ChatsFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                Iterable<DataSnapshot> allUsers = dataSnapshot.getChildren();
-                for (DataSnapshot child : allUsers) {
+                Iterable<DataSnapshot> allConversations = dataSnapshot.getChildren();
+                for (DataSnapshot child : allConversations) {
                     Conversation conversation = child.getValue(Conversation.class);
                     conversations.add(conversation);
                 }
@@ -87,8 +86,6 @@ public class ChatsFragment extends Fragment {
 
             }
         });
-
-        //displayContactChat();
 
         chatOverview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -108,35 +105,21 @@ public class ChatsFragment extends Fragment {
 
     @Override
     public void onStart() {
+        //START TOOLBAR
         super.onStart();
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_conversations);
         toolbar.setTitle("Chats");
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
+        //END TOOLBAR
     }
 
-    /*
-    private void displayContactChat() {
-
-        chatOverview = (ListView) getActivity().findViewById(R.id.ChatsOverview);
-
-        adapter = new FirebaseListAdapter<ContactChat>(this, ContactChat.class, R.layout.contactchat,
-                FirebaseDatabase.getInstance().getReference()) {
-            @Override
-            protected void populateView(View v, ContactChat model, int position) {
-
-                TextView contactname = (TextView)v.findViewById(R.id.name);
-                ImageView contactpicture = (ImageView)v.findViewById(R.id.contactPicture);
-
-
-                contactname.setText(model.getContactname());
-                //contactpicture.setImageResource(model.contactPicture);
-            }
-        };
-
-        displayContactChat().setAdapter(adapter);
+    @Override
+    public void onPause() {
+        super.onPause();
+        counterImg_user = 0;
+        counterImg_user2 = 0;
     }
-*/
 
     private class ConversationListAdapter extends ArrayAdapter<Conversation> {
 
