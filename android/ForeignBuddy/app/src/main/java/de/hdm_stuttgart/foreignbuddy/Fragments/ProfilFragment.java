@@ -93,7 +93,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     private LocationManager locationManager;
     private LocationListener locationListener;
     private static final int LOCATION_REQUEST_CODE = 22;
-    private String provider;
     Geocoder geocoder;
     List<Address> addresses;
     //GPS End
@@ -216,11 +215,20 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                     locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                Criteria criteria = new Criteria();
-                provider = locationManager.getBestProvider(criteria, false);
                 geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                locationManager.requestLocationUpdates(provider, 0, 0, this);
-                //locationManager.requestSingleUpdate(provider,this,null);
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+                Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (l == null) {
+                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+                        l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                    if (l != null) {
+                        onLocationChanged(l);
+                    }
+                } else {
+                    onLocationChanged(l);
+                }
             } else {
                 showSettingsAlertForGPS();
             }
