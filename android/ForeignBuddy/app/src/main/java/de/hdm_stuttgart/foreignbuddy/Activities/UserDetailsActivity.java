@@ -105,7 +105,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                         rB_French.setChecked(true);
                         break;
                     case "Spanish":
-                        rB_French.setChecked(true);
+                        rB_Spanish.setChecked(true);
                         break;
 
                     default:
@@ -131,14 +131,6 @@ public class UserDetailsActivity extends AppCompatActivity {
 
 
     public void addUserDataToDatabase(){
-
-        //Add User to database
-        User user = new User(firebaseAuth.getInstance().getCurrentUser().getUid());
-        FirebaseDatabase.getInstance()
-                .getReference()
-                .child("users")
-                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                .setValue(user);
 
         //Add username to database
         FirebaseDatabase.getInstance()
