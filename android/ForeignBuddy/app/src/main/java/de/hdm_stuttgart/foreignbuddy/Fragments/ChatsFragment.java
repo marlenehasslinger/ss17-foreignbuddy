@@ -44,9 +44,8 @@ public class ChatsFragment extends Fragment {
     private TextView name;
     private TextView lastMessage;
     private Toolbar toolbar;
-    private ArrayList<ImageView> img_user;
-    private int counterImg_user;
-    private int counterImg_user2;
+    private ImageView img_user;
+    private User currentUser;
 
 
     @Override
@@ -56,9 +55,6 @@ public class ChatsFragment extends Fragment {
 
         chatOverview = (ListView)view.findViewById(R.id.ChatsOverview);
         conversations = new ArrayList<>();
-        img_user = new ArrayList<>();
-        counterImg_user = 0;
-        counterImg_user2 = 0;
 
         progressDialog = ProgressDialog.show(getActivity(), "Loading Conversations...", "Please wait...", true);
         FirebaseDatabase.getInstance().getReference()
@@ -114,13 +110,6 @@ public class ChatsFragment extends Fragment {
         //END TOOLBAR
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        counterImg_user = 0;
-        counterImg_user2 = 0;
-    }
-
     private class ConversationListAdapter extends ArrayAdapter<Conversation> {
 
         public ConversationListAdapter() {
@@ -132,45 +121,50 @@ public class ChatsFragment extends Fragment {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
             View view = convertView;
-            final Conversation currentConversation = conversations.get(position);
-
             if (convertView == null) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.conversations, parent, false);
-
             }
 
-            //img_user = (ImageView) view.findViewById(R.id.img_user_conversations);
-            img_user.add((ImageView) view.findViewById(R.id.img_user_conversation));
+
+            final Conversation currentConversation = conversations.get(position);
             name = (TextView) view.findViewById(R.id.txt_name_conversation);
+            img_user = (ImageView) view.findViewById(R.id.img_user_conversation);
             lastMessage = (TextView) view.findViewById(R.id.txt_lastMassage_conversation);
-
-
-            name.setText(currentConversation.username);
-            lastMessage.setText("Testsuidhfs");
 
             FirebaseDatabase.getInstance().getReference()
                     .child("users")
                     .child(currentConversation.UserID)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    User currentUser = dataSnapshot.getValue(User.class);
-                    Picasso.with(getActivity()).
-                            load(currentUser.urlProfilephoto)
-                            .placeholder(R.drawable.user_male)
-                            .error(R.drawable.user_male)
-                            .into(img_user.get(counterImg_user2));
-                    counterImg_user2++;
-                }
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            currentUser = dataSnapshot.getValue(User.class);
+                            ImageView img_user_ref = img_user;
+                            setImgUser(img_user_ref, currentUser);
+                        }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
-            counterImg_user++;
+                        }
+                    });
+
+            name.setText(currentConversation.username);
+            lastMessage.setText("Testsuidhfs");
+
+
             return view;
 
         }
+
+        private void setImgUser(ImageView img_user_ref, User currentUserRef){
+            if (currentUser != null) {
+                Picasso.with(getActivity()).
+                        load(currentUserRef.urlProfilephoto)
+                        .placeholder(R.drawable.user_male)
+                        .error(R.drawable.user_male)
+                        .into(img_user_ref);
+            }
+        }
+
     }
 }

@@ -185,8 +185,10 @@ public class MatchesFragment extends Fragment  {
 
             name.setText(currentUser.username);
 
-            if (currentUser.latitude == null && currentUser.longitude == null) {
+            if (currentUser.latitude == null || currentUser.longitude == null) {
                 location.setText("- Km");
+            } else if (myUser.latitude == null || myUser.longitude == null) {
+                location.setText("In " + currentUser.lastKnownCity);
             } else {
                 double entfernung = distanceInKm(myUser.latitude, myUser.longitude
                         , currentUser.latitude, currentUser.longitude);
