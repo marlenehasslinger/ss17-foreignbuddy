@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -99,6 +100,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
     User myUser;
+
+    //Initialize size for thumbnails
+    final int THUMBSIZE = 64;
+
 
 
     //Für Fileprovider
@@ -323,8 +328,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
                         imageView.setImageDrawable(Drawable.createFromPath(localFile.getPath()));
-
-
                         Log.d("Download", "Profil photo successfully downloaded");
 
 
@@ -346,10 +349,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filepath = data.getData();
 
+             try {
 
-            try {
+
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
                 imageView.setImageBitmap(bitmap);
+
+
                 uploadFile();
 
 
@@ -357,13 +363,19 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 e.printStackTrace();
             }
 
+
+
         } else  if (requestCode ==CAM_REQUEST) {
 
             if (resultCode == RESULT_OK) {
-                Bitmap takenImage = BitmapFactory.decodeFile(fileWritten.getAbsolutePath());
+                 Bitmap takenImage = BitmapFactory.decodeFile(fileWritten.getAbsolutePath());
+
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
                 filepath = Uri.fromFile(fileWritten);
+
+
+
                 uploadFile();
 
 
@@ -397,8 +409,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child("urlProfilephoto")
                                     .setValue(downloadUri.toString());
-                            Picasso.with(getContext()).load(downloadUri).into(imageView);
-                            Log.d("Picasso", "Set Photo with Picasso successful");
+
+                            //Picasso.with(getContext()).load(downloadUri).into(imageView);
+                           // Log.d("Picasso", "Set Photo with Picasso successful");
 
 
 
