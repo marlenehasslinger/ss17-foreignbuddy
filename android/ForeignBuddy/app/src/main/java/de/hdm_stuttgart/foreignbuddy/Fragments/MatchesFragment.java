@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -39,38 +39,45 @@ import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 
-public class MatchesFragment extends Fragment  {
-
-    private List<User> matches;
-    private ListView listView;
-    private Toolbar toolbar;
-    private DatabaseReference mDatabase;
-    private ProgressDialog progressDialog;
-
+public class MatchesFragment extends Fragment {
 
     String UserId;
-    private User myUser;
-
-
-    //Start Location Varaibles
-    private Geocoder geocoder;
-    private List<Address> addresses;
-    //END Location Variables
-
-
-    //Für Profilbilddownload
-    private StorageReference riversRef;
-    private StorageReference storageReference;
-    private String uploadName;
-
-
-    //Für Listenelement
     ImageView img_user;
     TextView name;
     TextView location;
     TextView language;
     Button btn_chat;
+    private List<User> matches;
+    private ListView listView;
+    private Toolbar toolbar;
+    private DatabaseReference mDatabase;
+    private ProgressDialog progressDialog;
+    private User myUser;
+    //Start Location Varaibles
+    private Geocoder geocoder;
+    private List<Address> addresses;
+    //END Location Variables
+    //START PROFILPHOTO
+    private StorageReference riversRef;
+    private StorageReference storageReference;
+    private String uploadName;
+    //END PROFILPHOTO
 
+    private static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
+        final int radius = 6371;
+
+        double lat = Math.toRadians(lat2 - lat1);
+        double lon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(lat / 2) * Math.sin(lat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(lon / 2) * Math.sin(lon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = radius * c;
+
+        double result = Math.abs(d);
+        result = Math.round(100.0 * result) / 100.0;
+
+        return result;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,10 +137,12 @@ public class MatchesFragment extends Fragment  {
     @Override
     public void onStart() {
         super.onStart();
+        //START TOOLBAR
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_conversations);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("Matches");
+        //END TOOLBAR
     }
 
     private class UserListAdapter extends ArrayAdapter<User> {
@@ -197,7 +206,6 @@ public class MatchesFragment extends Fragment  {
             language.setText(currentUser.nativeLanguage);
 
 
-
             Picasso.with(getActivity()).
                     load(currentUser.urlProfilephoto)
                     .placeholder(R.drawable.user_male)
@@ -207,22 +215,6 @@ public class MatchesFragment extends Fragment  {
             return view;
 
         }
-    }
-
-    private static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
-        final int radius = 6371;
-
-        double lat = Math.toRadians(lat2 - lat1);
-        double lon = Math.toRadians(lon2- lon1);
-
-        double a = Math.sin(lat / 2) * Math.sin(lat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(lon / 2) * Math.sin(lon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = radius * c;
-
-        double result =  Math.abs(d);
-        result = Math.round(100.0 * result) / 100.0;
-
-        return result;
     }
 
 }
