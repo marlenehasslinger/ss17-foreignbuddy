@@ -68,27 +68,33 @@ import static android.app.Activity.RESULT_OK;
 public class ProfilFragment extends Fragment implements View.OnClickListener, LocationListener {
 
     private StorageReference storageReference;
+
     private static final int PICK_IMAGE_REQUEST = 234;
     static final int CAM_REQUEST =1;
     static final int CAMERA_REQUEST_CODE = 10;
-    static final int WRITE_EXTERNAL_REQUEST_CODE = 20;
+
     private Button btn_choosePhoto, btn_takePhoto;
+
     private TextView txt_userName;
     private TextView txt_location_profil;
     private TextView txt_nativeLanguage;
     private TextView txt_languages;
+
     private ImageView imageView;
-    private Uri filepath;
-    private StorageReference riversRef;
+
     private Uri downloadUri;
-    private FirebaseAuth firebaseAuth;
-    private File localFile = null;
-    ProgressDialog progressDialog;
+    private Uri filepath;
     private String uploadName;
-    private File folder;
+    private File localFile = null;
+    public String photoFileName;
+
+    private FirebaseAuth firebaseAuth;
+    private StorageReference riversRef;
+
+    private ProgressDialog progressDialog;
 
     //Toolbar
-    Toolbar toolbar;
+    private Toolbar toolbar;
 
     // GPS Start
     private LocationManager locationManager;
@@ -96,7 +102,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     private static final int LOCATION_REQUEST_CODE = 22;
     Geocoder geocoder;
     List<Address> addresses;
-    //GPS End
 
 
     User myUser;
@@ -140,6 +145,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         //END FIREBASE INSTANCES
 
         uploadName = firebaseAuth.getCurrentUser().getEmail() + "_profilePhoto";
+
+        photoFileName = "photo.jpg";
 
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
@@ -324,6 +331,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     //GPS Functions END
 
+
     private void downloadProfilePhoto() {
         try {
             localFile = File.createTempFile("images", uploadName);
@@ -356,42 +364,43 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
+        //User picks profile photo from gallery
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filepath = data.getData();
 
              try {
 
-
+                 //Load the photo into a preview
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
                 imageView.setImageBitmap(bitmap);
 
-
+                //upload photo to Firebase
                 uploadFile();
-
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
-
+        //User takes profile photo with camera
         } else  if (requestCode ==CAM_REQUEST) {
 
             if (resultCode == RESULT_OK) {
+
                  Bitmap takenImage = BitmapFactory.decodeFile(fileWritten.getAbsolutePath());
 
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
                 filepath = Uri.fromFile(fileWritten);
 
-
-
+                //upload photo to Firebase
                 uploadFile();
 
 
 
-            } else { // Result was a failure
+            } else {
+
+                // Result was a failure
                 Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
 
@@ -409,13 +418,16 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
+                            //Photo is successfully uploaded
                             Log.d("Upload", "Upload successful");
                             Toast.makeText(getActivity(),"File Uploaded!",Toast.LENGTH_SHORT).show();
 
-                                progressDialog.dismiss();
+                            progressDialog.dismiss();
 
                             downloadUri = taskSnapshot.getDownloadUrl();
 
+
+                            //Link to profile photo file will be stored within the corresponding user in the database
                             mDatabase.child("users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .child("urlProfilephoto")
@@ -432,6 +444,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                            progressDialog.dismiss();
+                            //Photo wasn't successfully uploaded
 
                             Log.d("Upload", "Upload failed");
 
@@ -463,6 +476,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     public void takePhoto(){
 
+        //Checks if required permissions are already given
         if( ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)==
                 PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -471,10 +485,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                         == PackageManager.PERMISSION_GRANTED) {
 
             Log.d("Permission", "Camera + Write External Permission granted");
+
+            //Starts camera
             invokeCamera();
 
         }    else {
 
+            //Missing permissions will be requested
             Log.d("Permission", "Camera External or Write External Permission Permission denied");
             String [] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
             requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
@@ -491,6 +508,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        //Asks for permissions that are needed for camera usage
         if(requestCode==CAMERA_REQUEST_CODE){
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 invokeCamera();
@@ -500,6 +518,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             }
         }
 
+        //Asks for Location permission
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 getLocation();
@@ -510,9 +529,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
-    public String photoFileName = "photo.jpg";
 
     private void invokeCamera() {
+
+        //Starts Camera Intent
         Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Log.d("Camera", "Camera started");
         camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
@@ -551,14 +571,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         return state.equals(Environment.MEDIA_MOUNTED);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view == btn_choosePhoto) {
-            showFileChooser();
-        } else if (view == btn_takePhoto){
-            takePhoto();
-        }
-    }
 
     //Logout function Start
     private void askForLogout(){
@@ -580,7 +592,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     }
 
     private void logout(){
-
         FirebaseAuth.getInstance().signOut();
         Log.d("Auth", FirebaseAuth.getInstance().getCurrentUser() + "is logged out");
         Intent i = new Intent(getActivity(), LogInActivity.class);
@@ -589,5 +600,19 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
     //Logout function END
+
+
+    //OnClickListener
+    @Override
+    public void onClick(View view) {
+        if (view == btn_choosePhoto) {
+            showFileChooser();
+        } else if (view == btn_takePhoto){
+            takePhoto();
+        }
+    }
+
+
+
 
 }

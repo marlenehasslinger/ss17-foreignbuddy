@@ -29,31 +29,11 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-
+        //firebase authentication initialization
         firebaseAuth = FirebaseAuth.getInstance();
 
 
-        /*
-
-        //Wird schon in LogIn Activity geprüft
-
-        if(firebaseAuth.getCurrentUser() != null) {
-
-            Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
-
-            Intent i =  new Intent(RegistrationActivity.this, MainActivity.class);
-            i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
-            startActivity(i);
-
-
-
-        } else {
-
-            */
-
-            //startActivityForResult ist ein Intent, der dann als Result gibt ob User authenticated ist
-            // oder nicht. Das Result wird dann unten wiederverwendet um zu checken ob user authenticated ist
-
+            //start special firebase activity for registration with facebook, google or email registration
             startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setProviders(
@@ -71,20 +51,19 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_SIGN_IN){
             if(resultCode == RESULT_OK){
-                //user logged in
+
+                //User logged in
                 Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
 
-                Intent i =  new Intent(RegistrationActivity.this, MainActivity.class);
-                i.putExtra("EMail", firebaseAuth.getCurrentUser().getEmail()); //Name statt E-Mail
-                startActivity(i);
-
+                //Add user to firebase database
                 addUserToDatabase();
 
-
+                //Open UserDetailsActivity so user can provide information for matching algorithm
                 Intent intent =  new Intent(RegistrationActivity.this, UserDetailsActivity.class);
                 startActivity(intent);
 
             } else {
+
                 //User not authenticated
                 Log.d("Auth", "Not Authenticated");
 
@@ -92,7 +71,6 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
     }
-
 
     public void addUserToDatabase(){
 
