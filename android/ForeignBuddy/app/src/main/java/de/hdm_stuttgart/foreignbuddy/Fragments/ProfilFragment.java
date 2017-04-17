@@ -1,40 +1,44 @@
 package de.hdm_stuttgart.foreignbuddy.Fragments;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.*;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,16 +51,11 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
-import android.Manifest;
-
-
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
 
 import de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity;
 import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
@@ -67,57 +66,39 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfilFragment extends Fragment implements View.OnClickListener, LocationListener {
 
-    private StorageReference storageReference;
-
-    private static final int PICK_IMAGE_REQUEST = 234;
-    static final int CAM_REQUEST =1;
+    static final int CAM_REQUEST = 1;
     static final int CAMERA_REQUEST_CODE = 10;
-
+    private static final int PICK_IMAGE_REQUEST = 234;
+    private static final int LOCATION_REQUEST_CODE = 22;
+    private static final String APP_TAG = "CAMERA_TEST_APP";
+    //Initialize size for thumbnails
+    final int THUMBSIZE = 64;
+    public String photoFileName;
+    Geocoder geocoder;
+    List<Address> addresses;
+    User myUser;
+    //Für Fileprovider
+    File fileWritten;
+    DatabaseReference mDatabase;
+    private StorageReference storageReference;
     private Button btn_choosePhoto, btn_takePhoto;
-
     private TextView txt_userName;
     private TextView txt_location_profil;
     private TextView txt_nativeLanguage;
     private TextView txt_languages;
-
     private ImageView imageView;
-
     private Uri downloadUri;
     private Uri filepath;
     private String uploadName;
     private File localFile = null;
-    public String photoFileName;
-
     private FirebaseAuth firebaseAuth;
     private StorageReference riversRef;
-
     private ProgressDialog progressDialog;
-
     //Toolbar
     private Toolbar toolbar;
-
     // GPS Start
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private static final int LOCATION_REQUEST_CODE = 22;
-    Geocoder geocoder;
-    List<Address> addresses;
-
-
-    User myUser;
-
-    //Initialize size for thumbnails
-    final int THUMBSIZE = 64;
-
-
-
-    //Für Fileprovider
-    File fileWritten;
-    private static final String APP_TAG = "CAMERA_TEST_APP";
-
-    DatabaseReference mDatabase;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -153,24 +134,24 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
         mDatabase.child("users")
                 .child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        myUser = dataSnapshot.getValue(User.class);
-                        txt_userName.setText(myUser.username);
-                        txt_nativeLanguage.setText(myUser.getNativeLanguage());
-                        txt_languages.setText(myUser.getLanguage());
-                        toolbar.setTitle(myUser.username);
-                    }
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                myUser = dataSnapshot.getValue(User.class);
+                txt_userName.setText(myUser.username);
+                txt_nativeLanguage.setText(myUser.getNativeLanguage());
+                txt_languages.setText(myUser.getLanguage());
+                toolbar.setTitle(myUser.username);
+            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         //Set current profile photo
         try {
             downloadProfilePhoto();
-            } catch (Exception e){
+        } catch (Exception e) {
             imageView.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
@@ -188,7 +169,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         super.onStart();
         //START TOOLBAR
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("");
         setHasOptionsMenu(true);
@@ -223,12 +204,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     //Toolbar functions END
 
     //GPS functions Start
-    private void getLocation(){
+    private void getLocation() {
 
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                ==PackageManager.PERMISSION_GRANTED &&
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                     locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -236,7 +217,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
                 Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (l == null) {
-                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                         locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
                         l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     }
@@ -256,7 +237,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
         } else {
             Log.d("Permission", "Camera External or Write External Permission Permission denied");
-            String [] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+            String[] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
             requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
         }
     }
@@ -368,9 +349,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filepath = data.getData();
 
-             try {
+            try {
 
-                 //Load the photo into a preview
+                //Load the photo into a preview
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
                 imageView.setImageBitmap(bitmap);
 
@@ -382,12 +363,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             }
 
 
-        //User takes profile photo with camera
-        } else  if (requestCode ==CAM_REQUEST) {
+            //User takes profile photo with camera
+        } else if (requestCode == CAM_REQUEST) {
 
             if (resultCode == RESULT_OK) {
 
-                 Bitmap takenImage = BitmapFactory.decodeFile(fileWritten.getAbsolutePath());
+                Bitmap takenImage = BitmapFactory.decodeFile(fileWritten.getAbsolutePath());
 
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
@@ -395,7 +376,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
                 //upload photo to Firebase
                 uploadFile();
-
 
 
             } else {
@@ -408,58 +388,53 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
-    private void uploadFile(){
+    private void uploadFile() {
 
-        if(filepath != null) {
+        if (filepath != null) {
 
-           progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
+            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
 
             riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            //Photo is successfully uploaded
-                            Log.d("Upload", "Upload successful");
-                            Toast.makeText(getActivity(),"File Uploaded!",Toast.LENGTH_SHORT).show();
+                    //Photo is successfully uploaded
+                    Log.d("Upload", "Upload successful");
+                    Toast.makeText(getActivity(), "File Uploaded!", Toast.LENGTH_SHORT).show();
 
-                            progressDialog.dismiss();
+                    progressDialog.dismiss();
 
-                            downloadUri = taskSnapshot.getDownloadUrl();
-
-
-                            //Link to profile photo file will be stored within the corresponding user in the database
-                            mDatabase.child("users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .child("urlProfilephoto")
-                                    .setValue(downloadUri.toString());
-
-                            //Picasso.with(getContext()).load(downloadUri).into(imageView);
-                           // Log.d("Picasso", "Set Photo with Picasso successful");
+                    downloadUri = taskSnapshot.getDownloadUrl();
 
 
+                    //Link to profile photo file will be stored within the corresponding user in the database
+                    mDatabase.child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("urlProfilephoto")
+                            .setValue(downloadUri.toString());
 
-                        }
-                    })
+                    //Picasso.with(getContext()).load(downloadUri).into(imageView);
+                    // Log.d("Picasso", "Set Photo with Picasso successful");
+
+
+                }
+            })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                           progressDialog.dismiss();
+                            progressDialog.dismiss();
                             //Photo wasn't successfully uploaded
 
                             Log.d("Upload", "Upload failed");
 
 
-                            Toast.makeText(getActivity(),"Something went wrong",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
-                    })
-
-
-            ;
-
+                    });
 
         } else {
 
-            Toast.makeText(getActivity(),"Something went wrong",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -471,13 +446,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         Log.d("Files", "User chose File for upload");
 
 
-
     }
 
-    public void takePhoto(){
+    public void takePhoto() {
 
         //Checks if required permissions are already given
-        if( ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)==
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED &&
@@ -489,14 +463,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             //Starts camera
             invokeCamera();
 
-        }    else {
+        } else {
 
             //Missing permissions will be requested
             Log.d("Permission", "Camera External or Write External Permission Permission denied");
-            String [] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+            String[] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
             requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
-
-
 
 
         }
@@ -509,8 +481,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         //Asks for permissions that are needed for camera usage
-        if(requestCode==CAMERA_REQUEST_CODE){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 invokeCamera();
             } else {
 
@@ -547,12 +519,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             // This way, we don't need to request external read/write runtime permissions.
             File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
             // getExternalFilesDir() + "/Pictures" should match the declaration in fileprovider.xml paths
-            File file = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" +System.currentTimeMillis()+".png");
+            File file = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
             //store file to load later
             fileWritten = file;
             // wrap File object into a content provider. NOTE: authority here should match authority in manifest declaration
             // Create the storage directory if it does not exist
-            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
                 Log.d(APP_TAG, "failed to create directory");
             }
             // Return the file target for the photo based on filename
@@ -573,7 +545,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
     //Logout function Start
-    private void askForLogout(){
+    private void askForLogout() {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Sign Out")
                 .setMessage("Are you sure you want to Sign Out?")
@@ -587,11 +559,11 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                         // do nothing
                     }
                 })
-                /*.setIcon(android.R.drawable.ic_dialog_alert)*/ // Set own Icon!
+                .setIcon(android.R.drawable.ic_dialog_alert) // Set own Icon!
                 .show();
     }
 
-    private void logout(){
+    private void logout() {
         FirebaseAuth.getInstance().signOut();
         Log.d("Auth", FirebaseAuth.getInstance().getCurrentUser() + "is logged out");
         Intent i = new Intent(getActivity(), LogInActivity.class);
@@ -607,12 +579,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     public void onClick(View view) {
         if (view == btn_choosePhoto) {
             showFileChooser();
-        } else if (view == btn_takePhoto){
+        } else if (view == btn_takePhoto) {
             takePhoto();
         }
     }
-
-
 
 
 }

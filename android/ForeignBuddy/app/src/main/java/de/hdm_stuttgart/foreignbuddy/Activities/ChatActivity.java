@@ -85,7 +85,6 @@ public class ChatActivity extends AppCompatActivity {
 
                 // Read the input field and push a new instance
                 // of ChatMessage to the Firebase database
-
                 FirebaseDatabase.getInstance()
                         .getReference()
                         .child("chats")
@@ -93,7 +92,6 @@ public class ChatActivity extends AppCompatActivity {
                         .child(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date().getTime()))
                         .setValue(new ChatMessage(EnterText.getText().toString(), myUser.username
                                 ,myUser.userID));
-
                 // Clear the input
                 EnterText.setText("");
             }

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
+import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
@@ -37,14 +38,19 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 public class ChatsFragment extends Fragment {
 
+    //START WIDGETS
     private ListView chatOverview;
-    private List<Conversation> conversations;
-    private String conversationId;
-    private ProgressDialog progressDialog;
     private TextView name;
     private TextView lastMessage;
     private Toolbar toolbar;
     private ImageView img_user;
+    //END WIDGETS
+
+
+    private List<Conversation> conversations;
+
+
+    private ProgressDialog progressDialog;
     private User currentUser;
 
 
@@ -64,7 +70,6 @@ public class ChatsFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
 
                 Iterable<DataSnapshot> allConversations = dataSnapshot.getChildren();
                 for (DataSnapshot child : allConversations) {
@@ -125,7 +130,6 @@ public class ChatsFragment extends Fragment {
                 view = getActivity().getLayoutInflater().inflate(R.layout.conversations, parent, false);
             }
 
-
             final Conversation currentConversation = conversations.get(position);
             name = (TextView) view.findViewById(R.id.txt_name_conversation);
             img_user = (ImageView) view.findViewById(R.id.img_user_conversation);
@@ -149,7 +153,7 @@ public class ChatsFragment extends Fragment {
                     });
 
             name.setText(currentConversation.username);
-            lastMessage.setText("Testsuidhfs");
+            lastMessage.setText("Last Message");
 
 
             return view;
