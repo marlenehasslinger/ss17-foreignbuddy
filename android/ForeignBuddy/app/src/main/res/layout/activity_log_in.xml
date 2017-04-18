@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity">
+    tools:context="de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity"
+    >
 
 
     <EditText
@@ -63,6 +64,18 @@
         android:background="#FFFFFFFF"
         android:onClick="btn_register_clicked"
         android:text="Register Now" />
+
+    <ImageView
+        android:id="@+id/Logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:cropToPadding="false"
+        android:saveEnabled="false"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:layout_above="@+id/txt_password_login"
+        android:layout_alignStart="@+id/txt_email_login"
+        android:layout_marginBottom="52dp" />
 
 
 </RelativeLayout>

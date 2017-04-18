@@ -3,8 +3,10 @@ package de.hdm_stuttgart.foreignbuddy.Activities;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
 import de.hdm_stuttgart.foreignbuddy.Fragments.MatchesFragment;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fragment, chat);
