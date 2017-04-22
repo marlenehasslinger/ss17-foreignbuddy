@@ -20,12 +20,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -38,17 +34,17 @@ import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
 
 public class MatchesFragment extends Fragment {
 
-    private String UserId;
     private ImageView img_user;
     private TextView name;
     private TextView location;
     private TextView language;
     private Button btn_chat;
-    private List<User> matches = new ArrayList<>();;
+    private List<User> matches = new ArrayList<>();
     private ListView listView;
     private Toolbar toolbar;
     private DatabaseReference mDatabase;
@@ -65,21 +61,6 @@ public class MatchesFragment extends Fragment {
     private StorageReference storageReference;
     private String uploadName;
 
-    private static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
-        final int radius = 6371;
-
-        double lat = Math.toRadians(lat2 - lat1);
-        double lon = Math.toRadians(lon2 - lon1);
-
-        double a = Math.sin(lat / 2) * Math.sin(lat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(lon / 2) * Math.sin(lon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = radius * c;
-
-        double result = Math.abs(d);
-        result = Math.round(100.0 * result) / 100.0;
-
-        return result;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,60 +106,55 @@ public class MatchesFragment extends Fragment {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-            View view = convertView;
-            final User currentUser = matches.get(position);
-            UserId = currentUser.getUserID();
-
-
+            View view;
             if (convertView == null) {
                 view = getActivity().getLayoutInflater().inflate(R.layout.matches, parent, false);
-                btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
-                btn_chat.setTag(currentUser);
-                btn_chat.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent intent = new Intent(getActivity(), ChatActivity.class);
-                        User user = (User) v.getTag();
-                        intent.putExtra("UserID", user.userID);
-                        intent.putExtra("Username", user.username);
-                        startActivity(intent);
-                    }
-                });
+            } else {
+                view = convertView;
             }
 
-            /*try {
-                addresses = geocoder.getFromLocation(currentUser.latitude, currentUser.longitude, 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
+            final User currentMatch = matches.get(position);
+
+            btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
+            btn_chat.setTag(currentMatch);
+            btn_chat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    User user = (User) v.getTag();
+                    intent.putExtra("UserID", user.userID);
+                    intent.putExtra("Username", user.username);
+                    intent.putExtra("URLPhoto", user.urlProfilephoto);
+                    startActivity(intent);
+                }
+            });
 
             //For Profilephoto
-            uploadName = currentUser.email + "_profilePhoto";
+            uploadName = currentMatch.email + "_profilePhoto";
 
+            //Widgets
             img_user = (ImageView) view.findViewById(R.id.img_user_matches);
             name = (TextView) view.findViewById(R.id.txt_name_matches);
             location = (TextView) view.findViewById(R.id.txt_location_matches);
             language = (TextView) view.findViewById(R.id.txt_language_matches);
 
-
-            name.setText(currentUser.username);
-
-            if (currentUser.latitude == null || currentUser.longitude == null) {
-                location.setText("- Km");
+            //Set Widget texts
+            name.setText(currentMatch.username);
+            language.setText(currentMatch.nativeLanguage);
+            if (currentMatch.latitude == null || currentMatch.longitude == null) {
+                location.setText("- Km"); // If User has no location
             } else if (myUser.latitude == null || myUser.longitude == null) {
-                location.setText("In " + currentUser.lastKnownCity);
+                location.setText("In " + currentMatch.lastKnownCity); //If I have no location
             } else {
-                double entfernung = distanceInKm(myUser.latitude, myUser.longitude
-                        , currentUser.latitude, currentUser.longitude);
-                location.setText(Double.toString(entfernung) + " Km");
+                double entfernung = GPS.distanceInKm(myUser.latitude, myUser.longitude
+                        , currentMatch.latitude, currentMatch.longitude);
+                location.setText(Double.toString(entfernung) + " Km"); //If both have location
             }
-            language.setText(currentUser.nativeLanguage);
 
-
+            //Set picture
             Picasso.with(getActivity()).
-                    load(currentUser.urlProfilephoto)
+                    load(currentMatch.urlProfilephoto)
                     .placeholder(R.drawable.user_male)
                     .error(R.drawable.user_male)
                     .into(img_user);

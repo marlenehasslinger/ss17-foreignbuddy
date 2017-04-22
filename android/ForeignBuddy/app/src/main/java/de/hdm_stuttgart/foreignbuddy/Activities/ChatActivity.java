@@ -76,7 +76,8 @@ public class ChatActivity extends AppCompatActivity {
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("conversations")
                 .child(conversationID)
-                .setValue(new Conversation(getIntent().getStringExtra("UserID"),getIntent().getStringExtra("Username")));
+                .setValue(new Conversation(getIntent().getStringExtra("UserID"),getIntent().getStringExtra("Username"),
+                        getIntent().getStringExtra("URLPhoto")));
 
         SendButton.setOnClickListener(new View.OnClickListener() {
             @Override

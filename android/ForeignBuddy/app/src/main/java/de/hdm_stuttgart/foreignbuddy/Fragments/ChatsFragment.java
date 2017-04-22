@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
+import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
@@ -44,12 +46,10 @@ public class ChatsFragment extends Fragment {
     private ImageView img_user;
     //END WIDGETS
 
-
     private List<Conversation> conversations;
 
 
     private ProgressDialog progressDialog;
-    private User currentUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -67,7 +67,6 @@ public class ChatsFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 Iterable<DataSnapshot> allConversations = dataSnapshot.getChildren();
                 for (DataSnapshot child : allConversations) {
                     Conversation conversation = child.getValue(Conversation.class);
@@ -85,6 +84,17 @@ public class ChatsFragment extends Fragment {
             }
         });
 
+
+        /*if (DatabaseUser.haveCurrentUser() == false){
+            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
+            while (DatabaseUser.haveCurrentUser() == false) {}
+            progressDialog.dismiss();
+        }
+
+        conversations = DatabaseUser.getCurrentUsersConversations();
+        ArrayAdapter<Conversation> conversationAdapter = new ConversationListAdapter();
+        chatOverview.setAdapter(conversationAdapter);*/
+
         chatOverview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -94,6 +104,7 @@ public class ChatsFragment extends Fragment {
                     Conversation conversation = conversations.get(position);
                     intent.putExtra("UserID", conversation.UserID);
                     intent.putExtra("Username", conversation.username);
+                    intent.putExtra("URLPhoto", conversation.urlProfilephoto);
                     startActivity(intent);
                 }
         });
@@ -121,50 +132,27 @@ public class ChatsFragment extends Fragment {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            final View view = getActivity().getLayoutInflater().inflate(R.layout.conversations, parent, false);
 
-            View view = convertView;
-            if (convertView == null) {
-                view = getActivity().getLayoutInflater().inflate(R.layout.conversations, parent, false);
-            }
 
             final Conversation currentConversation = conversations.get(position);
+
+            //Widgets
             name = (TextView) view.findViewById(R.id.txt_name_conversation);
             img_user = (ImageView) view.findViewById(R.id.img_user_conversation);
             lastMessage = (TextView) view.findViewById(R.id.txt_lastMassage_conversation);
 
-            FirebaseDatabase.getInstance().getReference()
-                    .child("users")
-                    .child(currentConversation.UserID)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            currentUser = dataSnapshot.getValue(User.class);
-                            ImageView img_user_ref = img_user;
-                            setImgUser(img_user_ref, currentUser);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+            Picasso.with(getActivity()).
+                    load(currentConversation.urlProfilephoto)
+                    .placeholder(R.drawable.user_male)
+                    .error(R.drawable.user_male)
+                    .into(img_user);
 
             name.setText(currentConversation.username);
             lastMessage.setText("Last Message");
 
-
             return view;
 
-        }
-
-        private void setImgUser(ImageView img_user_ref, User currentUserRef){
-            if (currentUser != null) {
-                Picasso.with(getActivity()).
-                        load(currentUserRef.urlProfilephoto)
-                        .placeholder(R.drawable.user_male)
-                        .error(R.drawable.user_male)
-                        .into(img_user_ref);
-            }
         }
 
     }

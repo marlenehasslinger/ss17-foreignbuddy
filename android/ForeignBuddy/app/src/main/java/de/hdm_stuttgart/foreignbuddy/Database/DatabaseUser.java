@@ -1,8 +1,5 @@
 package de.hdm_stuttgart.foreignbuddy.Database;
 
-import android.app.Application;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,7 +11,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdm_stuttgart.foreignbuddy.Fragments.MatchesFragment;
+import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
+import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 /**
@@ -24,13 +22,15 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 public class DatabaseUser {
 
     private static User currentUser;
-    private static List<User> currentUsersMatches = new ArrayList<>();
+    private static List<User> currentUsersMatches;
+    private static List<Conversation> currentUsersConversations;
 
-    private DatabaseUser(){}
+    private DatabaseUser() {
+    }
 
     public static void InstanceCurrentUser() {
-            deleteConnection();
-            loadCurrentUser();
+        deleteCurrentUser();
+        loadCurrentUser();
     }
 
     public static User getCurrentUser() {
@@ -41,14 +41,18 @@ public class DatabaseUser {
         return currentUsersMatches;
     }
 
-    public  static boolean haveCurrentUser() {
-        if (currentUser != null) {
+    public static List<Conversation> getCurrentUsersConversations() {
+        return currentUsersConversations;
+    }
+
+    public static boolean haveCurrentUser() {
+        if (currentUser != null || currentUsersMatches != null || currentUsersConversations != null) {
             return true;
         }
         return false;
     }
 
-    private static void loadCurrentUser(){
+    private static void loadCurrentUser() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -56,7 +60,10 @@ public class DatabaseUser {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentUser = dataSnapshot.getValue(User.class);
+                        currentUsersMatches = new ArrayList<>();
                         loadCurrentUsersMatches();
+                        currentUsersConversations = new ArrayList<>();
+                        loadCurrentUsersConversations();
                     }
 
                     @Override
@@ -66,7 +73,7 @@ public class DatabaseUser {
                 });
     }
 
-    private static void loadCurrentUsersMatches(){
+    private static void loadCurrentUsersMatches() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -88,19 +95,43 @@ public class DatabaseUser {
         });
     }
 
-    private static boolean checkConstraintsMatches(User user){
+    private static boolean checkConstraintsMatches(User user) {
         if (user.getUserID().equals(currentUser.getUserID())) {
             return false;
         } else if (!user.getNativeLanguage().equals(currentUser.getLanguage())) {
             return false;
-        } else if (currentUser.getNativeLanguage().equals(user.getLanguage())){
+        } else if (currentUser.getNativeLanguage().equals(user.getLanguage())) {
             return false;
         }
         return true;
     }
 
-    private static void deleteConnection() {
+    private static void loadCurrentUsersConversations() {
+        FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("conversations")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterable<DataSnapshot> allConversations = dataSnapshot.getChildren();
+                        for (DataSnapshot child : allConversations) {
+                            Conversation conversation = child.getValue(Conversation.class);
+                            currentUsersConversations.add(conversation);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    private static void deleteCurrentUser() {
         currentUser = null;
+        currentUsersMatches = null;
+        currentUsersConversations = null;
     }
 
 }

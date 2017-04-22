@@ -70,7 +70,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     static final int CAM_REQUEST = 1;
     static final int CAMERA_REQUEST_CODE = 10;
     private static final int PICK_IMAGE_REQUEST = 234;
-    private static final int LOCATION_REQUEST_CODE = 22;
+    static final int LOCATION_REQUEST_CODE = 22;
     private static final String APP_TAG = "CAMERA_TEST_APP";
     //Initialize size for thumbnails
     final int THUMBSIZE = 64;
@@ -153,13 +153,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     @Override
     public void onStart() {
         super.onStart();
-        //START TOOLBAR
+
+        //toolbar
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("");
         setHasOptionsMenu(true);
-        //END TOOLBAR
     }
 
     @Override
@@ -481,7 +481,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 getLocation();
             } else {
-                Log.d("Permissions", "Locations Permissions denied still");
+                Log.d("Permissions", "Locations Permissions still denied");
             }
         }
 
@@ -558,7 +558,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
     //Logout function END
-
 
     //OnClickListener
     @Override
