@@ -13,6 +13,7 @@ public class Conversation {
     public String UserID;
     public String username;
     public String urlProfilephoto;
+    public String lastMessage;
 
     public Conversation() {
 
