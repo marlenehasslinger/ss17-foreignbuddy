@@ -45,7 +45,8 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-        <activity android:name=".Activities.UserDetailsActivity"></activity>
+        <activity android:name=".Activities.UserDetailsActivity" />
+        <activity android:name=".Activities.UserDetailRegistration"></activity>
     </application>
 
 </manifest>
