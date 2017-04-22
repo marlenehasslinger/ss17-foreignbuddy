@@ -45,8 +45,8 @@
         android:text="Spanish"
         android:layout_alignBaseline="@+id/txt_name_matches"
         android:layout_alignBottom="@+id/txt_name_matches"
-        android:layout_toEndOf="@+id/txt_name_matches"
-        android:layout_marginStart="15dp" />
+        android:layout_toStartOf="@+id/btn_chat_matches"
+        android:layout_marginEnd="14dp" />
 
     <ImageView
         android:id="@+id/img_location_matches"
