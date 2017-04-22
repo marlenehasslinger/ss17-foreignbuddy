@@ -381,7 +381,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 File file = getPhotoFile(uploadName);
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(file);
-                    takenImage.compress(Bitmap.CompressFormat.JPEG, 10, fOut);
+                    takenImage.compress(Bitmap.CompressFormat.JPEG, 15, fOut);
                     fOut.flush();
                     fOut.close();
 
