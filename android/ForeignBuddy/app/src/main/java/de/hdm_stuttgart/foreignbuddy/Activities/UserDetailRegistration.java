@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -15,13 +14,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
-import de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
-public class UserDetailsActivity extends AppCompatActivity {
+public class UserDetailRegistration extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private EditText userName;
@@ -53,80 +49,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
 
-            getCurrentUserData();
-
-
     }
-
-
-    public void getCurrentUserData(){
-
-
-        mDatabase.child("users")
-                .child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                myUser = dataSnapshot.getValue(User.class);
-
-                //Set current username in EditText
-                userName.setText(myUser.getUsername());
-
-
-                //Set current native language in radiobutton group
-                switch (myUser.getNativeLanguage()) {
-                    case "English":
-                        rB_native_English.setChecked(true);
-                        break;
-                    case "German":
-                        rB_native_German.setChecked(true);
-                        break;
-                    case "French":
-                        rB_native_French.setChecked(true);
-                        break;
-                    case "Spanish":
-                        rB_native_Spanish.setChecked(true);
-                        break;
-
-                    default:
-                        throw new IllegalArgumentException("Wrong Language");
-                }
-
-
-
-                //Set current language in radiobutton group
-                switch (myUser.getLanguage()) {
-                    case "English":
-                        rB_English.setChecked(true);
-                        break;
-                    case "German":
-                        rB_German.setChecked(true);
-                        break;
-                    case "French":
-                        rB_French.setChecked(true);
-                        break;
-                    case "Spanish":
-                        rB_Spanish.setChecked(true);
-                        break;
-
-                    default:
-                        throw new IllegalArgumentException("Wrong Language");
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-
-    }
-
-
-
 
 
 
@@ -159,7 +82,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("nativeLanguage")
+                    .child("mativeLanguage")
                     .setValue("English");
         }
         else if(rB_native_German.isChecked()){
@@ -191,7 +114,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         }
 
 
-    //Add language the user wants to improve
+        //Add language the user wants to improve
         if(rB_English.isChecked()){
 
             FirebaseDatabase.getInstance()
@@ -240,7 +163,8 @@ public class UserDetailsActivity extends AppCompatActivity {
     public  void btn_next_clicked(View v) {
 
         addUserDataToDatabase();
-        Intent i =  new Intent(UserDetailsActivity.this, MainActivity.class);
+        Intent i =  new Intent(UserDetailRegistration.this, MainActivity.class);
         startActivity(i);
     }
 }
+

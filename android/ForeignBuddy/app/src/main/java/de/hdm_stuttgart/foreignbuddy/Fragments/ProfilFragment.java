@@ -381,7 +381,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 File file = getPhotoFile(uploadName);
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(file);
-                    takenImage.compress(Bitmap.CompressFormat.JPEG, 10, fOut);
+                    takenImage.compress(Bitmap.CompressFormat.JPEG, 15, fOut);
                     fOut.flush();
                     fOut.close();
 
@@ -426,7 +426,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                         outWidth = (inWidth * maxSize) / inHeight;
                     }
 
-                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, true);
+                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
 
                     //Compress ProfilePhoto
@@ -435,7 +435,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                     //For some reason photos which are taken by the camera are displayed in a wrong angle.
                     //So the bitmaps gets rotated
 
-                    //takenImage = RotateBitmap(takenImage, 90);
+                   // takenImage = RotateBitmap(takenImage, 90);
+
                     takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
                     fOut.flush();
                     fOut.close();

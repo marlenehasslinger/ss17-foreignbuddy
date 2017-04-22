@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity"
+    android:fillViewport="true"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="900dp"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        >
+
+        <RadioGroup
+            android:id="@+id/radioLanguages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView2">
+
+            <RadioButton
+                android:id="@+id/rB_French"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView2"
+                android:layout_marginTop="25dp"
+                android:text="French" />
+
+            <RadioButton
+                android:id="@+id/rB_English"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/rB_French"
+                android:text="English"
+                tools:layout_editor_absoluteX="6dp"
+                tools:layout_editor_absoluteY="320dp" />
+
+            <RadioButton
+                android:id="@+id/rB_German"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/rB_Spanish"
+                android:text="German" />
+
+            <RadioButton
+                android:id="@+id/rB_Spanish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/cB_English"
+                android:text="Spanish" />
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/text_userName"
+            android:layout_width="373dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="13dp"
+            android:ems="10"
+            android:hint="Choose username"
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="19dp"
+            tools:layout_editor_absoluteY="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="What is your native language?"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="98dp"
+            android:layout_below="@+id/text_userName"
+            android:layout_alignParentStart="true" />
+
+
+        <RadioGroup
+            android:id="@+id/radioNativeLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView">
+
+            <RadioButton
+                android:id="@+id/rB_native_English"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/radioNativeLanguage"
+                android:layout_below="@+id/textView"
+                android:layout_marginTop="25dp"
+                android:layout_weight="1"
+                android:text="English"
+                tools:layout_editor_absoluteX="6dp"
+                tools:layout_editor_absoluteY="144dp" />
+
+            <RadioButton
+                android:id="@+id/rB_native_Spanish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Spanish"
+                tools:layout_editor_absoluteX="100dp"
+                tools:layout_editor_absoluteY="184dp" />
+
+            <RadioButton
+                android:id="@+id/rB_native_German"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/rB_native_Spanish"
+                android:layout_alignBottom="@+id/rB_native_Spanish"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:text="German"
+                tools:layout_editor_absoluteX="6dp"
+                tools:layout_editor_absoluteY="184dp" />
+
+            <RadioButton
+                android:id="@+id/rB_native_French"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/textView"
+                android:layout_alignTop="@+id/rB_native_English"
+                android:layout_weight="1"
+                android:text="French"
+                tools:layout_editor_absoluteX="100dp"
+                tools:layout_editor_absoluteY="144dp" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/radioNativeLanguage"
+            android:layout_marginTop="34dp"
+            android:text="Which language would you like to improve?"
+            tools:layout_editor_absoluteX="6dp"
+            tools:layout_editor_absoluteY="262dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="btn_next_clicked"
+            android:text="next"
+            tools:layout_editor_absoluteX="83dp"
+            tools:layout_editor_absoluteY="704dp"
+            android:layout_below="@+id/cB_Technology"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="38dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="What are your interests?"
+            android:layout_below="@+id/radioLanguages"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView8" />
+
+        <CheckBox
+            android:id="@+id/cB_Nature"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView8"
+            android:layout_marginTop="24dp"
+            android:text="Nature" />
+        <CheckBox
+            android:id="@+id/cB_Culture"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cB_Nature"
+            android:text="Culture" />
+        <CheckBox
+            android:id="@+id/cB_Politics"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Politics"
+            android:layout_below="@+id/cB_Culture" />
+        <CheckBox
+            android:id="@+id/cB_Sports"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Sports"
+            android:layout_below="@+id/cB_Politics" />
+        <CheckBox
+            android:id="@+id/cB_Reading"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Reading"
+            android:layout_below="@+id/cB_Sports" />
+        <CheckBox
+            android:id="@+id/cB_Music"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Music"
+            android:layout_below="@+id/cB_Reading"
+            />
+        <CheckBox
+            android:id="@+id/cB_Technology"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Technology"
+            android:layout_below="@+id/cB_Music" />
+
+
+    </RelativeLayout>
+</ScrollView>

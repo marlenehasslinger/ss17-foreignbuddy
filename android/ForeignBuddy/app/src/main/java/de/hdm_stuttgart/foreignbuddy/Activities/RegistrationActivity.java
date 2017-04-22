@@ -52,14 +52,14 @@ public class RegistrationActivity extends AppCompatActivity {
         if(requestCode == RC_SIGN_IN){
             if(resultCode == RESULT_OK){
 
-                //User logged in
-                Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
-
                 //Add user to firebase database
                 addUserToDatabase();
 
+                //User logged in
+                Log.d("AUTH", firebaseAuth.getCurrentUser().getEmail());
+
                 //Open UserDetailsActivity so user can provide information for matching algorithm
-                Intent intent =  new Intent(RegistrationActivity.this, UserDetailsActivity.class);
+                Intent intent =  new Intent(RegistrationActivity.this, UserDetailRegistration.class);
                 startActivity(intent);
 
             } else {
