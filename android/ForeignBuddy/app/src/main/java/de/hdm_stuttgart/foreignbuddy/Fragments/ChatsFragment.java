@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
-import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
@@ -52,7 +50,6 @@ public class ChatsFragment extends Fragment {
 
     private ProgressDialog progressDialog;
     private User currentUser;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,

@@ -59,6 +59,7 @@ import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity;
 import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
+import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
@@ -91,21 +92,20 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     private Uri filepath;
     private String uploadName;
     private File localFile = null;
-    private FirebaseAuth firebaseAuth;
     private StorageReference riversRef;
     private ProgressDialog progressDialog;
     //Toolbar
     private Toolbar toolbar;
-    // GPS Start
+
+    //GPS
     private LocationManager locationManager;
-    private LocationListener locationListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profil, container, false);
 
-        //START WIDGETS
+        //WIDGETS
         imageView = (ImageView) view.findViewById(R.id.imageView);
         btn_choosePhoto = (Button) view.findViewById(R.id.btn_choosePhoto);
         btn_takePhoto = (Button) view.findViewById(R.id.btn_takePhoto);
@@ -113,40 +113,26 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         txt_location_profil = (TextView) view.findViewById(R.id.txt_location_user);
         txt_languages = (TextView) view.findViewById(R.id.txt_languages);
         txt_nativeLanguage = (TextView) view.findViewById(R.id.txt_nativeLanguage);
-        //END WIDGETS
 
-        //START BUTTON LISTENER
+        //Set Button Listener
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
-        //END BUTTON LISTENER
 
-        //START FIREBASE INSTANCES
-        firebaseAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        //END FIREBASE INSTANCES
-
-        uploadName = firebaseAuth.getCurrentUser().getEmail() + "_profilePhoto";
+        uploadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
 
         photoFileName = "photo.jpg";
 
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
 
-        mDatabase.child("users")
-                .child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                myUser = dataSnapshot.getValue(User.class);
-                txt_userName.setText(myUser.username);
-                txt_nativeLanguage.setText(myUser.getNativeLanguage());
-                txt_languages.setText(myUser.getLanguage());
-                toolbar.setTitle(myUser.username);
-            }
+        //Get current User
+        myUser = DatabaseUser.getCurrentUser();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        //Set text on Widgets
+        txt_userName.setText(myUser.getUsername());
+        txt_nativeLanguage.setText(myUser.getNativeLanguage());
+        txt_languages.setText(myUser.getLanguage());
+
 
         //Set current profile photo
         try {
@@ -156,12 +142,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
 
-        //Start LOCATION
+        //Set Location
         getLocation();
-        //END LOCATION
 
         return view;
-
     }
 
     @Override

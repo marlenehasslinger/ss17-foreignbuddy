@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
+import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
@@ -47,7 +48,7 @@ public class MatchesFragment extends Fragment {
     TextView location;
     TextView language;
     Button btn_chat;
-    private List<User> matches;
+    private List<User> matches = new ArrayList<>();;
     private ListView listView;
     private Toolbar toolbar;
     private DatabaseReference mDatabase;
@@ -88,48 +89,17 @@ public class MatchesFragment extends Fragment {
         //Für Profilbilder
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
-        matches = new ArrayList<>();
         listView = (ListView) view.findViewById(R.id.list_matches);
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        //START GET CURRENT USER
-        mDatabase.child("users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        myUser = dataSnapshot.getValue(User.class);
-                    }
+        //get current User
+        myUser = DatabaseUser.getCurrentUser();
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-        //END GET CURRENT USER
-
-        progressDialog = ProgressDialog.show(getActivity(), "Loading Matches...", "Please wait...", true);
-        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Iterable<DataSnapshot> allUsers = dataSnapshot.getChildren();
-                for (DataSnapshot child : allUsers) {
-                    User user = child.getValue(User.class);
-                    matches.add(user);
-                }
-                ArrayAdapter<User> matchesAdapter = new UserListAdapter();
-                listView.setAdapter(matchesAdapter);
-
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        //get Matches and set in TableView
+        matches = DatabaseUser.getCurrentUsersMatches();
+        ArrayAdapter<User> matchesAdapter = new UserListAdapter();
+        listView.setAdapter(matchesAdapter);
 
         return view;
     }

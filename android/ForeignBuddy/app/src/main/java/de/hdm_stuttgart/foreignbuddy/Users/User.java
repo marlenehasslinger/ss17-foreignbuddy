@@ -7,6 +7,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 
 /**
  * Created by Marc-JulianFleck on 29.03.17.
@@ -23,6 +26,7 @@ public class User {
     public String lastKnownCity;
     public Double latitude;
     public Double longitude;
+    //private ArrayList<Conversation> conversations;
 
 
     //Constucture
@@ -33,6 +37,7 @@ public class User {
 
     public User (){}
 
+
     //Getters
     public String getUserID() {
         return userID;
@@ -42,10 +47,6 @@ public class User {
         return username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public String getNativeLanguage() {
         return nativeLanguage;
     }
@@ -53,6 +54,12 @@ public class User {
     public String getLanguage() {
         return language;
     }
+
+    /*public ArrayList<Conversation> getConversations() {
+        return conversations;
+    }*/
+
+
 
     //Setters
     public void setUserID(String userID) {
@@ -73,9 +80,6 @@ public class User {
 
     public void setLanguage(String Language) { this.language = Language; }
 
-
-    public static User getOwnUser(){
-        return new User();
-    }
+    /*public void setConversations(ArrayList<Conversation> conversations) {}*/
 
 }
