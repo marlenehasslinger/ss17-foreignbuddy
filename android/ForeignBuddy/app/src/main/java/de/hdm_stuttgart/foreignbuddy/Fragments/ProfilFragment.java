@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -53,6 +54,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -158,7 +160,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle("");
+        toolbar.setTitle("Profile");
         setHasOptionsMenu(true);
     }
 
@@ -335,18 +337,69 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filepath = data.getData();
 
-            try {
 
-                //Load the photo into a preview
+            /*
+            try{
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
                 imageView.setImageBitmap(bitmap);
 
-                //upload photo to Firebase
-                uploadFile();
+            Intent i = new Intent();
+            i.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
 
-            } catch (IOException e) {
+            } catch (IOException e){
                 e.printStackTrace();
             }
+
+            */
+
+
+
+            try{
+            Bitmap takenImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
+
+                //imageView.setImageBitmap(bitmap);
+              //  Bitmap takenImage = BitmapFactory.decodeFile(filepath.toString());
+
+
+
+                    //Find ratio to scale
+                    final int maxSize = 850;
+                    int outWidth;
+                    int outHeight;
+                    int inWidth = takenImage.getWidth();
+                    int inHeight = takenImage.getHeight();
+                    if(inWidth > inHeight){
+                        outWidth = maxSize;
+                        outHeight = (inHeight * maxSize) / inWidth;
+                    } else {
+                        outHeight = maxSize;
+                        outWidth = (inWidth * maxSize) / inHeight;
+                    }
+
+                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
+
+                File file = getPhotoFile(uploadName);
+                    //Compress ProfilePhoto
+                    FileOutputStream fOut = new FileOutputStream(file);
+                    takenImage.compress(Bitmap.CompressFormat.JPEG, 10, fOut);
+                    fOut.flush();
+                    fOut.close();
+
+
+                // Load the taken image into a preview
+                imageView.setImageBitmap(takenImage);
+                filepath = Uri.fromFile(file);
+
+                uploadFile();
+
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+
+
+
+
+
 
 
             //User takes profile photo with camera
@@ -354,11 +407,48 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
             if (resultCode == RESULT_OK) {
 
+                //Set bitmap with the file that was created when the photo was taken with camera
                 Bitmap takenImage = BitmapFactory.decodeFile(fileWritten.getAbsolutePath());
+
+                try {
+
+                    //Find ratio to scale
+                    final int maxSize = 850;
+                    int outWidth;
+                    int outHeight;
+                    int inWidth = takenImage.getWidth();
+                    int inHeight = takenImage.getHeight();
+                    if(inWidth > inHeight){
+                        outWidth = maxSize;
+                        outHeight = (inHeight * maxSize) / inWidth;
+                    } else {
+                        outHeight = maxSize;
+                        outWidth = (inWidth * maxSize) / inHeight;
+                    }
+
+                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, true);
+
+
+                    //Compress ProfilePhoto
+                    FileOutputStream fOut = new FileOutputStream(fileWritten);
+
+                    //For some reason photos which are taken by the camera are displayed in a wrong angle.
+                    //So the bitmaps gets rotated
+
+                    takenImage = RotateBitmap(takenImage, 90);
+                    takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
+                    fOut.flush();
+                    fOut.close();
+
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
 
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
                 filepath = Uri.fromFile(fileWritten);
+
+
 
                 //upload photo to Firebase
                 uploadFile();
@@ -374,6 +464,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
+    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
+
     private void uploadFile() {
 
         if (filepath != null) {
@@ -385,13 +482,14 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     //Photo is successfully uploaded
-                    Log.d("Upload", "Upload successful");
-                    Toast.makeText(getActivity(), "File Uploaded!", Toast.LENGTH_SHORT).show();
+
 
                     progressDialog.dismiss();
 
                     downloadUri = taskSnapshot.getDownloadUrl();
 
+                    Log.d("Upload", "Upload successful");
+                    Toast.makeText(getActivity(), "File Uploaded!", Toast.LENGTH_SHORT).show();
 
                     //Link to profile photo file will be stored within the corresponding user in the database
                     FirebaseDatabase.getInstance().getReference().child("users")
@@ -514,7 +612,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 Log.d(APP_TAG, "failed to create directory");
             }
             // Return the file target for the photo based on filename
-            //File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+            // File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
             // wrap File object into a content provider
             // required for API >= 24
             Uri fileuri = FileProvider.getUriForFile(getActivity(), "com.codepath.fileprovider", file);
@@ -522,6 +620,35 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         }
         return null;
     }
+
+    public File getPhotoFile (String fileName) {
+        // Only continue if the SD Card is mounted
+        if (isExternalStorageAvailable()) {
+            // Get safe storage directory for photos
+            // Use `getExternalFilesDir` on Context to access package-specific directories.
+            // This way, we don't need to request external read/write runtime permissions.
+            File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
+            // getExternalFilesDir() + "/Pictures" should match the declaration in fileprovider.xml paths
+            File file = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            //store file to load later
+            fileWritten = file;
+            // wrap File object into a content provider. NOTE: authority here should match authority in manifest declaration
+            // Create the storage directory if it does not exist
+            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+                Log.d(APP_TAG, "failed to create directory");
+            }
+            // Return the file target for the photo based on filename
+            // File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+            // wrap File object into a content provider
+            // required for API >= 24
+           // Uri fileuri = FileProvider.getUriForFile(getActivity(), "com.codepath.fileprovider", file);
+            return file;
+        }
+
+        return null;
+    }
+
+
 
     // Returns true if external storage for photos is available
     private boolean isExternalStorageAvailable() {

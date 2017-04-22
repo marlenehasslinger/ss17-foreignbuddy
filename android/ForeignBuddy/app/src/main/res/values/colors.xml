@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffca00</color>
-    <color name="colorPrimaryDark">#ffca00</color>
+    <color name="colorPrimary">#aa3939</color>
+    <color name="colorPrimaryDark">#701e1e</color>
     <color name="colorAccent">#b2dfdb</color>
 
     <color name="colorWhite">#ffffff</color>
+    <color name="NavBarGray">#ff9d9d</color>
+    <color name="ProfileLayout">#e6e6e6</color>
 </resources>
