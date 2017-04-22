@@ -159,7 +159,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .getReference()
                     .child("users")
                     .child(firebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("mativeLanguage")
+                    .child("nativeLanguage")
                     .setValue("English");
         }
         else if(rB_native_German.isChecked()){
