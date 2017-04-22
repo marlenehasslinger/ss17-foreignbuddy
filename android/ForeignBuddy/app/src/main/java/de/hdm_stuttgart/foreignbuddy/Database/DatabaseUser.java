@@ -24,7 +24,7 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 public class DatabaseUser {
 
     private static User currentUser;
-    private static List<User> currentUsersMatches = new ArrayList<>();;
+    private static List<User> currentUsersMatches = new ArrayList<>();
 
     private DatabaseUser(){}
 
@@ -75,7 +75,9 @@ public class DatabaseUser {
                 Iterable<DataSnapshot> allUsers = dataSnapshot.getChildren();
                 for (DataSnapshot child : allUsers) {
                     User user = child.getValue(User.class);
-                    currentUsersMatches.add(user);
+                    if (!user.getUserID().equals(currentUser.getUserID())) {
+                        currentUsersMatches.add(user);
+                    }
                 }
             }
 
@@ -84,6 +86,17 @@ public class DatabaseUser {
 
             }
         });
+    }
+
+    private static boolean checkConstraintsMatches(User user){
+        if (user.getUserID().equals(currentUser.getUserID())) {
+            return false;
+        } else if (!user.getNativeLanguage().equals(currentUser.getLanguage())) {
+            return false;
+        } else if (currentUser.getNativeLanguage().equals(user.getLanguage())){
+            return false;
+        }
+        return true;
     }
 
     private static void deleteConnection() {

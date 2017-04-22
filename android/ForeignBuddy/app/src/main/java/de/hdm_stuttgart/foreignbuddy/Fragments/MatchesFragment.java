@@ -42,27 +42,28 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 public class MatchesFragment extends Fragment {
 
-    String UserId;
-    ImageView img_user;
-    TextView name;
-    TextView location;
-    TextView language;
-    Button btn_chat;
+    private String UserId;
+    private ImageView img_user;
+    private TextView name;
+    private TextView location;
+    private TextView language;
+    private Button btn_chat;
     private List<User> matches = new ArrayList<>();;
     private ListView listView;
     private Toolbar toolbar;
     private DatabaseReference mDatabase;
     private ProgressDialog progressDialog;
     private User myUser;
-    //Start Location Varaibles
+
+    //For Location
     private Geocoder geocoder;
     private List<Address> addresses;
-    //END Location Variables
-    //START PROFILPHOTO
+
+
+    //For profilphoto
     private StorageReference riversRef;
     private StorageReference storageReference;
     private String uploadName;
-    //END PROFILPHOTO
 
     private static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
         final int radius = 6371;

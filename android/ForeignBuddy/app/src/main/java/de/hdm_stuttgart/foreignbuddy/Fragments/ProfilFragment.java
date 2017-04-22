@@ -114,6 +114,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         txt_languages = (TextView) view.findViewById(R.id.txt_languages);
         txt_nativeLanguage = (TextView) view.findViewById(R.id.txt_nativeLanguage);
 
+        //mDatabase.getDatabase().getReference();
+
         //Set Button Listener
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
@@ -392,7 +394,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
                     //Link to profile photo file will be stored within the corresponding user in the database
-                    mDatabase.child("users")
+                    FirebaseDatabase.getInstance().getReference().child("users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child("urlProfilephoto")
                             .setValue(downloadUri.toString());
