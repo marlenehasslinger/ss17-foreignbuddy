@@ -73,7 +73,7 @@ public class DatabaseUser {
                 });
     }
 
-    private static void loadCurrentUsersMatches() {
+    public static void loadCurrentUsersMatches() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -106,7 +106,7 @@ public class DatabaseUser {
         return true;
     }
 
-    private static void loadCurrentUsersConversations() {
+    public static void loadCurrentUsersConversations() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

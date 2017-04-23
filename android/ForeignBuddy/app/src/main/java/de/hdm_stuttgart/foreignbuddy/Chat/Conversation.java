@@ -13,15 +13,18 @@ public class Conversation {
     public String UserID;
     public String username;
     public String urlProfilephoto;
+    public String lastMessage;
+    public String conversationID;
 
     public Conversation() {
 
     }
 
-    public  Conversation(String UserID, String username, String urlProfilephoto){
+    public  Conversation(String UserID, String username, String urlProfilephoto, String conversationID){
         this.UserID = UserID;
         this.username = username;
         this.urlProfilephoto = urlProfilephoto;
+        this.conversationID = conversationID;
     }
 
 

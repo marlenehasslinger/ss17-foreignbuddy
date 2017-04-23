@@ -38,13 +38,12 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 public class ChatsFragment extends Fragment {
 
-    //START WIDGETS
+    //Widgets
     private ListView chatOverview;
     private TextView name;
     private TextView lastMessage;
     private Toolbar toolbar;
     private ImageView img_user;
-    //END WIDGETS
 
     private List<Conversation> conversations;
 
@@ -90,7 +89,6 @@ public class ChatsFragment extends Fragment {
             while (DatabaseUser.haveCurrentUser() == false) {}
             progressDialog.dismiss();
         }
-
         conversations = DatabaseUser.getCurrentUsersConversations();
         ArrayAdapter<Conversation> conversationAdapter = new ConversationListAdapter();
         chatOverview.setAdapter(conversationAdapter);*/
@@ -98,8 +96,6 @@ public class ChatsFragment extends Fragment {
         chatOverview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //Object listItem = list.getItemAtPosition(position);
-
                     Intent intent = new Intent(getActivity(),ChatActivity.class);
                     Conversation conversation = conversations.get(position);
                     intent.putExtra("UserID", conversation.UserID);
@@ -149,7 +145,7 @@ public class ChatsFragment extends Fragment {
                     .into(img_user);
 
             name.setText(currentConversation.username);
-            lastMessage.setText("Last Message");
+            lastMessage.setText(currentConversation.lastMessage);
 
             return view;
 

@@ -34,9 +34,9 @@
         android:id="@+id/txt_location_matches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/img_user_matches"
-        android:layout_alignStart="@+id/txt_name_matches"
-        android:text="no Location" />
+        android:text="no Location"
+        android:layout_alignTop="@+id/img_location_matches"
+        android:layout_toEndOf="@+id/img_location_matches" />
 
     <TextView
         android:id="@+id/txt_language_matches"
@@ -57,8 +57,8 @@
         android:maxWidth="15dp"
         android:nestedScrollingEnabled="false"
         app:srcCompat="@drawable/location"
-        android:layout_below="@+id/txt_name_matches"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignBottom="@+id/img_user_matches"
+        android:layout_alignStart="@+id/txt_name_matches" />
 
     <Button
         android:id="@+id/btn_chat_matches"

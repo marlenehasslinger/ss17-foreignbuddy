@@ -436,6 +436,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                     //So the bitmaps gets rotated
 
                    // takenImage = RotateBitmap(takenImage, 90);
+
                     takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
                     fOut.flush();
                     fOut.close();
