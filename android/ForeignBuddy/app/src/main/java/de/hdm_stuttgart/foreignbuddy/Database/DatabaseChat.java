@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import de.hdm_stuttgart.foreignbuddy.Chat.ChatMessage;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
@@ -28,6 +29,12 @@ public class DatabaseChat {
         activity = ChatActivity;
         conversationID = getConversationID();
         User currentUser = DatabaseUser.getCurrentUser();
+        List<Conversation> conversations = DatabaseUser.getCurrentUsersConversations();
+        for (Conversation c : conversations) {
+            if (c.conversationID == conversationID) {
+                return conversationID;
+            }
+        }
         FirebaseDatabase.getInstance()
                 .getReference()
                 .child("users")
@@ -36,7 +43,8 @@ public class DatabaseChat {
                 .child(conversationID)
                 .setValue(new Conversation(activity.getIntent().getStringExtra("UserID")
                         , activity.getIntent().getStringExtra("Username")
-                        , activity.getIntent().getStringExtra("URLPhoto")));
+                        , activity.getIntent().getStringExtra("URLPhoto")
+                        , conversationID));
 
         FirebaseDatabase.getInstance()
                 .getReference()
@@ -46,7 +54,9 @@ public class DatabaseChat {
                 .child(conversationID)
                 .setValue(new Conversation(currentUser.getUserID()
                         , currentUser.getUsername()
-                        , currentUser.urlProfilephoto));
+                        , currentUser.urlProfilephoto
+                        , conversationID));
+
         return conversationID;
     }
 

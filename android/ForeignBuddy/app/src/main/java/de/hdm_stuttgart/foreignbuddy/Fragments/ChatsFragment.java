@@ -38,13 +38,12 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 public class ChatsFragment extends Fragment {
 
-    //START WIDGETS
+    //Widgets
     private ListView chatOverview;
     private TextView name;
     private TextView lastMessage;
     private Toolbar toolbar;
     private ImageView img_user;
-    //END WIDGETS
 
     private List<Conversation> conversations;
 
