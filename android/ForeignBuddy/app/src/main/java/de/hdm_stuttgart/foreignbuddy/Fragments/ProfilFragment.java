@@ -378,6 +378,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                     takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
                 File file = getPhotoFile(uploadName);
+
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(file);
                     takenImage.compress(Bitmap.CompressFormat.JPEG, 15, fOut);
@@ -523,11 +524,32 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     }
 
     private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST);
-        Log.d("Files", "User chose File for upload");
+
+        //Checks if required permissions are already given
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+            Log.d("Permission", "Camera + Write External Permission granted");
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST);
+            Log.d("Files", "User chose File for upload");
+
+        } else {
+
+            //Missing permissions will be requested
+            Log.d("Permission", "Camera External or Write External Permission Permission denied");
+            String[] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+            requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
+
+
+        }
 
 
     }
