@@ -23,4 +23,10 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/toolbar_conversations" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/toolbar_conversations"
+        android:background="@drawable/shadow_toolbar"/>
+
 </RelativeLayout>

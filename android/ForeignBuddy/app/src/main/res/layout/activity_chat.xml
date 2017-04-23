@@ -55,6 +55,13 @@
         android:id="@+id/list_of_messages"
         android:layout_marginBottom="16dp"
         android:layout_below="@+id/toolbar_conversation" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/toolbar_conversation"
+        android:background="@drawable/shadow_toolbar"/>
 </RelativeLayout>
 
 

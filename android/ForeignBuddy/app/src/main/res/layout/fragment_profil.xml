@@ -119,4 +119,10 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/toolbar_profil"
+        android:background="@drawable/shadow_toolbar"/>
+
 </RelativeLayout>
