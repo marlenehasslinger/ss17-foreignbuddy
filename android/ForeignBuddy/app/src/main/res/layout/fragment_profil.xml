@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+android:background="@drawable/background"
     tools:context="de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment"
     >
 
@@ -15,108 +16,111 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
+
+    //       android:background="@color/ProfileLayout"
+
+    <TextView
+        android:id="@+id/txt_userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="7dp"
+        android:textColor="#000000"
+        android:textSize="34sp" />
+
+    <Button
+        android:id="@+id/btn_choosePhoto"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:background="@android:color/transparent"
+        android:text="Choose Photo"
+        android:textSize="15sp"
+        android:layout_below="@+id/toolbar_profil"
+        android:layout_alignParentStart="true" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_below="@+id/btn_takePhoto"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/user_male" />
+
+    <Button
+        android:id="@+id/btn_takePhoto"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:background="@android:color/transparent"
+        android:text="Take Photo"
+        android:textSize="15sp"
+        android:layout_below="@+id/toolbar_profil"
+        android:layout_alignParentEnd="true" />
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/relativeLayout"
         android:background="@color/ProfileLayout"
-        android:layout_below="@+id/toolbar_profil"
-        android:layout_alignParentStart="true">
-
-
-
-        <Button
-            android:id="@+id/btn_takePhoto"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:background="@android:color/transparent"
-            android:text="Take Photo"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:textSize="15sp"/>
-
-        <Button
-            android:id="@+id/btn_choosePhoto"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/btn_takePhoto"
-            android:layout_alignBottom="@+id/btn_takePhoto"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="14dp"
-            android:background="@android:color/transparent"
-            android:text="Choose Photo"
-            android:textSize="15sp"/>
+        android:layout_below="@+id/txt_userName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true">
 
         <TextView
-            android:id="@+id/txt_userName"
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView"
-
+            android:layout_below="@+id/txt_nativeLanguage"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
+
+            android:text="wants to improve:"
+            android:textColor="#FF5C6862"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="8dp"
+            android:text="speaks fluently:"
+            android:textColor="#FF5C6862"
+            android:textSize="16sp"
+            android:layout_below="@+id/txt_location_user"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/txt_location_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="...loading Location"
             android:textColor="#000000"
-            android:textSize="30sp" />
+            android:textSize="22sp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageView"
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-            android:layout_below="@+id/btn_takePhoto"
+        <TextView
+            android:id="@+id/txt_languages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="11dp"
-            android:src="@drawable/user_male" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txt_nativeLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView3"
+
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000"
+            android:textSize="20sp" />
     </RelativeLayout>
-
-
-    <TextView
-        android:id="@+id/txt_location_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="...loading Location"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="speaks fluently:"
-        android:textColor="#000000"
-        android:layout_below="@+id/txt_location_user"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="wants to improve:"
-        android:textColor="#000000"
-        android:layout_below="@+id/txt_nativeLanguage"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:id="@+id/txt_nativeLanguage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/txt_languages"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
-        android:textColor="#000000"
-        android:layout_centerHorizontal="true"
-        android:textSize="20sp" />
 
 </RelativeLayout>
