@@ -26,6 +26,8 @@ public class User {
     public String lastKnownCity;
     public Double latitude;
     public Double longitude;
+    public int distanceToMatch;
+
     //private ArrayList<Conversation> conversations;
 
 
@@ -55,6 +57,8 @@ public class User {
         return language;
     }
 
+    public int getDistanceToMatch() {return distanceToMatch;}
+
     /*public ArrayList<Conversation> getConversations() {
         return conversations;
     }*/
@@ -79,6 +83,8 @@ public class User {
     }
 
     public void setLanguage(String Language) { this.language = Language; }
+
+    public void setDistanceToMatch(int distanceToMatch) {this.distanceToMatch = distanceToMatch;}
 
     /*public void setConversations(ArrayList<Conversation> conversations) {}*/
 

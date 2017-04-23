@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +27,9 @@ public class UserDetailRegistration extends AppCompatActivity {
     private RadioButton rB_native_English, rB_native_German, rB_native_French, rB_native_Spanish;
     private DatabaseReference mDatabase;
     private User myUser;
+    private TextView currentDistance;
+    private SeekBar seekbar;
+    private int seekbarprogess;
 
 
     @Override
@@ -47,6 +52,33 @@ public class UserDetailRegistration extends AppCompatActivity {
         //Database und firebase authentication initialization
         mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+
+
+        currentDistance = (TextView) findViewById(R.id.tv_currentDistance);
+        seekbar = (SeekBar) findViewById (R.id.seekBar);
+
+        //Set Seekbar
+        seekbar.setMax(200);
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                seekbarprogess = i;
+                currentDistance.setText("" + seekbarprogess);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
 
     }
@@ -73,6 +105,13 @@ public class UserDetailRegistration extends AppCompatActivity {
                 .child("email")
                 .setValue(firebaseAuth.getInstance().getCurrentUser().getEmail());
 
+        //Add distance to Matches to database
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("distanceToMatch")
+                .setValue(seekbarprogess);
 
 
         //Add native language to database

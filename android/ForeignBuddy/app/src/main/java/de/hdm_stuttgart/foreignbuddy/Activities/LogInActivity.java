@@ -43,7 +43,6 @@ public class LogInActivity extends AppCompatActivity {
         txt_email_login = (EditText) findViewById(R.id.txt_email_login);
         txt_password_login = (EditText) findViewById(R.id.txt_password_login);
         btn_login_login = (Button) findViewById(R.id.btn_login_login);
-        btn_passwordRequest = (Button) findViewById(R.id.btn_passwordRequest);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -91,10 +90,6 @@ public class LogInActivity extends AppCompatActivity {
                 });
     }
 
-    public void btn_passwordRequest_clicked(View v){
-        //TODO
-
-    }
 
     public  void btn_register_clicked(View v) {
         Log.d("Auth", "onAuthStateChanged:register:");
