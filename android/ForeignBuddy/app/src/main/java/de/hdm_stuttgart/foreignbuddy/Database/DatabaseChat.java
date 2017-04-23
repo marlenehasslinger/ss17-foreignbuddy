@@ -30,8 +30,8 @@ public class DatabaseChat {
         conversationID = getConversationID();
         User currentUser = DatabaseUser.getCurrentUser();
         List<Conversation> conversations = DatabaseUser.getCurrentUsersConversations();
-        for (Conversation c : conversations) {
-            if (c.conversationID == conversationID) {
+        for (int i = 0; i < conversations.size(); i++) {
+            if (conversations.get(i).conversationID.equals(conversationID)) {
                 return conversationID;
             }
         }
@@ -56,6 +56,8 @@ public class DatabaseChat {
                         , currentUser.getUsername()
                         , currentUser.urlProfilephoto
                         , conversationID));
+
+        DatabaseUser.loadCurrentUsersConversations();
 
         return conversationID;
     }
