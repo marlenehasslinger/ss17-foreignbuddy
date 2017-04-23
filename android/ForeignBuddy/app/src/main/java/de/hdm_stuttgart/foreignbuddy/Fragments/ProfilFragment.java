@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -43,11 +42,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -72,6 +68,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     static final int CAM_REQUEST = 1;
     static final int CAMERA_REQUEST_CODE = 10;
     private static final int PICK_IMAGE_REQUEST = 234;
+    private static final int FILE_CHOOSER_REQUEST = 224;
     static final int LOCATION_REQUEST_CODE = 22;
     private static final String APP_TAG = "CAMERA_TEST_APP";
     //Initialize size for thumbnails
@@ -193,41 +190,25 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     //GPS functions Start
     private void getLocation() {
 
+        //Check if permissions are already given
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-                Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (l == null) {
-                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                        l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    }
-                    if (l != null) {
-                        onLocationChanged(l);
-                    } else {
-                        //txt_location_profil.setText(myUser.lastKnownCity);
-                        showSettingsAlertForGPS();
-                    }
-                } else {
-                    onLocationChanged(l);
-                }
-            } else {
-                //txt_location_profil.setText(myUser.lastKnownCity);
-                showSettingsAlertForGPS();
-            }
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
 
-        } else {
-            Log.d("Permission", "Camera External or Write External Permission Permission denied");
-            String[] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-            requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
+            //If permissions are granteed already the location request starts
+            startLocationRequest();
+
+        } else{
+
+            //Missing permissions will be requested
+                Log.d("Permission", "Location Permission denied");
+                String[] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+                requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
+            }
         }
-    }
+
+
 
     private void showSettingsAlertForGPS() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
@@ -328,6 +309,162 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         });
     }
 
+
+
+    private void showFileChooser() {
+
+        //Checks if required permissions are already given
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+            Log.d("Permission", "Read + Write External Permission granted");
+
+
+        //If permissions are granteed File chooser will be started
+        startFileChooser();
+
+        } else {
+
+            //Missing permissions will be requested
+            Log.d("Permission", "Camera External or Write External Permission Permission denied");
+            String[] permissionRequested = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+            requestPermissions(permissionRequested, FILE_CHOOSER_REQUEST);
+
+
+        }
+
+
+    }
+
+    public void startFileChooser(){
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST);
+        Log.d("Files", "User chose File for upload");
+
+    }
+
+    private void startCamera() {
+
+        //Starts Camera Intent
+        Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.d("Camera", "Camera started");
+        camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
+        startActivityForResult(camera_Intent, CAM_REQUEST);
+    }
+
+    private void startLocationRequest(){
+
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        try {
+
+
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+                Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (l == null) {
+                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+                        l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                    if (l != null) {
+                        onLocationChanged(l);
+                    } else {
+                        //txt_location_profil.setText(myUser.lastKnownCity);
+                        showSettingsAlertForGPS();
+                    }
+                } else {
+                    onLocationChanged(l);
+                }
+            } else {
+                //txt_location_profil.setText(myUser.lastKnownCity);
+                showSettingsAlertForGPS();
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+
+
+
+    public void takePhoto() {
+
+        //Checks if required permissions are already given
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+            Log.d("Permission", "Camera + Write External Permission granted");
+
+            //Starts camera
+            startCamera();
+
+        } else {
+
+            //Missing permissions will be requested
+            Log.d("Permission", "Camera External or Write External Permission Permission denied");
+            String[] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+            requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
+
+
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        //Asks for permissions that are needed for camera usage
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                startCamera();
+            } else {
+
+                Log.d("Permissions", "Camera Permission denied still");
+            }
+        }
+
+        //Asks for permissions that are needed for file chooser usage
+        if (requestCode == FILE_CHOOSER_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                startFileChooser();
+
+            } else {
+
+                Log.d("Permissions", "Camera Permission denied still");
+            }
+        }
+
+        //Asks for Location permission
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                startLocationRequest();
+            } else {
+                Log.d("Permissions", "Locations Permissions still denied");
+            }
+        }
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -354,36 +491,36 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
             try{
-            Bitmap takenImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
+                Bitmap takenImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
 
                 //imageView.setImageBitmap(bitmap);
-              //  Bitmap takenImage = BitmapFactory.decodeFile(filepath.toString());
+                //  Bitmap takenImage = BitmapFactory.decodeFile(filepath.toString());
 
 
 
-                    //Find ratio to scale
-                    final int maxSize = 850;
-                    int outWidth;
-                    int outHeight;
-                    int inWidth = takenImage.getWidth();
-                    int inHeight = takenImage.getHeight();
-                    if(inWidth > inHeight){
-                        outWidth = maxSize;
-                        outHeight = (inHeight * maxSize) / inWidth;
-                    } else {
-                        outHeight = maxSize;
-                        outWidth = (inWidth * maxSize) / inHeight;
-                    }
+                //Find ratio to scale
+                final int maxSize = 850;
+                int outWidth;
+                int outHeight;
+                int inWidth = takenImage.getWidth();
+                int inHeight = takenImage.getHeight();
+                if(inWidth > inHeight){
+                    outWidth = maxSize;
+                    outHeight = (inHeight * maxSize) / inWidth;
+                } else {
+                    outHeight = maxSize;
+                    outWidth = (inWidth * maxSize) / inHeight;
+                }
 
-                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
+                takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
                 File file = getPhotoFile(uploadName);
 
-                    //Compress ProfilePhoto
-                    FileOutputStream fOut = new FileOutputStream(file);
-                    takenImage.compress(Bitmap.CompressFormat.JPEG, 15, fOut);
-                    fOut.flush();
-                    fOut.close();
+                //Compress ProfilePhoto
+                FileOutputStream fOut = new FileOutputStream(file);
+                takenImage.compress(Bitmap.CompressFormat.JPEG, 15, fOut);
+                fOut.flush();
+                fOut.close();
 
 
                 // Load the taken image into a preview
@@ -395,11 +532,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             } catch (IOException e){
                 e.printStackTrace();
             }
-
-
-
-
-
 
 
             //User takes profile photo with camera
@@ -435,7 +567,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                     //For some reason photos which are taken by the camera are displayed in a wrong angle.
                     //So the bitmaps gets rotated
 
-                   // takenImage = RotateBitmap(takenImage, 90);
+                    // takenImage = RotateBitmap(takenImage, 90);
 
                     takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
                     fOut.flush();
@@ -448,7 +580,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
                 filepath = Uri.fromFile(fileWritten);
-
 
 
                 //upload photo to Firebase
@@ -523,99 +654,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         }
     }
 
-    private void showFileChooser() {
-
-        //Checks if required permissions are already given
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED) {
-
-            Log.d("Permission", "Camera + Write External Permission granted");
-
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select an Image"), PICK_IMAGE_REQUEST);
-            Log.d("Files", "User chose File for upload");
-
-        } else {
-
-            //Missing permissions will be requested
-            Log.d("Permission", "Camera External or Write External Permission Permission denied");
-            String[] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-            requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
-
-
-        }
-
-
-    }
-
-    public void takePhoto() {
-
-        //Checks if required permissions are already given
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED) {
-
-            Log.d("Permission", "Camera + Write External Permission granted");
-
-            //Starts camera
-            invokeCamera();
-
-        } else {
-
-            //Missing permissions will be requested
-            Log.d("Permission", "Camera External or Write External Permission Permission denied");
-            String[] permissionRequested = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-            requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
-
-
-        }
-
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        //Asks for permissions that are needed for camera usage
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                invokeCamera();
-            } else {
-
-                Log.d("Permissions", "Camera Permission denied still");
-            }
-        }
-
-        //Asks for Location permission
-        if (requestCode == LOCATION_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                getLocation();
-            } else {
-                Log.d("Permissions", "Locations Permissions still denied");
-            }
-        }
-
-    }
-
-
-    private void invokeCamera() {
-
-        //Starts Camera Intent
-        Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.d("Camera", "Camera started");
-        camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
-        startActivityForResult(camera_Intent, CAM_REQUEST);
-    }
 
     public Uri getPhotoFileUri(String fileName) {
         // Only continue if the SD Card is mounted
