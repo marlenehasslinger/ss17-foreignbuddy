@@ -3,21 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-android:background="@drawable/background"
-    tools:context="de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment"
-    >
+    android:background="@drawable/background2"
+    tools:context="de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_profil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
+        android:background="@color/primary_material_light"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
-
-
-    //       android:background="@color/ProfileLayout"
 
     <TextView
         android:id="@+id/txt_userName"

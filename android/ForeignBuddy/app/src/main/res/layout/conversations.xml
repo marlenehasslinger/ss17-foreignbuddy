@@ -32,15 +32,9 @@
         android:id="@+id/txt_lastMassage_conversation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="last Message"
+        android:layout_below="@+id/txt_name_conversation"
         android:layout_alignStart="@+id/txt_name_conversation"
-        android:text="last Message" />
+        android:layout_marginTop="14dp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_name"
-        android:layout_alignTop="@+id/txt_name_conversation"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"/>
-    
 </RelativeLayout>

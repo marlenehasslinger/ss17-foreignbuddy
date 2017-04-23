@@ -159,7 +159,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         //toolbar
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("Profile");
         setHasOptionsMenu(true);
     }

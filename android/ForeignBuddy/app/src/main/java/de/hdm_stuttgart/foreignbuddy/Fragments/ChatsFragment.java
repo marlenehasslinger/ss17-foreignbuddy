@@ -110,13 +110,11 @@ public class ChatsFragment extends Fragment {
 
     @Override
     public void onStart() {
-        //START TOOLBAR
+        //toolbar
         super.onStart();
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_conversations);
         toolbar.setTitle("Chats");
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
-        //END TOOLBAR
     }
 
     private class ConversationListAdapter extends ArrayAdapter<Conversation> {

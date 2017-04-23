@@ -2,11 +2,14 @@
 <resources>
     <color name="colorPrimary">#77bb99</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#b2dfdb</color>
+    <color name="colorAccent">#f5b800</color>
 
-    <color name="colorWhite">#ffffff</color>
+    <!--#b2dfdb-->
+
+    <color name="colorBlack">#000000</color>
     <color name="NavBarGray">#ff9d9d</color>
     <color name="ProfileLayout">#ffffff</color>
     <color name="Red">#aa3939</color>
     <color name="darkred">#701e1e</color>
+    <color name="accent_material_light_1">#f5b800</color>
 </resources>
