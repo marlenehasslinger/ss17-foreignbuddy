@@ -37,7 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
             startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setProviders(
-                            AuthUI.FACEBOOK_PROVIDER,
+                           // AuthUI.FACEBOOK_PROVIDER,
                             AuthUI.GOOGLE_PROVIDER,
                             AuthUI.EMAIL_PROVIDER
                     )

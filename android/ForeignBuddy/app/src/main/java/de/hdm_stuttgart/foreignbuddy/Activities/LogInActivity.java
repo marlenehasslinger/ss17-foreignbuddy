@@ -26,7 +26,6 @@ public class LogInActivity extends AppCompatActivity {
     private EditText txt_email_login;
     private EditText txt_password_login;
     private Button btn_login_login;
-    private Button btn_passwordRequest;
     private ProgressDialog progressDialog;
 
     //Firebase
@@ -94,13 +93,6 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
-=======
-    public void btn_passwordRequest_clicked(View v) {
-        //TODO
-
-    }
->>>>>>> f5402244fe36a94d10905419ceb3c2f242d43d96
 
     public void btn_register_clicked(View v) {
         Log.d("Auth", "onAuthStateChanged:register:");

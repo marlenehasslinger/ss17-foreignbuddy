@@ -30,6 +30,7 @@ public class UserDetailRegistration extends AppCompatActivity {
     private TextView currentDistance;
     private SeekBar seekbar;
     private int seekbarprogess;
+    private String name;
 
 
     @Override
@@ -53,12 +54,22 @@ public class UserDetailRegistration extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
 
+        ///Set Defaultwert für Username
+        name = getUserNameFromEmail(firebaseAuth.getInstance().getCurrentUser().getEmail());
+        userName.setText(name);
 
         currentDistance = (TextView) findViewById(R.id.tv_currentDistance);
         seekbar = (SeekBar) findViewById (R.id.seekBar);
 
-        //Set Seekbar
+        //Set default values for languages
+        rB_English.setChecked(true);
+        rB_native_German.setChecked(true);
+
+        //Set SeekBar and give a default value
         seekbar.setMax(200);
+        seekbar.setProgress(100);
+        currentDistance.setText("100");
+        seekbarprogess = 100;
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
             @Override
@@ -84,7 +95,13 @@ public class UserDetailRegistration extends AppCompatActivity {
     }
 
 
+    public String getUserNameFromEmail(String email){
+        name = email;
+        name = name.substring(0, name.lastIndexOf("@"));
+        name = name.substring(0,1).toUpperCase()+name.substring(1);
+        return name;
 
+    }
 
 
     public void addUserDataToDatabase(){
@@ -142,7 +159,7 @@ public class UserDetailRegistration extends AppCompatActivity {
                     .child("nativeLanguage")
                     .setValue("French");
         }
-        else if(rB_native_Spanish.isChecked()){
+        if(rB_native_Spanish.isChecked()){
 
             FirebaseDatabase.getInstance()
                     .getReference()
@@ -151,6 +168,8 @@ public class UserDetailRegistration extends AppCompatActivity {
                     .child("nativeLanguage")
                     .setValue("Spanish");
         }
+
+
 
 
         //Add language the user wants to improve
@@ -191,8 +210,6 @@ public class UserDetailRegistration extends AppCompatActivity {
                     .child("language")
                     .setValue("Spanish");
         }
-
-
 
     }
 
