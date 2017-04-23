@@ -65,11 +65,10 @@ public class ChatActivity extends AppCompatActivity {
         toolbar = (Toolbar) this.findViewById(R.id.toolbar_conversation);
         toolbar.setTitle(getIntent().getStringExtra("Username"));
         this.setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-        upArrow.setColorFilter(getResources().getColor(R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorBlack), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
     }

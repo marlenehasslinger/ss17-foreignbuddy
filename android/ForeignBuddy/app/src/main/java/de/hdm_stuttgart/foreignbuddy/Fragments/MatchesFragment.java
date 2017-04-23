@@ -89,12 +89,10 @@ public class MatchesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //START TOOLBAR
+        //Toolbar
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_conversations);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("Matches");
-        //END TOOLBAR
     }
 
     private class UserListAdapter extends ArrayAdapter<User> {

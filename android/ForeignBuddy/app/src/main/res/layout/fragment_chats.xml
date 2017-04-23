@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment"
-    android:background="@drawable/background">
+    android:background="@drawable/background2">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_conversations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/primary_material_light"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         android:layout_alignParentTop="true" />
