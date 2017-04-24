@@ -41,6 +41,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
 
+        //WIDGETS
         userName = (EditText) findViewById(R.id.text_userName);
 
         rB_English = (RadioButton) findViewById(R.id.rB_English);
@@ -53,7 +54,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         rB_native_German = (RadioButton) findViewById(R.id.rB_native_German);
         rB_native_Spanish = (RadioButton) findViewById(R.id.rB_native_Spanish);
 
-
         currentDistance = (TextView) findViewById(R.id.tv_currentDistance);
         seekbar = (SeekBar) findViewById (R.id.seekBar);
 
@@ -64,7 +64,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         getCurrentUserData();
 
-        //Set Seekbar
+        //Set Seekbar for selecting value for maximum distance to matches that will be displayed
         seekbar.setMax(200);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
@@ -100,18 +100,16 @@ public class UserDetailsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
                 myUser = dataSnapshot.getValue(User.class);
 
-                //Get current username in EditText
+                //Get current username
                 userName.setText(myUser.getUsername());
 
 
-                //Get distance to user
+                //Get desired maximum distance to matches that will be displayed
                 currentDistance.setText("" + myUser.getDistanceToMatch());
                 seekbarprogess = myUser.getDistanceToMatch();
                 seekbar.setProgress(seekbarprogess);
-
 
 
                 //Get current native language in radiobutton group

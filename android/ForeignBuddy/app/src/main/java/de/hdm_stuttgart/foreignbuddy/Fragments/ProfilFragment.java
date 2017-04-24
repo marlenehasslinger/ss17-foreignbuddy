@@ -113,23 +113,23 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         txt_languages = (TextView) view.findViewById(R.id.txt_languages);
         txt_nativeLanguage = (TextView) view.findViewById(R.id.txt_nativeLanguage);
 
-        //mDatabase.getDatabase().getReference();
 
         //Set Button Listener
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
 
+        //Set filename for firebase up- and downloads and local files
         uploadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
-
         photoFileName = "photo.jpg";
 
+        //Firebase database
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
 
         //Get current User
         myUser = DatabaseUser.getCurrentUser();
 
-        //Set text on Widgets
+        //Set current user values on widgets
         txt_userName.setText(myUser.getUsername());
         txt_nativeLanguage.setText(myUser.getNativeLanguage());
         txt_languages.setText(myUser.getLanguage());
@@ -153,7 +153,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     public void onStart() {
         super.onStart();
 
-        //toolbar
+        //Set oolbar
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("Profile");
@@ -282,6 +282,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
     private void downloadProfilePhoto() {
+
         try {
             localFile = File.createTempFile("images", uploadName);
 
@@ -289,12 +290,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             e.printStackTrace();
         }
 
+        //Download profile photo via firebase database reference
         riversRef.getFile(localFile)
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-
+                        //Set profile photo after successful download
                         imageView.setImageDrawable(Drawable.createFromPath(localFile.getPath()));
                         Log.d("Download", "Profil photo successfully downloaded");
 
@@ -315,15 +317,15 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
         //Checks if required permissions are already given
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED &&
+                == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED) {
 
             Log.d("Permission", "Read + Write External Permission granted");
 
 
-        //If permissions are granteed File chooser will be started
-        startFileChooser();
+            //If permissions are granteed File chooser will be started
+            startFileChooser();
 
         } else {
 
@@ -348,23 +350,21 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
-    private void startCamera() {
+    public void startCamera() {
 
-        //Starts Camera Intent
         Intent camera_Intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Log.d("Camera", "Camera started");
         camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
         startActivityForResult(camera_Intent, CAM_REQUEST);
     }
 
-    private void startLocationRequest(){
-
+    public void startLocationRequest(){
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         try {
 
-
+            //Check if GPS functionality of device is activiated
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                     locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                 geocoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -514,6 +514,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
                 takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
+                //Create a new file so the original file won't be changed during compressing process
                 File file = getPhotoFile(uploadName);
 
                 //Compress ProfilePhoto
@@ -560,15 +561,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
                     takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
+                    //For some reason photos which are taken by the camera are displayed in a wrong angle.
+                    //So the bitmaps gets rotated
+                    // takenImage = RotateBitmap(takenImage, 90);
 
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(fileWritten);
-
-                    //For some reason photos which are taken by the camera are displayed in a wrong angle.
-                    //So the bitmaps gets rotated
-
-                    // takenImage = RotateBitmap(takenImage, 90);
-
                     takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
                     fOut.flush();
                     fOut.close();
@@ -614,8 +612,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     //Photo is successfully uploaded
-
-
                     progressDialog.dismiss();
 
                     downloadUri = taskSnapshot.getDownloadUrl();
@@ -623,14 +619,11 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                     Log.d("Upload", "Upload successful");
                     Toast.makeText(getActivity(), "File Uploaded!", Toast.LENGTH_SHORT).show();
 
-                    //Link to profile photo file will be stored within the corresponding user in the database
+                    //Downloadink to profile photo will be stored within the corresponding user in the database
                     FirebaseDatabase.getInstance().getReference().child("users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child("urlProfilephoto")
                             .setValue(downloadUri.toString());
-
-                    //Picasso.with(getContext()).load(downloadUri).into(imageView);
-                    // Log.d("Picasso", "Set Photo with Picasso successful");
 
 
                 }
@@ -744,7 +737,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
     }
-    //Logout function END
 
     //OnClickListener
     @Override

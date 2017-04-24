@@ -38,6 +38,7 @@ public class UserDetailRegistration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
 
+        //WIDGETS
         userName = (EditText) findViewById(R.id.text_userName);
 
         rB_English = (RadioButton) findViewById(R.id.rB_English);
@@ -50,22 +51,23 @@ public class UserDetailRegistration extends AppCompatActivity {
         rB_native_German = (RadioButton) findViewById(R.id.rB_native_German);
         rB_native_Spanish = (RadioButton) findViewById(R.id.rB_native_Spanish);
 
+        currentDistance = (TextView) findViewById(R.id.tv_currentDistance);
+        seekbar = (SeekBar) findViewById (R.id.seekBar);
+
         //Database und firebase authentication initialization
         mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        ///Set Defaultwert für Username
+        ///Set Default value for username
         name = getUserNameFromEmail(firebaseAuth.getInstance().getCurrentUser().getEmail());
         userName.setText(name);
 
-        currentDistance = (TextView) findViewById(R.id.tv_currentDistance);
-        seekbar = (SeekBar) findViewById (R.id.seekBar);
 
         //Set default values for languages
         rB_English.setChecked(true);
         rB_native_German.setChecked(true);
 
-        //Set SeekBar and give a default value
+        //Set Seekbar for selecting value for maximum distance to matches that will be displayed
         seekbar.setMax(200);
         seekbar.setProgress(100);
         currentDistance.setText("100");
@@ -212,7 +214,6 @@ public class UserDetailRegistration extends AppCompatActivity {
         }
 
     }
-
 
 
 

@@ -33,7 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
 
-            //start special firebase activity for registration with facebook, google or email registration
+            //start separate activity for registration with facebook, google or email registration
             startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setProviders(

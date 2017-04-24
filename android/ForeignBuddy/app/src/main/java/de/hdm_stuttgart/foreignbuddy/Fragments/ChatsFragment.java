@@ -59,6 +59,8 @@ public class ChatsFragment extends Fragment {
         conversations = new ArrayList<>();
 
         progressDialog = ProgressDialog.show(getActivity(), "Loading Conversations...", "Please wait...", true);
+
+        //Set listener to firebase database so messages can be retrieved
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -93,6 +95,7 @@ public class ChatsFragment extends Fragment {
         ArrayAdapter<Conversation> conversationAdapter = new ConversationListAdapter();
         chatOverview.setAdapter(conversationAdapter);*/
 
+        //Set onItemClickListener on list elements to open chats
         chatOverview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -110,7 +113,7 @@ public class ChatsFragment extends Fragment {
 
     @Override
     public void onStart() {
-        //toolbar
+        //Set toolbar
         super.onStart();
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_conversations);
         toolbar.setTitle("Chats");
@@ -128,7 +131,6 @@ public class ChatsFragment extends Fragment {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             final View view = getActivity().getLayoutInflater().inflate(R.layout.conversations, parent, false);
 
-
             final Conversation currentConversation = conversations.get(position);
 
             //Widgets
@@ -136,13 +138,17 @@ public class ChatsFragment extends Fragment {
             img_user = (ImageView) view.findViewById(R.id.img_user_conversation);
             lastMessage = (TextView) view.findViewById(R.id.txt_lastMassage_conversation);
 
+            //Load profile photo of conversation partner
             Picasso.with(getActivity()).
                     load(currentConversation.urlProfilephoto)
                     .placeholder(R.drawable.user_male)
                     .error(R.drawable.user_male)
                     .into(img_user);
 
+            //Set usename of conversation partner
             name.setText(currentConversation.username);
+
+            //Set preview of last message in chat list overview elements
             lastMessage.setText(currentConversation.lastMessage);
 
             return view;
