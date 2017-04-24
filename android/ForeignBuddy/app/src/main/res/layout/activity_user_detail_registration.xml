@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity"
     android:fillViewport="true"
-    >
+    android:screenOrientation="portrait">
 
     <RelativeLayout
         android:layout_width="match_parent"

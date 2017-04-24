@@ -149,7 +149,12 @@ public class ChatsFragment extends Fragment {
             name.setText(currentConversation.username);
 
             //Set preview of last message in chat list overview elements
-            lastMessage.setText(currentConversation.lastMessage);
+            if (currentConversation.lastMessage.length() >= 33) {
+                lastMessage.setText(currentConversation.lastMessage.substring(0,30) + "...");
+            } else {
+                lastMessage.setText(currentConversation.lastMessage);
+            }
+
 
             return view;
 

@@ -98,7 +98,7 @@ public class DatabaseUser {
     private static boolean checkConstraintsMatches(User user) {
         if (user.getUserID().equals(currentUser.getUserID())) {
             return false;
-        } else if (!user.getNativeLanguage().equals(currentUser.getLanguage())) {
+        } else if (user.getNativeLanguage().equals(currentUser.getLanguage())) {
             return false;
         } else if (currentUser.getNativeLanguage().equals(user.getLanguage())) {
             return false;

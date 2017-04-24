@@ -153,20 +153,14 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     public void onStart() {
         super.onStart();
 
-        //Set oolbar
+        //Set toolbar
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_profil);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("Profile");
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getLocation();
-    }
-
-    //Toolbar functions Starts
+    //Toolbar methods
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.toolbar_profil_menu, menu);
@@ -185,7 +179,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         }
         return true;
     }
-    //Toolbar functions END
 
     //GPS functions Start
     private void getLocation() {
@@ -207,8 +200,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
             }
         }
-
-
 
     private void showSettingsAlertForGPS() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
@@ -278,7 +269,42 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
-    //GPS Functions END
+    public void startLocationRequest(){
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        try {
+            //Check if GPS functionality of device is activated
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+                geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+                Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (l == null) {
+                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+                        l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    }
+                    if (l != null) {
+                        onLocationChanged(l);
+                    } else {
+                        //txt_location_profil.setText(myUser.lastKnownCity);
+                        showSettingsAlertForGPS();
+                    }
+                } else {
+                    onLocationChanged(l);
+                }
+            } else {
+                //txt_location_profil.setText(myUser.lastKnownCity);
+                showSettingsAlertForGPS();
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 
     private void downloadProfilePhoto() {
@@ -310,8 +336,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             }
         });
     }
-
-
 
     private void showFileChooser() {
 
@@ -357,49 +381,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         camera_Intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
         startActivityForResult(camera_Intent, CAM_REQUEST);
     }
-
-    public void startLocationRequest(){
-
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-        try {
-
-            //Check if GPS functionality of device is activiated
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-                Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (l == null) {
-                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                        l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    }
-                    if (l != null) {
-                        onLocationChanged(l);
-                    } else {
-                        //txt_location_profil.setText(myUser.lastKnownCity);
-                        showSettingsAlertForGPS();
-                    }
-                } else {
-                    onLocationChanged(l);
-                }
-            } else {
-                //txt_location_profil.setText(myUser.lastKnownCity);
-                showSettingsAlertForGPS();
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
-
-
-
-
 
     public void takePhoto() {
 
@@ -647,7 +628,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         }
     }
 
-
     public Uri getPhotoFileUri(String fileName) {
         // Only continue if the SD Card is mounted
         if (isExternalStorageAvailable()) {
@@ -701,14 +681,11 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         return null;
     }
 
-
-
     // Returns true if external storage for photos is available
     private boolean isExternalStorageAvailable() {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
     }
-
 
     //Logout function Start
     private void askForLogout() {
@@ -747,6 +724,5 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             takePhoto();
         }
     }
-
 
 }

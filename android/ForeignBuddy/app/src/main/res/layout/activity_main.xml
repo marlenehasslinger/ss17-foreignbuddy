@@ -5,7 +5,8 @@
     android:id="@+id/activity_my_profil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.hdm_stuttgart.foreignbuddy.Activities.MainActivity">
+    tools:context="de.hdm_stuttgart.foreignbuddy.Activities.MainActivity"
+    android:screenOrientation="portrait">
 
     <FrameLayout
         android:id="@+id/fragment"

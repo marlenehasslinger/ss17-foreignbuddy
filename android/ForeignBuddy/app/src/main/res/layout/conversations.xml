@@ -30,11 +30,12 @@
 
     <TextView
         android:id="@+id/txt_lastMassage_conversation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="last Message"
-        android:layout_below="@+id/txt_name_conversation"
         android:layout_alignStart="@+id/txt_name_conversation"
-        android:layout_marginTop="14dp" />
+        android:layout_below="@+id/txt_name_conversation"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="14dp"
+        android:text="last Message" />
 
 </RelativeLayout>
