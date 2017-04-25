@@ -41,6 +41,7 @@ public class DatabaseUser {
 
     private static DatabaseUser instance;
 
+    //Create and get Instance of DatabaseUser
     public static synchronized DatabaseUser getInstance() {
         if (instance == null) {
             instance = new DatabaseUser();
@@ -48,7 +49,7 @@ public class DatabaseUser {
         return instance;
     }
 
-
+    //User Data
     private User currentUser;
     private List<User> currentUsersMatches;
     private List<Conversation> currentUsersConversations;
@@ -78,13 +79,6 @@ public class DatabaseUser {
 
     public List<Conversation> getCurrentUsersConversations() {
         return currentUsersConversations;
-    }
-
-    public boolean haveCurrentUser() {
-        if (currentUser != null || currentUsersMatches != null || currentUsersConversations != null) {
-            return true;
-        }
-        return false;
     }
 
     private void loadCurrentUser() {
@@ -200,6 +194,7 @@ public class DatabaseUser {
         currentUser = null;
         currentUsersMatches = null;
         currentUsersConversations = null;
+        currentUserProfilpicture = null;
     }
 
 }
