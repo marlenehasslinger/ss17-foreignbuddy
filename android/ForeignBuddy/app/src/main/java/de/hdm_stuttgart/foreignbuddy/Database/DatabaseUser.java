@@ -5,10 +5,12 @@ import android.widget.ArrayAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
@@ -24,6 +26,7 @@ public class DatabaseUser {
     private static User currentUser;
     private static List<User> currentUsersMatches;
     private static List<Conversation> currentUsersConversations;
+    
 
     private DatabaseUser() {
     }

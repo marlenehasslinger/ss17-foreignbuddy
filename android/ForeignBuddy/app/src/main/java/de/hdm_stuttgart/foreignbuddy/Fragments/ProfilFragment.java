@@ -272,31 +272,22 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     public void startLocationRequest(){
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
         try {
-            //Check if GPS functionality of device is activated
+            //Check if GPS or Network Location functionality of device is activated
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                     locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
-                geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-                Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (l == null) {
-                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                        l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    }
-                    if (l != null) {
-                        onLocationChanged(l);
-                    } else {
-                        //txt_location_profil.setText(myUser.lastKnownCity);
-                        showSettingsAlertForGPS();
-                    }
-                } else {
-                    onLocationChanged(l);
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
                 }
+
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+                }
+
             } else {
-                //txt_location_profil.setText(myUser.lastKnownCity);
                 showSettingsAlertForGPS();
             }
         } catch (SecurityException e) {
