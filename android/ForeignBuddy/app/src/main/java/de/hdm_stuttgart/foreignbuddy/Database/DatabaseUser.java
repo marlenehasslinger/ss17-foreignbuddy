@@ -101,7 +101,7 @@ public class DatabaseUser {
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
                         loadCurrentUsersConversations();
-                        downloadProfilePhoto();
+                        //downloadProfilePhoto();
 
                     }
 
@@ -214,7 +214,6 @@ public class DatabaseUser {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     //Photo is successfully uploaded
-                 //   progressDialog.dismiss();
 
                     Uri downloadUri = taskSnapshot.getDownloadUrl();
 
@@ -227,8 +226,7 @@ public class DatabaseUser {
                             .child("urlProfilephoto")
                             .setValue(downloadUri.toString());
 
-                   // downloadProfilePhoto();
-
+                   //downloadProfilePhoto();
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
@@ -258,7 +256,7 @@ public class DatabaseUser {
         currentUser = null;
         currentUsersMatches = null;
         currentUsersConversations = null;
-        currentUserProfilpicture = null;
+        //currentUserProfilpicture = null;
     }
 
 }
