@@ -1,10 +1,23 @@
 package de.hdm_stuttgart.foreignbuddy.UtilityClasses;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.os.Bundle;
+
 /**
  * Created by Marc-JulianFleck on 22.04.17.
  */
 
 public class GPS {
+
+    private Context context;
+
+    public GPS (Context context) {
+        this.context = context;
+    }
+
+
 
     public static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
         final int radius = 6371;
