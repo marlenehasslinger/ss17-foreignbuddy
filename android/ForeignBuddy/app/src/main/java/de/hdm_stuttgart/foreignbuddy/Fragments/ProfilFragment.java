@@ -51,6 +51,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -410,7 +411,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
                 filepath = Uri.fromFile(file);
-                DatabaseUser.getInstance().uploadProfilePhoto(filepath);
+                uploadProfilePhoto(filepath);
 
             } catch (IOException e){
                 e.printStackTrace();
@@ -502,7 +503,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
                 //upload photo to Firebase
-                DatabaseUser.getInstance().uploadProfilePhoto(filepath);
+                uploadProfilePhoto(filepath);
 
 
             } else {
@@ -513,6 +514,54 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         }
 
+    }
+
+    private void uploadProfilePhoto(Uri filepath) {
+
+        if (filepath != null) {
+
+            String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
+            storageReference = FirebaseStorage.getInstance().getReference();
+            riversRef = storageReference.child("images/" + downloadName);
+
+
+            riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    //Photo is successfully uploaded
+
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+
+                    Log.d("Upload", "Upload successful");
+                    Toast.makeText(getActivity(), "File Uploaded!", Toast.LENGTH_SHORT).show();
+
+                    //Downloadink to profile photo will be stored within the corresponding user in the database
+                    FirebaseDatabase.getInstance().getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("urlProfilephoto")
+                            .setValue(downloadUri.toString());
+
+                    //downloadProfilePhoto();
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            //          progressDialog.dismiss();
+                            //Photo wasn't successfully uploaded
+
+                            Log.d("Upload", "Upload failed");
+
+
+                            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        } else {
+
+            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Uri getPhotoFileUri(String fileName) {

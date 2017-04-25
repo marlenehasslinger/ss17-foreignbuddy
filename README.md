@@ -2,8 +2,6 @@ ForeignBuddy
 =============
 
 The mobile app `ForeignBuddy` finds matching language partnerships in your neighborhood.
-Considering the user input (desired language, first language, location) optimal 'matches' are suggested. 
-
 
 ### Team Members
 
@@ -26,3 +24,5 @@ Considering the user input (desired language, first language, location) optimal 
 - We commented out the functionality for limiting the distance within matches are displayed because obviously the app doesn't have enough users for constraints like this yet
 
 - The hobbies which can be selected in the Settings of users profile are not used yet. They will be used later when we progress this app for our semester project. So just ignore them.
+
+- 

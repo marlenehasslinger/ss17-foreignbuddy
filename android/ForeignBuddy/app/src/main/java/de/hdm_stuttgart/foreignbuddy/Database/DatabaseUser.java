@@ -200,6 +200,8 @@ public class DatabaseUser {
 
     }
 
+    /*
+
     public void uploadProfilePhoto(Uri filepath) {
 
         if (filepath != null) {
@@ -247,6 +249,8 @@ public class DatabaseUser {
             Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
     }
+
+    */
 
     public String getCurrentUserProfilpicture() {
         return currentUserProfilpicture.getPath();
