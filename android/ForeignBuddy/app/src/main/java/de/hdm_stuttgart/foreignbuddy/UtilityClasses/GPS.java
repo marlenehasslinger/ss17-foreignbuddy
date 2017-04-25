@@ -57,6 +57,40 @@ public class GPS implements LocationListener {
         return result;
     }
 
+    public void startLocationRequest() {
+
+        // New LocationManager for handling LocationService
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        //Instance Geocoder for later Address resolve
+        geocoder = new Geocoder(context, Locale.getDefault());
+
+        try {
+            //Check if GPS or Network Location functionality of device is activated
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+                //If Network ist activated, Network is used
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+                }
+
+                //If GPS is activated, GPS will be used or will be used too
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+                }
+
+            } else {
+                //If no LocationProvider is enabled, the app will ask for it
+                showSettingsAlertForGPS();
+            }
+        } catch (SecurityException e) {
+            //Exception while LocationRequest occurred
+            e.printStackTrace();
+        }
+
+    }
+
     private void showSettingsAlertForGPS() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
@@ -64,10 +98,7 @@ public class GPS implements LocationListener {
         alertDialog.setTitle("GPS is off");
 
         // Setting Dialog Message
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-        // Setting Icon to Dialog
-        //alertDialog.setIcon(R.drawable.delete);
+        alertDialog.setMessage("GPS/Location is not enabled. Do you want to go to settings menu?");
 
         // On pressing Settings button
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
@@ -94,16 +125,20 @@ public class GPS implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         try {
+            //Load resolved addresses in List
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses.size() > 0) {
+
+                //Get City from first (most exact) address
                 String city = addresses.get(0).getLocality();
 
+                //Send Broadcast with City for BroadCastReceiver ProfileFragment
                 Intent locationIntent = new Intent();
                 locationIntent.setAction(GPS.LOCATION_UPDATED);
                 locationIntent.putExtra("city", city);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(locationIntent);
 
-
+                //Upload new Location to Firebase
                 FirebaseDatabase.getInstance().getReference().child("users")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .child("latitude").setValue(location.getLatitude());
@@ -132,33 +167,6 @@ public class GPS implements LocationListener {
 
     @Override
     public void onProviderDisabled(String provider) {
-
-    }
-
-    public void startLocationRequest() {
-
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        geocoder = new Geocoder(context, Locale.getDefault());
-
-        try {
-            //Check if GPS or Network Location functionality of device is activated
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-
-                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                }
-
-                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-                }
-
-            } else {
-                showSettingsAlertForGPS();
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
 
     }
 
