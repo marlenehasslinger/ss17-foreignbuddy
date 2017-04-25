@@ -60,10 +60,12 @@ import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.RotateBitmap;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfilFragment extends Fragment implements View.OnClickListener, LocationListener {
+public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     static final int CAM_REQUEST = 1;
     static final int CAMERA_REQUEST_CODE = 10;
@@ -73,7 +75,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     private static final String APP_TAG = "CAMERA_TEST_APP";
     //Initialize size for thumbnails
     final int THUMBSIZE = 64;
-    public String photoFileName;
+    private String photoFileName;
     Geocoder geocoder;
     List<Address> addresses;
     User myUser;
@@ -98,9 +100,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     //Toolbar
     private Toolbar toolbar;
-
-    //GPS
-    private LocationManager locationManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,6 +134,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         //Get current User
         myUser = DatabaseUser.getInstance().getCurrentUser();
 
+
         //Set current user values on widgets
         txt_userName.setText(myUser.getUsername());
         txt_nativeLanguage.setText(myUser.getNativeLanguage());
@@ -143,9 +143,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         //Figure out the manufacturer of devicce
         manufacturer = android.os.Build.MANUFACTURER;
 
-
-
-        //Set current profile photo
+        //Set profile photo
         try {
             imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
         } catch (Exception e) {
@@ -153,14 +151,17 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
 
+        //Get City
+        GPS.getInstance().setContext(getActivity().getApplicationContext());
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                //location text setzen
-
+                //Set city
+                String locationCity = intent.getStringExtra("city");
+                txt_location_profil.setText(locationCity);
             }
-        }, new IntentFilter("LOCATION_UPDATED"));
-        //Set Location
+        }, new IntentFilter(GPS.LOCATION_UPDATED));
+
         getLocation();
 
         return view;
@@ -206,8 +207,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
 
-            //If permissions are granteed already the location request starts
-            startLocationRequest();
+            //If permissions are granted already the location request starts
+           GPS.getInstance().startLocationRequest();
 
         } else{
 
@@ -218,100 +219,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             }
         }
 
-    private void showSettingsAlertForGPS() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-
-        // Setting Dialog Title
-        alertDialog.setTitle("GPS is off");
-
-        // Setting Dialog Message
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-        // Setting Icon to Dialog
-        //alertDialog.setIcon(R.drawable.delete);
-
-        // On pressing Settings button
-        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        });
-
-        // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        alertDialog.show();
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        try {
-            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (addresses.size() > 0) {
-                String city = addresses.get(0).getLocality();
-                txt_location_profil.setText("in " + city);
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("latitude").setValue(location.getLatitude());
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("longitude").setValue(location.getLongitude());
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("lastKnownCity").setValue(city);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    public void startLocationRequest(){
-
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        geocoder = new Geocoder(getActivity(), Locale.getDefault());
-
-        try {
-            //Check if GPS or Network Location functionality of device is activated
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-
-                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                }
-
-                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-                }
-
-            } else {
-                showSettingsAlertForGPS();
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     private void showFileChooser() {
 
@@ -386,6 +293,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -414,13 +322,14 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         //Asks for Location permission
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                startLocationRequest();
+                GPS.getInstance().startLocationRequest();
             } else {
                 Log.d("Permissions", "Locations Permissions still denied");
             }
         }
 
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -507,7 +416,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
                         //For photos taken in portrait mode
                         if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("6")){
-                            takenImage = RotateBitmap(takenImage, 90);
+                            takenImage = RotateBitmap.RotateBitmap(takenImage, 90);
                             Log.e("orientation", "image rotated" );
 
 
@@ -515,7 +424,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
                         //For photos taken in landscape mode
                         if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("3")){
-                            takenImage = RotateBitmap(takenImage, 180);
+                            takenImage = RotateBitmap.RotateBitmap(takenImage, 180);
                             Log.e("orientation", "image rotated" );
 
 
@@ -562,16 +471,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
-    public static Bitmap RotateBitmap(Bitmap source, float angle)
-    {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-    }
-
-
-
-    public Uri getPhotoFileUri(String fileName) {
+    private Uri getPhotoFileUri(String fileName) {
         // Only continue if the SD Card is mounted
         if (isExternalStorageAvailable()) {
             // Get safe storage directory for photos
@@ -597,7 +497,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         return null;
     }
 
-    public File getPhotoFile (String fileName) {
+    private File getPhotoFile (String fileName) {
         // Only continue if the SD Card is mounted
         if (isExternalStorageAvailable()) {
             // Get safe storage directory for photos

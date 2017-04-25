@@ -69,6 +69,7 @@ public class DatabaseUser {
         this.context = context;
     }
 
+
     public void InstanceCurrentUser() {
         deleteCurrentUser();
         loadCurrentUser();
