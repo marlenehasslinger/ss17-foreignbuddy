@@ -147,8 +147,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         //Set profile photo
         try {
-           // imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
-            downloadProfilePhoto();
+           imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
+            //downloadProfilePhoto();
         } catch (Exception e) {
             imageView.setImageResource(R.drawable.user_male);
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
@@ -203,7 +203,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         return localFile.toString();
 
     }
-
 
     @Override
     public void onStart() {

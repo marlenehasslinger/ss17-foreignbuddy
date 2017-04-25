@@ -1,5 +1,6 @@
 package de.hdm_stuttgart.foreignbuddy.Database;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,6 +37,7 @@ import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
+import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 /**
@@ -69,14 +72,9 @@ public class DatabaseUser {
         this.context = context;
     }
 
-
     public void InstanceCurrentUser() {
         deleteCurrentUser();
         loadCurrentUser();
-        /*Intent locationIntent = new Intent();
-        locationIntent.setAction("LOCATION_UPDATED");
-        locationIntent.putExtra("location","Stuttgart");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(locationIntent);*/
     }
 
     public User getCurrentUser() {
@@ -103,7 +101,7 @@ public class DatabaseUser {
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
                         loadCurrentUsersConversations();
-                       // downloadProfilePhoto();
+                        downloadProfilePhoto();
 
                     }
 
@@ -193,6 +191,7 @@ public class DatabaseUser {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
+                currentUserProfilpicture = null;
                 Log.d("Download", "Profil photo download failed");
             }
         });
@@ -200,8 +199,6 @@ public class DatabaseUser {
         return currentUserProfilpicture.toString();
 
     }
-
-
 
     public void uploadProfilePhoto(Uri filepath) {
 
