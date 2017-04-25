@@ -77,6 +77,10 @@ public class UserDetailRegistration extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 seekbarprogess = i;
+
+                if(seekbarprogess<20){
+                    seekbarprogess=20;
+                }
                 currentDistance.setText("" + seekbarprogess);
 
             }

@@ -15,6 +15,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -93,6 +94,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     private File localFile = null;
     private StorageReference riversRef;
     private ProgressDialog progressDialog;
+    private String manufacturer;
+
+
     //Toolbar
     private Toolbar toolbar;
 
@@ -134,6 +138,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         txt_nativeLanguage.setText(myUser.getNativeLanguage());
         txt_languages.setText(myUser.getLanguage());
 
+        //Figure out the manufacturer of devicce
+        manufacturer = android.os.Build.MANUFACTURER;
 
         //Set current profile photo
         try {
@@ -450,34 +456,15 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+
         //User picks profile photo from gallery
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filepath = data.getData();
 
 
-            /*
-            try{
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
-                imageView.setImageBitmap(bitmap);
-
-            Intent i = new Intent();
-            i.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
-
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-
-            */
-
-
-
             try{
                 Bitmap takenImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
-
-                //imageView.setImageBitmap(bitmap);
-                //  Bitmap takenImage = BitmapFactory.decodeFile(filepath.toString());
-
-
 
                 //Find ratio to scale
                 final int maxSize = 850;
@@ -492,7 +479,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                     outHeight = maxSize;
                     outWidth = (inWidth * maxSize) / inHeight;
                 }
-
+                Log.e("Bild", "Orig. size: h:"+inHeight+ ",w:"+inWidth+" New size: h:"+outHeight+",w: "+outWidth );
                 takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
                 //Create a new file so the original file won't be changed during compressing process
@@ -526,12 +513,14 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
                 try {
 
+
                     //Find ratio to scale
                     final int maxSize = 850;
                     int outWidth;
                     int outHeight;
                     int inWidth = takenImage.getWidth();
                     int inHeight = takenImage.getHeight();
+
                     if(inWidth > inHeight){
                         outWidth = maxSize;
                         outHeight = (inHeight * maxSize) / inWidth;
@@ -540,17 +529,46 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                         outWidth = (inWidth * maxSize) / inHeight;
                     }
 
-                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
-                    //For some reason photos which are taken by the camera are displayed in a wrong angle.
-                    //So the bitmaps gets rotated
-                    // takenImage = RotateBitmap(takenImage, 90);
+                    //To fix a samsung camera orientation bug, the images for samsung devies will be rotated
+                    if("samsung".equals(manufacturer)){
+
+                        ExifInterface exif = new ExifInterface(fileWritten.getAbsolutePath());
+                        Log.e("orientation", "image needs to be rotated. Exif:"+exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+
+                        //For photos taken in portrait mode
+                        if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("6")){
+                            takenImage = RotateBitmap(takenImage, 90);
+                            Log.e("orientation", "image rotated" );
+
+
+                        }
+
+                        //For photos taken in landscape mode
+                        if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("3")){
+                            takenImage = RotateBitmap(takenImage, 180);
+                            Log.e("orientation", "image rotated" );
+
+
+                        }
+                    }
+
 
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(fileWritten);
                     takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
                     fOut.flush();
                     fOut.close();
+
+
+                    Log.e("Bild", "Orig. size: h:"+inHeight+ ",w:"+inWidth+" New size: h:"+outHeight+",w: "+outWidth );
+
+                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
+
+                    Log.e("Bild", "Scale image size: h: "+takenImage.getHeight()+", w: "+takenImage.getWidth() );
+
+
+
 
                 } catch (IOException e){
                     e.printStackTrace();
