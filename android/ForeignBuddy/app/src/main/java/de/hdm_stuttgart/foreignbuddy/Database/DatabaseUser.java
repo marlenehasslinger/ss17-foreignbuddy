@@ -103,6 +103,7 @@ public class DatabaseUser {
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
                         loadCurrentUsersConversations();
+                       // downloadProfilePhoto();
 
                     }
 
@@ -168,7 +169,7 @@ public class DatabaseUser {
                 });
     }
 
-    private void downloadProfilePhoto() {
+    public String downloadProfilePhoto() {
 
         String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -176,6 +177,7 @@ public class DatabaseUser {
 
         try {
             currentUserProfilpicture = File.createTempFile("images", downloadName);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -194,6 +196,9 @@ public class DatabaseUser {
                 Log.d("Download", "Profil photo download failed");
             }
         });
+
+        return currentUserProfilpicture.toString();
+
     }
 
 
@@ -225,7 +230,7 @@ public class DatabaseUser {
                             .child("urlProfilephoto")
                             .setValue(downloadUri.toString());
 
-                    downloadProfilePhoto();
+                   // downloadProfilePhoto();
 
                 }
             })

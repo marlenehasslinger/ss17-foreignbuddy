@@ -43,9 +43,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -144,7 +147,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         //Set profile photo
         try {
-            imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
+           // imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
+            downloadProfilePhoto();
         } catch (Exception e) {
             imageView.setImageResource(R.drawable.user_male);
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
@@ -165,6 +169,41 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         return view;
     }
+
+    public String downloadProfilePhoto() {
+
+        String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
+        storageReference = FirebaseStorage.getInstance().getReference();
+        riversRef = storageReference.child("images/" + downloadName);
+
+        try {
+            localFile = File.createTempFile("images", downloadName);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Download profile photo via firebase database reference
+        riversRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Log.d("Download", "Profil photo successfully downloaded");
+
+                        imageView.setImageDrawable(Drawable.createFromPath(localFile.getAbsolutePath()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("Download", "Profil photo download failed");
+            }
+        });
+
+        return localFile.toString();
+
+    }
+
 
     @Override
     public void onStart() {
@@ -345,7 +384,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 Bitmap takenImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
 
                 //Find ratio to scale
-                final int maxSize = 400;
+                final int maxSize = 800;
                 int outWidth;
                 int outHeight;
                 int inWidth = takenImage.getWidth();
@@ -365,7 +404,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
                 //Compress ProfilePhoto
                 FileOutputStream fOut = new FileOutputStream(file);
-                takenImage.compress(Bitmap.CompressFormat.JPEG, 15, fOut);
+                takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
                 fOut.flush();
                 fOut.close();
 
@@ -392,7 +431,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
                     //Find ratio to scale
-                    final int maxSize = 400;
+                    final int maxSize = 800;
                     int outWidth;
                     int outHeight;
                     int inWidth = takenImage.getWidth();
@@ -428,12 +467,20 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
                         }
+
+                        //For photos taken with front cam
+                        if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("8")){
+                            takenImage = RotateBitmap.RotateBitmap(takenImage, 270);
+                            Log.e("orientation", "image rotated" );
+
+
+                        }
                     }
 
 
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(fileWritten);
-                    takenImage.compress(Bitmap.CompressFormat.JPEG, 10, fOut);
+                    takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
                     fOut.flush();
                     fOut.close();
 
