@@ -2,9 +2,11 @@ package de.hdm_stuttgart.foreignbuddy.Fragments;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +26,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -127,7 +130,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         riversRef = storageReference.child("images/" + uploadName);
 
         //Get current User
-        myUser = DatabaseUser.getCurrentUser();
+        myUser = DatabaseUser.getInstance().getCurrentUser();
 
         //Set current user values on widgets
         txt_userName.setText(myUser.getUsername());
@@ -137,12 +140,19 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
         //Set current profile photo
         try {
-            downloadProfilePhoto();
+            imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
         } catch (Exception e) {
             imageView.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
 
+        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //location text setzen
+
+            }
+        }, new IntentFilter("LOCATION_UPDATED"));
         //Set Location
         getLocation();
 
@@ -297,8 +307,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     }
 
 
-
-    private void downloadProfilePhoto() {
+    /*private void downloadProfilePhoto() {
 
         try {
             localFile = File.createTempFile("images", uploadName);
@@ -326,7 +335,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 Log.d("Download", "Profil photo download failed");
             }
         });
-    }
+    }*/
 
     private void showFileChooser() {
 

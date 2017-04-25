@@ -28,8 +28,8 @@ public class DatabaseChat {
     public static String newChat(Activity ChatActivity){
         activity = ChatActivity;
         conversationID = getConversationID();
-        User currentUser = DatabaseUser.getCurrentUser();
-        List<Conversation> conversations = DatabaseUser.getCurrentUsersConversations();
+        User currentUser = DatabaseUser.getInstance().getCurrentUser();
+        List<Conversation> conversations = DatabaseUser.getInstance().getCurrentUsersConversations();
         for (int i = 0; i < conversations.size(); i++) {
             if (conversations.get(i).conversationID.equals(conversationID)) {
                 return conversationID;
@@ -57,7 +57,7 @@ public class DatabaseChat {
                         , currentUser.urlProfilephoto
                         , conversationID));
 
-        DatabaseUser.loadCurrentUsersConversations();
+        DatabaseUser.getInstance().loadCurrentUsersConversations();
 
         return conversationID;
     }
@@ -70,13 +70,13 @@ public class DatabaseChat {
                 .child("chats")
                 .child(conversationID)
                 .child(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date().getTime()))
-                .setValue(new ChatMessage(message, DatabaseUser.getCurrentUser().getUsername()
-                        ,DatabaseUser.getCurrentUser().getUserID()));
+                .setValue(new ChatMessage(message, DatabaseUser.getInstance().getCurrentUser().getUsername()
+                        ,DatabaseUser.getInstance().getCurrentUser().getUserID()));
         setLastMessage(message);
     }
 
     private static void setLastMessage(String message){
-        User currentUser = DatabaseUser.getCurrentUser();
+        User currentUser = DatabaseUser.getInstance().getCurrentUser();
         FirebaseDatabase.getInstance()
                 .getReference()
                 .child("users")

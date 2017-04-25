@@ -1,17 +1,33 @@
 package de.hdm_stuttgart.foreignbuddy.Database;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.location.Geocoder;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
@@ -23,39 +39,55 @@ import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 public class DatabaseUser {
 
-    private static User currentUser;
-    private static List<User> currentUsersMatches;
-    private static List<Conversation> currentUsersConversations;
-    
+    private static DatabaseUser instance;
 
-    private DatabaseUser() {
+    public static synchronized DatabaseUser getInstance() {
+        if (instance == null) {
+            instance = new DatabaseUser();
+        }
+        return instance;
     }
 
-    public static void InstanceCurrentUser() {
+
+    private User currentUser;
+    private List<User> currentUsersMatches;
+    private List<Conversation> currentUsersConversations;
+    private File currentUserProfilpicture = null;
+
+    //Helper
+    private StorageReference riversRef;
+    private StorageReference storageReference;
+
+
+    public void InstanceCurrentUser() {
         deleteCurrentUser();
         loadCurrentUser();
+        /*Intent locationIntent = new Intent();
+        locationIntent.setAction("LOCATION_UPDATED");
+        locationIntent.putExtra("location","Stuttgart");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(locationIntent);*/
     }
 
-    public static User getCurrentUser() {
+    public User getCurrentUser() {
         return currentUser;
     }
 
-    public static List<User> getCurrentUsersMatches() {
+    public List<User> getCurrentUsersMatches() {
         return currentUsersMatches;
     }
 
-    public static List<Conversation> getCurrentUsersConversations() {
+    public List<Conversation> getCurrentUsersConversations() {
         return currentUsersConversations;
     }
 
-    public static boolean haveCurrentUser() {
+    public boolean haveCurrentUser() {
         if (currentUser != null || currentUsersMatches != null || currentUsersConversations != null) {
             return true;
         }
         return false;
     }
 
-    private static void loadCurrentUser() {
+    private void loadCurrentUser() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -67,6 +99,7 @@ public class DatabaseUser {
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
                         loadCurrentUsersConversations();
+                        downloadProfilePhoto();
                     }
 
                     @Override
@@ -76,7 +109,7 @@ public class DatabaseUser {
                 });
     }
 
-    public static void loadCurrentUsersMatches() {
+    public void loadCurrentUsersMatches() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -98,7 +131,7 @@ public class DatabaseUser {
         });
     }
 
-    private static boolean checkConstraintsMatches(User user) {
+    private boolean checkConstraintsMatches(User user) {
         if (user.getUserID().equals(currentUser.getUserID())) {
             return false;
         } else if (user.getNativeLanguage().equals(currentUser.getLanguage())) {
@@ -109,7 +142,7 @@ public class DatabaseUser {
         return true;
     }
 
-    public static void loadCurrentUsersConversations() {
+    public void loadCurrentUsersConversations() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -131,7 +164,39 @@ public class DatabaseUser {
                 });
     }
 
-    private static void deleteCurrentUser() {
+    private void downloadProfilePhoto() {
+
+        String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
+        storageReference = FirebaseStorage.getInstance().getReference();
+        riversRef = storageReference.child("images/" + downloadName);
+
+        try {
+            currentUserProfilpicture = File.createTempFile("images", downloadName);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Download profile photo via firebase database reference
+        riversRef.getFile(currentUserProfilpicture)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Log.d("Download", "Profil photo successfully downloaded");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("Download", "Profil photo download failed");
+            }
+        });
+    }
+
+    public String getCurrentUserProfilpicture() {
+        return currentUserProfilpicture.getPath();
+    }
+
+    private void deleteCurrentUser() {
         currentUser = null;
         currentUsersMatches = null;
         currentUsersConversations = null;
