@@ -43,15 +43,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -133,6 +129,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
 
+        //Set application context
+        DatabaseUser.getInstance().setContext(getActivity().getApplicationContext());
+
         //Get current User
         myUser = DatabaseUser.getInstance().getCurrentUser();
 
@@ -143,6 +142,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
         //Figure out the manufacturer of devicce
         manufacturer = android.os.Build.MANUFACTURER;
+
+
 
         //Set current profile photo
         try {
@@ -312,37 +313,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
     }
 
-
-    /*private void downloadProfilePhoto() {
-
-        try {
-            localFile = File.createTempFile("images", uploadName);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Download profile photo via firebase database reference
-        riversRef.getFile(localFile)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-                        //Set profile photo after successful download
-                        imageView.setImageDrawable(Drawable.createFromPath(localFile.getPath()));
-                        Log.d("Download", "Profil photo successfully downloaded");
-
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-                Log.d("Download", "Profil photo download failed");
-            }
-        });
-    }*/
-
     private void showFileChooser() {
 
         //Checks if required permissions are already given
@@ -495,8 +465,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
                 filepath = Uri.fromFile(file);
-
-                uploadFile();
+                DatabaseUser.getInstance().uploadProfilePhoto(filepath);
 
             } catch (IOException e){
                 e.printStackTrace();
@@ -515,7 +484,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
                     //Find ratio to scale
-                    final int maxSize = 850;
+                    final int maxSize = 400;
                     int outWidth;
                     int outHeight;
                     int inWidth = takenImage.getWidth();
@@ -556,7 +525,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(fileWritten);
-                    takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
+                    takenImage.compress(Bitmap.CompressFormat.JPEG, 10, fOut);
                     fOut.flush();
                     fOut.close();
 
@@ -580,7 +549,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
 
                 //upload photo to Firebase
-                uploadFile();
+                DatabaseUser.getInstance().uploadProfilePhoto(filepath);
 
 
             } else {
@@ -600,51 +569,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
-    private void uploadFile() {
 
-        if (filepath != null) {
-
-            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-
-            riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    //Photo is successfully uploaded
-                    progressDialog.dismiss();
-
-                    downloadUri = taskSnapshot.getDownloadUrl();
-
-                    Log.d("Upload", "Upload successful");
-                    Toast.makeText(getActivity(), "File Uploaded!", Toast.LENGTH_SHORT).show();
-
-                    //Downloadink to profile photo will be stored within the corresponding user in the database
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("urlProfilephoto")
-                            .setValue(downloadUri.toString());
-
-
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            progressDialog.dismiss();
-                            //Photo wasn't successfully uploaded
-
-                            Log.d("Upload", "Upload failed");
-
-
-                            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-        } else {
-
-            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public Uri getPhotoFileUri(String fileName) {
         // Only continue if the SD Card is mounted
