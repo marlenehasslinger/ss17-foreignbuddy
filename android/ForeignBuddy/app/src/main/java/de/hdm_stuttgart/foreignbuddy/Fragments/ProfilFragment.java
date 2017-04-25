@@ -99,8 +99,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     private StorageReference riversRef;
     private ProgressDialog progressDialog;
     private String manufacturer;
-
-
+    
     //Toolbar
     private Toolbar toolbar;
 
@@ -140,7 +139,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         txt_nativeLanguage.setText(myUser.getNativeLanguage());
         txt_languages.setText(myUser.getLanguage());
 
-        //Figure out the manufacturer of devicce
+        //Figure out the manufacturer of device
         manufacturer = android.os.Build.MANUFACTURER;
 
         //Set profile photo
@@ -320,7 +319,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         //Asks for Location permission
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                startLocationRequest();
+                GPS.getInstance().startLocationRequest();
             } else {
                 Log.d("Permissions", "Locations Permissions still denied");
             }
