@@ -64,10 +64,11 @@ import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfilFragment extends Fragment implements View.OnClickListener, LocationListener {
+public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     static final int CAM_REQUEST = 1;
     static final int CAMERA_REQUEST_CODE = 10;
@@ -103,9 +104,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     //Toolbar
     private Toolbar toolbar;
 
-    //GPS
-    private LocationManager locationManager;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -136,6 +134,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         //Get current User
         myUser = DatabaseUser.getInstance().getCurrentUser();
 
+
         //Set current user values on widgets
         txt_userName.setText(myUser.getUsername());
         txt_nativeLanguage.setText(myUser.getNativeLanguage());
@@ -144,7 +143,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         //Figure out the manufacturer of devicce
         manufacturer = android.os.Build.MANUFACTURER;
 
-        //Set current profile photo
+        //Set profile photo
         try {
             imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
         } catch (Exception e) {
@@ -152,14 +151,17 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
 
+        //Get City
+        GPS.getInstance().setContext(getActivity().getApplicationContext());
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                //location text setzen
-
+                //Set city
+                String locationCity = intent.getStringExtra("city");
+                txt_location_profil.setText(locationCity);
             }
-        }, new IntentFilter("LOCATION_UPDATED"));
-        //Set Location
+        }, new IntentFilter(GPS.LOCATION_UPDATED));
+
         getLocation();
 
         return view;
@@ -205,8 +207,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
 
-            //If permissions are granteed already the location request starts
-            startLocationRequest();
+            //If permissions are granted already the location request starts
+           GPS.getInstance().startLocationRequest();
 
         } else{
 
@@ -216,132 +218,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
             }
         }
-
-    private void showSettingsAlertForGPS() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-
-        // Setting Dialog Title
-        alertDialog.setTitle("GPS is off");
-
-        // Setting Dialog Message
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-        // Setting Icon to Dialog
-        //alertDialog.setIcon(R.drawable.delete);
-
-        // On pressing Settings button
-        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        });
-
-        // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        alertDialog.show();
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        try {
-            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (addresses.size() > 0) {
-                String city = addresses.get(0).getLocality();
-                txt_location_profil.setText("in " + city);
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("latitude").setValue(location.getLatitude());
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("longitude").setValue(location.getLongitude());
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("lastKnownCity").setValue(city);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    public void startLocationRequest(){
-
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        geocoder = new Geocoder(getActivity(), Locale.getDefault());
-
-        try {
-            //Check if GPS or Network Location functionality of device is activated
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-
-                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                }
-
-                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-                }
-
-            } else {
-                showSettingsAlertForGPS();
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    /*private void downloadProfilePhoto() {
-
-        try {
-            localFile = File.createTempFile("images", uploadName);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Download profile photo via firebase database reference
-        riversRef.getFile(localFile)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-                        //Set profile photo after successful download
-                        imageView.setImageDrawable(Drawable.createFromPath(localFile.getPath()));
-                        Log.d("Download", "Profil photo successfully downloaded");
-
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-                Log.d("Download", "Profil photo download failed");
-            }
-        });
-    }*/
 
     private void showFileChooser() {
 

@@ -56,9 +56,14 @@ public class DatabaseUser {
     private File currentUserProfilpicture = null;
 
     //Helper
+    private Context context;
     private StorageReference riversRef;
     private StorageReference storageReference;
 
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     public void InstanceCurrentUser() {
         deleteCurrentUser();
