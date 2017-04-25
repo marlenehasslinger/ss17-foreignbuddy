@@ -444,7 +444,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                         outWidth = (inWidth * maxSize) / inHeight;
                     }
 
-
+/*
                     //To fix a samsung camera orientation bug, the images for samsung devies will be rotated
                     if("samsung".equals(manufacturer)){
 
@@ -475,7 +475,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
                         }
                     }
-
+*/
 
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(fileWritten);
