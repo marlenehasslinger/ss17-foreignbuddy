@@ -103,7 +103,7 @@ public class DatabaseUser {
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
                         loadCurrentUsersConversations();
-                        downloadProfilePhoto();
+
                     }
 
                     @Override
@@ -202,8 +202,9 @@ public class DatabaseUser {
 
         if (filepath != null) {
 
-          //  progressDialog = progressDialog.show(context, "Loading...", "Please wait...", true);
-
+            String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
+            storageReference = FirebaseStorage.getInstance().getReference();
+            riversRef = storageReference.child("images/" + downloadName);
 
 
             riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

@@ -147,7 +147,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         try {
             imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
         } catch (Exception e) {
-            imageView.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
+            imageView.setImageResource(R.drawable.user_male);
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
 
@@ -346,7 +346,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 Bitmap takenImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
 
                 //Find ratio to scale
-                final int maxSize = 850;
+                final int maxSize = 400;
                 int outWidth;
                 int outHeight;
                 int inWidth = takenImage.getWidth();
