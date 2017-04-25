@@ -96,8 +96,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     private StorageReference riversRef;
     private ProgressDialog progressDialog;
     private String manufacturer;
-
-
+    
     //Toolbar
     private Toolbar toolbar;
 
@@ -140,7 +139,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         txt_nativeLanguage.setText(myUser.getNativeLanguage());
         txt_languages.setText(myUser.getLanguage());
 
-        //Figure out the manufacturer of devicce
+        //Figure out the manufacturer of device
         manufacturer = android.os.Build.MANUFACTURER;
 
         //Set profile photo

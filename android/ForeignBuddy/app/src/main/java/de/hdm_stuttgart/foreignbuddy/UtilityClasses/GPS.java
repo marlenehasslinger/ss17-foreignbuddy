@@ -1,10 +1,8 @@
 package de.hdm_stuttgart.foreignbuddy.UtilityClasses;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -12,10 +10,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,7 +24,7 @@ import java.util.Locale;
  * Created by Marc-JulianFleck on 22.04.17.
  */
 
-public class GPS implements LocationListener{
+public class GPS implements LocationListener {
 
 
     public static final String LOCATION_UPDATED = "LOCATION_UPDATED";
@@ -36,10 +32,30 @@ public class GPS implements LocationListener{
 
     //Helper
     private Geocoder geocoder;
-
-
     private Context context;
 
+    public static GPS getInstance() {
+        if (instance == null) {
+            instance = new GPS();
+        }
+        return instance;
+    }
+
+    public static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
+        final int radius = 6371;
+
+        double lat = Math.toRadians(lat2 - lat1);
+        double lon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(lat / 2) * Math.sin(lat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(lon / 2) * Math.sin(lon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = radius * c;
+
+        double result = Math.abs(d);
+        result = Math.round(100.0 * result) / 100.0;
+
+        return result;
+    }
 
     private void showSettingsAlertForGPS() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
@@ -71,13 +87,6 @@ public class GPS implements LocationListener{
         alertDialog.show();
     }
 
-    public static GPS getInstance(){
-        if (instance == null) {
-            instance = new GPS();
-        }
-        return instance;
-    }
-
     public void setContext(Context context) {
         this.context = context;
     }
@@ -88,11 +97,10 @@ public class GPS implements LocationListener{
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses.size() > 0) {
                 String city = addresses.get(0).getLocality();
-                //txt_location_profil.setText("in " + city);
 
                 Intent locationIntent = new Intent();
                 locationIntent.setAction(GPS.LOCATION_UPDATED);
-                locationIntent.putExtra("city",city);
+                locationIntent.putExtra("city", city);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(locationIntent);
 
 
@@ -127,7 +135,7 @@ public class GPS implements LocationListener{
 
     }
 
-    public void startLocationRequest(){
+    public void startLocationRequest() {
 
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         geocoder = new Geocoder(context, Locale.getDefault());
@@ -137,7 +145,7 @@ public class GPS implements LocationListener{
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                     locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
-                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                     locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
                 }
 
@@ -152,24 +160,6 @@ public class GPS implements LocationListener{
             e.printStackTrace();
         }
 
-    }
-
-
-
-    public static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
-        final int radius = 6371;
-
-        double lat = Math.toRadians(lat2 - lat1);
-        double lon = Math.toRadians(lon2 - lon1);
-
-        double a = Math.sin(lat / 2) * Math.sin(lat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(lon / 2) * Math.sin(lon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = radius * c;
-
-        double result = Math.abs(d);
-        result = Math.round(100.0 * result) / 100.0;
-
-        return result;
     }
 
 }
