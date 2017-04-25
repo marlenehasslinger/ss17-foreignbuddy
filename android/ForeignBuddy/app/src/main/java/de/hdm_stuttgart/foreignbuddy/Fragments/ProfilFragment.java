@@ -43,15 +43,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,6 +61,7 @@ import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.RotateBitmap;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -78,7 +75,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     private static final String APP_TAG = "CAMERA_TEST_APP";
     //Initialize size for thumbnails
     final int THUMBSIZE = 64;
-    public String photoFileName;
+    private String photoFileName;
     Geocoder geocoder;
     List<Address> addresses;
     User myUser;
@@ -129,6 +126,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         //Firebase database
         storageReference = FirebaseStorage.getInstance().getReference();
         riversRef = storageReference.child("images/" + uploadName);
+
+        //Set application context
+        DatabaseUser.getInstance().setContext(getActivity().getApplicationContext());
 
         //Get current User
         myUser = DatabaseUser.getInstance().getCurrentUser();
@@ -218,6 +218,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             }
         }
 
+
     private void showFileChooser() {
 
         //Checks if required permissions are already given
@@ -291,6 +292,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -326,6 +328,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -370,8 +373,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
                 filepath = Uri.fromFile(file);
-
-                uploadFile();
+                DatabaseUser.getInstance().uploadProfilePhoto(filepath);
 
             } catch (IOException e){
                 e.printStackTrace();
@@ -390,7 +392,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
                     //Find ratio to scale
-                    final int maxSize = 850;
+                    final int maxSize = 400;
                     int outWidth;
                     int outHeight;
                     int inWidth = takenImage.getWidth();
@@ -413,7 +415,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
                         //For photos taken in portrait mode
                         if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("6")){
-                            takenImage = RotateBitmap(takenImage, 90);
+                            takenImage = RotateBitmap.RotateBitmap(takenImage, 90);
                             Log.e("orientation", "image rotated" );
 
 
@@ -421,7 +423,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
                         //For photos taken in landscape mode
                         if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("3")){
-                            takenImage = RotateBitmap(takenImage, 180);
+                            takenImage = RotateBitmap.RotateBitmap(takenImage, 180);
                             Log.e("orientation", "image rotated" );
 
 
@@ -431,7 +433,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(fileWritten);
-                    takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
+                    takenImage.compress(Bitmap.CompressFormat.JPEG, 10, fOut);
                     fOut.flush();
                     fOut.close();
 
@@ -455,7 +457,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
                 //upload photo to Firebase
-                uploadFile();
+                DatabaseUser.getInstance().uploadProfilePhoto(filepath);
 
 
             } else {
@@ -468,60 +470,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public static Bitmap RotateBitmap(Bitmap source, float angle)
-    {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-    }
-
-    private void uploadFile() {
-
-        if (filepath != null) {
-
-            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-
-            riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    //Photo is successfully uploaded
-                    progressDialog.dismiss();
-
-                    downloadUri = taskSnapshot.getDownloadUrl();
-
-                    Log.d("Upload", "Upload successful");
-                    Toast.makeText(getActivity(), "File Uploaded!", Toast.LENGTH_SHORT).show();
-
-                    //Downloadink to profile photo will be stored within the corresponding user in the database
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("urlProfilephoto")
-                            .setValue(downloadUri.toString());
-
-
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            progressDialog.dismiss();
-                            //Photo wasn't successfully uploaded
-
-                            Log.d("Upload", "Upload failed");
-
-
-                            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-        } else {
-
-            Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public Uri getPhotoFileUri(String fileName) {
+    private Uri getPhotoFileUri(String fileName) {
         // Only continue if the SD Card is mounted
         if (isExternalStorageAvailable()) {
             // Get safe storage directory for photos
@@ -547,7 +496,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         return null;
     }
 
-    public File getPhotoFile (String fileName) {
+    private File getPhotoFile (String fileName) {
         // Only continue if the SD Card is mounted
         if (isExternalStorageAvailable()) {
             // Get safe storage directory for photos

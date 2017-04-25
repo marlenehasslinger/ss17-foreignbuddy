@@ -1,14 +1,17 @@
 package de.hdm_stuttgart.foreignbuddy.Database;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Geocoder;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,14 +60,15 @@ public class DatabaseUser {
     private File currentUserProfilpicture = null;
 
     //Helper
-    private Context context;
     private StorageReference riversRef;
     private StorageReference storageReference;
-
+    private Context context;
+    //private ProgressDialog progressDialog;
 
     public void setContext(Context context) {
         this.context = context;
     }
+
 
     public void InstanceCurrentUser() {
         deleteCurrentUser();
@@ -189,6 +194,57 @@ public class DatabaseUser {
                 Log.d("Download", "Profil photo download failed");
             }
         });
+    }
+
+
+
+    public void uploadProfilePhoto(Uri filepath) {
+
+        if (filepath != null) {
+
+          //  progressDialog = progressDialog.show(context, "Loading...", "Please wait...", true);
+
+
+
+            riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    //Photo is successfully uploaded
+                 //   progressDialog.dismiss();
+
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+
+                    Log.d("Upload", "Upload successful");
+                    Toast.makeText(context, "File Uploaded!", Toast.LENGTH_SHORT).show();
+
+                    //Downloadink to profile photo will be stored within the corresponding user in the database
+                    FirebaseDatabase.getInstance().getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("urlProfilephoto")
+                            .setValue(downloadUri.toString());
+
+                    downloadProfilePhoto();
+
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                  //          progressDialog.dismiss();
+                            //Photo wasn't successfully uploaded
+
+                            Log.d("Upload", "Upload failed");
+
+
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        } else {
+
+            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public String getCurrentUserProfilpicture() {
