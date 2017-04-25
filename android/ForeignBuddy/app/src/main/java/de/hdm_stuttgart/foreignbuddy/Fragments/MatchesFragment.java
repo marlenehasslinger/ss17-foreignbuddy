@@ -76,10 +76,10 @@ public class MatchesFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //get current User
-        myUser = DatabaseUser.getCurrentUser();
+        myUser = DatabaseUser.getInstance().getCurrentUser();
 
         //get Matches and set in TableView
-        matches = DatabaseUser.getCurrentUsersMatches();
+        matches = DatabaseUser.getInstance().getCurrentUsersMatches();
         ArrayAdapter<User> matchesAdapter = new UserListAdapter();
         listView.setAdapter(matchesAdapter);
 

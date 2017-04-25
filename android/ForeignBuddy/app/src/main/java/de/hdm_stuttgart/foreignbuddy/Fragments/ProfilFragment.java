@@ -2,9 +2,11 @@ package de.hdm_stuttgart.foreignbuddy.Fragments;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +17,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -60,10 +64,11 @@ import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfilFragment extends Fragment implements View.OnClickListener, LocationListener {
+public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     static final int CAM_REQUEST = 1;
     static final int CAMERA_REQUEST_CODE = 10;
@@ -93,11 +98,11 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     private File localFile = null;
     private StorageReference riversRef;
     private ProgressDialog progressDialog;
+    private String manufacturer;
+
+
     //Toolbar
     private Toolbar toolbar;
-
-    //GPS
-    private LocationManager locationManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,23 +132,36 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
         riversRef = storageReference.child("images/" + uploadName);
 
         //Get current User
-        myUser = DatabaseUser.getCurrentUser();
+        myUser = DatabaseUser.getInstance().getCurrentUser();
+
 
         //Set current user values on widgets
         txt_userName.setText(myUser.getUsername());
         txt_nativeLanguage.setText(myUser.getNativeLanguage());
         txt_languages.setText(myUser.getLanguage());
 
+        //Figure out the manufacturer of devicce
+        manufacturer = android.os.Build.MANUFACTURER;
 
-        //Set current profile photo
+        //Set profile photo
         try {
-            downloadProfilePhoto();
+            imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
         } catch (Exception e) {
             imageView.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
 
-        //Set Location
+        //Get City
+        GPS.getInstance().setContext(getActivity().getApplicationContext());
+        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Set city
+                String locationCity = intent.getStringExtra("city");
+                txt_location_profil.setText(locationCity);
+            }
+        }, new IntentFilter(GPS.LOCATION_UPDATED));
+
         getLocation();
 
         return view;
@@ -189,8 +207,8 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
 
-            //If permissions are granteed already the location request starts
-            startLocationRequest();
+            //If permissions are granted already the location request starts
+           GPS.getInstance().startLocationRequest();
 
         } else{
 
@@ -200,142 +218,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                 requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
             }
         }
-
-    private void showSettingsAlertForGPS() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-
-        // Setting Dialog Title
-        alertDialog.setTitle("GPS is off");
-
-        // Setting Dialog Message
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-        // Setting Icon to Dialog
-        //alertDialog.setIcon(R.drawable.delete);
-
-        // On pressing Settings button
-        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-        });
-
-        // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        alertDialog.show();
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        try {
-            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (addresses.size() > 0) {
-                String city = addresses.get(0).getLocality();
-                txt_location_profil.setText("in " + city);
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("latitude").setValue(location.getLatitude());
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("longitude").setValue(location.getLongitude());
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("lastKnownCity").setValue(city);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    public void startLocationRequest(){
-
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-        try {
-            //Check if GPS functionality of device is activated
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-
-                geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
-                Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (l == null) {
-                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                        l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    }
-                    if (l != null) {
-                        onLocationChanged(l);
-                    } else {
-                        //txt_location_profil.setText(myUser.lastKnownCity);
-                        showSettingsAlertForGPS();
-                    }
-                } else {
-                    onLocationChanged(l);
-                }
-            } else {
-                //txt_location_profil.setText(myUser.lastKnownCity);
-                showSettingsAlertForGPS();
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
-    private void downloadProfilePhoto() {
-
-        try {
-            localFile = File.createTempFile("images", uploadName);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Download profile photo via firebase database reference
-        riversRef.getFile(localFile)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-                        //Set profile photo after successful download
-                        imageView.setImageDrawable(Drawable.createFromPath(localFile.getPath()));
-                        Log.d("Download", "Profil photo successfully downloaded");
-
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-                Log.d("Download", "Profil photo download failed");
-            }
-        });
-    }
 
     private void showFileChooser() {
 
@@ -450,34 +332,15 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+
         //User picks profile photo from gallery
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filepath = data.getData();
 
 
-            /*
-            try{
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
-                imageView.setImageBitmap(bitmap);
-
-            Intent i = new Intent();
-            i.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName));
-
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-
-            */
-
-
-
             try{
                 Bitmap takenImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
-
-                //imageView.setImageBitmap(bitmap);
-                //  Bitmap takenImage = BitmapFactory.decodeFile(filepath.toString());
-
-
 
                 //Find ratio to scale
                 final int maxSize = 850;
@@ -492,7 +355,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                     outHeight = maxSize;
                     outWidth = (inWidth * maxSize) / inHeight;
                 }
-
+                Log.e("Bild", "Orig. size: h:"+inHeight+ ",w:"+inWidth+" New size: h:"+outHeight+",w: "+outWidth );
                 takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
                 //Create a new file so the original file won't be changed during compressing process
@@ -526,12 +389,14 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
 
                 try {
 
+
                     //Find ratio to scale
                     final int maxSize = 850;
                     int outWidth;
                     int outHeight;
                     int inWidth = takenImage.getWidth();
                     int inHeight = takenImage.getHeight();
+
                     if(inWidth > inHeight){
                         outWidth = maxSize;
                         outHeight = (inHeight * maxSize) / inWidth;
@@ -540,17 +405,46 @@ public class ProfilFragment extends Fragment implements View.OnClickListener, Lo
                         outWidth = (inWidth * maxSize) / inHeight;
                     }
 
-                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
-                    //For some reason photos which are taken by the camera are displayed in a wrong angle.
-                    //So the bitmaps gets rotated
-                    // takenImage = RotateBitmap(takenImage, 90);
+                    //To fix a samsung camera orientation bug, the images for samsung devies will be rotated
+                    if("samsung".equals(manufacturer)){
+
+                        ExifInterface exif = new ExifInterface(fileWritten.getAbsolutePath());
+                        Log.e("orientation", "image needs to be rotated. Exif:"+exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+
+                        //For photos taken in portrait mode
+                        if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("6")){
+                            takenImage = RotateBitmap(takenImage, 90);
+                            Log.e("orientation", "image rotated" );
+
+
+                        }
+
+                        //For photos taken in landscape mode
+                        if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("3")){
+                            takenImage = RotateBitmap(takenImage, 180);
+                            Log.e("orientation", "image rotated" );
+
+
+                        }
+                    }
+
 
                     //Compress ProfilePhoto
                     FileOutputStream fOut = new FileOutputStream(fileWritten);
                     takenImage.compress(Bitmap.CompressFormat.JPEG, 20, fOut);
                     fOut.flush();
                     fOut.close();
+
+
+                    Log.e("Bild", "Orig. size: h:"+inHeight+ ",w:"+inWidth+" New size: h:"+outHeight+",w: "+outWidth );
+
+                    takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
+
+                    Log.e("Bild", "Scale image size: h: "+takenImage.getHeight()+", w: "+takenImage.getWidth() );
+
+
+
 
                 } catch (IOException e){
                     e.printStackTrace();

@@ -46,7 +46,8 @@
         </provider>
 
         <activity android:name=".Activities.UserDetailsActivity" />
-        <activity android:name=".Activities.UserDetailRegistration"></activity>
+        <activity android:name=".Activities.UserDetailRegistration" />
+
     </application>
 
 </manifest>

@@ -39,7 +39,7 @@ public class ChatActivity extends AppCompatActivity {
         // Widgets
         FloatingActionButton SendButton = (FloatingActionButton) findViewById(R.id.SendButton);
 
-        myUser = DatabaseUser.getCurrentUser();
+        myUser = DatabaseUser.getInstance().getCurrentUser();
 
         //get conversationID and ,if necessary, creats new Chat in Database
         conversationID = DatabaseChat.newChat(this);
