@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar_conversations" />
+        android:layout_below="@+id/toolbar_conversations"/>
 
     <View
         android:layout_width="match_parent"
