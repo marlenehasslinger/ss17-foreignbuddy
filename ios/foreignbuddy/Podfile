@@ -3,6 +3,7 @@
 
 target 'foreignbuddy' do
   pod 'Firebase/Core'
+  pod 'Firebase/Auth'
   use_frameworks!
 
   # Pods for foreignbuddy

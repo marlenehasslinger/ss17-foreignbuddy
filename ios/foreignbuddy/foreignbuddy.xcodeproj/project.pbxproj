@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		21C48EB51EB361E700936EC5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C48EB41EB361E700936EC5 /* AppDelegate.swift */; };
-		21C48EB71EB361E700936EC5 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C48EB61EB361E700936EC5 /* FirstViewController.swift */; };
-		21C48EB91EB361E700936EC5 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C48EB81EB361E700936EC5 /* SecondViewController.swift */; };
 		21C48EBC1EB361E700936EC5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21C48EBA1EB361E700936EC5 /* Main.storyboard */; };
 		21C48EBE1EB361E700936EC5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21C48EBD1EB361E700936EC5 /* Assets.xcassets */; };
 		21C48EC11EB361E700936EC5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21C48EBF1EB361E700936EC5 /* LaunchScreen.storyboard */; };
@@ -21,6 +19,9 @@
 		3CB2A45710782E12751352D1 /* Pods_foreignbuddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB2E4CD08B42D3C275470C02 /* Pods_foreignbuddy.framework */; };
 		3E60131ACA35FE7E48658864 /* Pods_foreignbuddyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ACC88154D5ED5833E5CEAB8 /* Pods_foreignbuddyUITests.framework */; };
 		6BCD26B10B8F770413B29A6F /* Pods_foreignbuddyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B181F4191049768A0F437249 /* Pods_foreignbuddyTests.framework */; };
+		96ED325F1EB761CD0082C570 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ED325E1EB761CD0082C570 /* LoginViewController.swift */; };
+		96ED32601EB761CD0082C570 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ED325E1EB761CD0082C570 /* LoginViewController.swift */; };
+		96ED32611EB761CD0082C570 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ED325E1EB761CD0082C570 /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,8 +45,6 @@
 		120F78FD91FB871378BFA8A5 /* Pods-foreignbuddyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foreignbuddyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-foreignbuddyTests/Pods-foreignbuddyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		21C48EB11EB361E700936EC5 /* foreignbuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foreignbuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21C48EB41EB361E700936EC5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		21C48EB61EB361E700936EC5 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		21C48EB81EB361E700936EC5 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		21C48EBB1EB361E700936EC5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		21C48EBD1EB361E700936EC5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21C48EC01EB361E700936EC5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -62,6 +61,7 @@
 		3CBBA2FF4884B6AF16FE6E19 /* Pods-foreignbuddy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foreignbuddy.release.xcconfig"; path = "Pods/Target Support Files/Pods-foreignbuddy/Pods-foreignbuddy.release.xcconfig"; sourceTree = "<group>"; };
 		579EA72466D8C457927BD48D /* Pods-foreignbuddyUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foreignbuddyUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-foreignbuddyUITests/Pods-foreignbuddyUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		81D7346F0992B7969E6D7D94 /* Pods-foreignbuddyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foreignbuddyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-foreignbuddyTests/Pods-foreignbuddyTests.release.xcconfig"; sourceTree = "<group>"; };
+		96ED325E1EB761CD0082C570 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B181F4191049768A0F437249 /* Pods_foreignbuddyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_foreignbuddyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB2E4CD08B42D3C275470C02 /* Pods_foreignbuddy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_foreignbuddy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD8805F1D9452B3CCCD212DA /* Pods-foreignbuddyUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foreignbuddyUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-foreignbuddyUITests/Pods-foreignbuddyUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -121,8 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				21C48EB41EB361E700936EC5 /* AppDelegate.swift */,
-				21C48EB61EB361E700936EC5 /* FirstViewController.swift */,
-				21C48EB81EB361E700936EC5 /* SecondViewController.swift */,
+				96ED325E1EB761CD0082C570 /* LoginViewController.swift */,
 				21C48EBA1EB361E700936EC5 /* Main.storyboard */,
 				21C48EBD1EB361E700936EC5 /* Assets.xcassets */,
 				21C48EBF1EB361E700936EC5 /* LaunchScreen.storyboard */,
@@ -250,12 +249,12 @@
 				TargetAttributes = {
 					21C48EB01EB361E700936EC5 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 6LWG4DX8B8;
+						DevelopmentTeam = U7GMCE2XAR;
 						ProvisioningStyle = Automatic;
 					};
 					21C48EC61EB361E800936EC5 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 6LWG4DX8B8;
+						DevelopmentTeam = U7GMCE2XAR;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 21C48EB01EB361E700936EC5;
 					};
@@ -460,9 +459,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21C48EB91EB361E700936EC5 /* SecondViewController.swift in Sources */,
+				96ED325F1EB761CD0082C570 /* LoginViewController.swift in Sources */,
 				21C48EB51EB361E700936EC5 /* AppDelegate.swift in Sources */,
-				21C48EB71EB361E700936EC5 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,6 +468,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96ED32601EB761CD0082C570 /* LoginViewController.swift in Sources */,
 				21C48ECC1EB361E800936EC5 /* foreignbuddyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -478,6 +477,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96ED32611EB761CD0082C570 /* LoginViewController.swift in Sources */,
 				21C48ED71EB361E800936EC5 /* foreignbuddyUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -615,8 +615,9 @@
 			baseConfigurationReference = 258FC22EFD9388CBC13F8FCB /* Pods-foreignbuddy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6LWG4DX8B8;
+				DEVELOPMENT_TEAM = U7GMCE2XAR;
 				INFOPLIST_FILE = foreignbuddy/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.hdm-stuttgart.foreignbuddy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -629,8 +630,9 @@
 			baseConfigurationReference = 3CBBA2FF4884B6AF16FE6E19 /* Pods-foreignbuddy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6LWG4DX8B8;
+				DEVELOPMENT_TEAM = U7GMCE2XAR;
 				INFOPLIST_FILE = foreignbuddy/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.hdm-stuttgart.foreignbuddy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -644,8 +646,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 6LWG4DX8B8;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = U7GMCE2XAR;
 				INFOPLIST_FILE = foreignbuddyTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.hdm-stuttgart.foreignbuddyTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -660,8 +664,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 6LWG4DX8B8;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = U7GMCE2XAR;
 				INFOPLIST_FILE = foreignbuddyTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.hdm-stuttgart.foreignbuddyTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -677,6 +683,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 6LWG4DX8B8;
 				INFOPLIST_FILE = foreignbuddyUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.hdm-stuttgart.foreignbuddyUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -692,6 +699,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 6LWG4DX8B8;
 				INFOPLIST_FILE = foreignbuddyUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.hdm-stuttgart.foreignbuddyUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -719,6 +727,7 @@
 				21C48EDD1EB361E800936EC5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		21C48EDE1EB361E800936EC5 /* Build configuration list for PBXNativeTarget "foreignbuddyTests" */ = {
 			isa = XCConfigurationList;
@@ -727,6 +736,7 @@
 				21C48EE01EB361E800936EC5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		21C48EE11EB361E800936EC5 /* Build configuration list for PBXNativeTarget "foreignbuddyUITests" */ = {
 			isa = XCConfigurationList;
@@ -735,6 +745,7 @@
 				21C48EE31EB361E800936EC5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
