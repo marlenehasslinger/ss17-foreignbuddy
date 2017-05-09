@@ -29,6 +29,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     private EditText userName;
     private RadioButton rB_English, rB_German, rB_French, rB_Spanish;
     private RadioButton rB_native_English, rB_native_German, rB_native_French, rB_native_Spanish;
+    private CheckBox cB_Nature, cB_Culture, cB_Politics, cB_Sports, cB_Reading, cB_Music, cB_Technology;
     private DatabaseReference mDatabase;
     private User myUser;
     private TextView currentDistance;
@@ -53,6 +54,14 @@ public class UserDetailsActivity extends AppCompatActivity {
         rB_native_French = (RadioButton) findViewById(R.id.rB_native_French);
         rB_native_German = (RadioButton) findViewById(R.id.rB_native_German);
         rB_native_Spanish = (RadioButton) findViewById(R.id.rB_native_Spanish);
+
+        cB_Nature = (CheckBox) findViewById(R.id.cB_Nature);
+        cB_Culture = (CheckBox) findViewById(R.id.cB_Culture);
+        cB_Politics = (CheckBox) findViewById(R.id.cB_Politics);
+        cB_Sports = (CheckBox) findViewById(R.id.cB_Sports);
+        cB_Reading = (CheckBox) findViewById(R.id.cB_Reading);
+        cB_Music = (CheckBox) findViewById(R.id.cB_Music);
+        cB_Technology = (CheckBox) findViewById(R.id.cB_Technology);
 
         currentDistance = (TextView) findViewById(R.id.tv_currentDistance);
         seekbar = (SeekBar) findViewById (R.id.seekBar);
@@ -157,9 +166,34 @@ public class UserDetailsActivity extends AppCompatActivity {
                         throw new IllegalArgumentException("Wrong Language");
                 }
 
+                //Get current interests
+                if (myUser.interests.get("Nature")) {
+                    cB_Nature.setChecked(true);
+                }
 
+                if (myUser.interests.get("Culture")) {
+                    cB_Culture.setChecked(true);
+                }
 
+                if (myUser.interests.get("Politics")) {
+                    cB_Politics.setChecked(true);
+                }
 
+                if (myUser.interests.get("Sports")) {
+                    cB_Sports.setChecked(true);
+                }
+
+                if (myUser.interests.get("Music")) {
+                    cB_Music.setChecked(true);
+                }
+
+                if (myUser.interests.get("Technology")) {
+                    cB_Technology.setChecked(true);
+                }
+
+                if (myUser.interests.get("Reading")) {
+                    cB_Reading.setChecked(true);
+                }
 
             }
 
@@ -284,7 +318,62 @@ public class UserDetailsActivity extends AppCompatActivity {
                     .setValue("Spanish");
         }
 
+        //Add interests to database
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("interests")
+                .child("Culture")
+                .setValue(cB_Culture.isChecked());
 
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("interests")
+                .child("Nature")
+                .setValue(cB_Nature.isChecked());
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("interests")
+                .child("Politics")
+                .setValue(cB_Politics.isChecked());
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("interests")
+                .child("Sports")
+                .setValue(cB_Sports.isChecked());
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("interests")
+                .child("Reading")
+                .setValue(cB_Reading.isChecked());
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("interests")
+                .child("Music")
+                .setValue(cB_Music.isChecked());
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(firebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("interests")
+                .child("Technology")
+                .setValue(cB_Technology.isChecked());
 
     }
 

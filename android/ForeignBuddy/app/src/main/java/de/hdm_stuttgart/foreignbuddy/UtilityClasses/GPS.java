@@ -1,5 +1,6 @@
 package de.hdm_stuttgart.foreignbuddy.UtilityClasses;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
+import de.hdm_stuttgart.foreignbuddy.R;
+
 /**
  * Created by Marc-JulianFleck on 22.04.17.
  */
@@ -33,6 +37,7 @@ public class GPS implements LocationListener {
     //Helper
     private Geocoder geocoder;
     private Context context;
+    private Activity activity;
 
     public static GPS getInstance() {
         if (instance == null) {
@@ -92,7 +97,8 @@ public class GPS implements LocationListener {
     }
 
     private void showSettingsAlertForGPS() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+
 
         // Setting Dialog Title
         alertDialog.setTitle("GPS is off");
@@ -104,13 +110,17 @@ public class GPS implements LocationListener {
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                context.startActivity(intent);
+                activity.startActivity(intent);
             }
         });
 
         // on pressing cancel button
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                Intent locationIntent = new Intent();
+                locationIntent.setAction(GPS.LOCATION_UPDATED);
+                locationIntent.putExtra("city", DatabaseUser.getInstance().getCurrentUser().lastKnownCity);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(locationIntent);
                 dialog.cancel();
             }
         });
@@ -120,6 +130,10 @@ public class GPS implements LocationListener {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     @Override

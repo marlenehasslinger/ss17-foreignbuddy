@@ -157,11 +157,15 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         //Get City
         GPS.getInstance().setContext(getActivity().getApplicationContext());
+        GPS.getInstance().setActivity(getActivity());
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 //Set city
                 String locationCity = intent.getStringExtra("city");
+                if (!locationCity.equals(myUser.lastKnownCity)){
+                    DatabaseUser.getInstance().InstanceCurrentUser();
+                }
                 txt_location_profil.setText(locationCity);
             }
         }, new IntentFilter(GPS.LOCATION_UPDATED));
@@ -179,8 +183,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         try {
             localFile = File.createTempFile("images", downloadName);
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -191,7 +193,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         Log.d("Download", "Profil photo successfully downloaded");
-
                         imageView.setImageDrawable(Drawable.createFromPath(localFile.getAbsolutePath()));
                     }
                 }).addOnFailureListener(new OnFailureListener() {

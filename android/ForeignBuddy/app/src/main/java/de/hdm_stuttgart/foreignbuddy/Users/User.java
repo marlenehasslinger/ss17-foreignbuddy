@@ -8,6 +8,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 
@@ -27,8 +28,7 @@ public class User {
     public Double latitude;
     public Double longitude;
     public int distanceToMatch;
-
-    //private ArrayList<Conversation> conversations;
+    public Map<String,Boolean> interests;
 
 
     //Constucture
