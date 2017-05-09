@@ -72,29 +72,8 @@ public class DatabaseChat {
                 .child(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date().getTime()))
                 .setValue(new ChatMessage(message, DatabaseUser.getInstance().getCurrentUser().getUsername()
                         ,DatabaseUser.getInstance().getCurrentUser().getUserID()));
-        setLastMessage(message);
     }
 
-    private static void setLastMessage(String message){
-        User currentUser = DatabaseUser.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance()
-                .getReference()
-                .child("users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("conversations")
-                .child(conversationID)
-                .child("lastMessage")
-                .setValue(message);
-
-        FirebaseDatabase.getInstance()
-                .getReference()
-                .child("users")
-                .child(activity.getIntent().getStringExtra("UserID"))
-                .child("conversations")
-                .child(conversationID)
-                .child("lastMessage")
-                .setValue(message);
-    }
 
     private static String getConversationID(){
         int c = FirebaseAuth.

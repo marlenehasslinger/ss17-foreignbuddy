@@ -60,7 +60,6 @@ public class DatabaseUser {
     private User currentUser;
     private List<User> currentUsersMatches;
     private List<Conversation> currentUsersConversations;
-    private File currentUserProfilpicture = null;
 
     //Helper
     private StorageReference riversRef;
@@ -134,17 +133,6 @@ public class DatabaseUser {
         });
     }
 
-    private boolean checkConstraintsMatches(User user) {
-        if (user.getUserID().equals(currentUser.getUserID())) {
-            return false;
-        } else if (user.getNativeLanguage().equals(currentUser.getLanguage())) {
-            return false;
-        } else if (currentUser.getNativeLanguage().equals(user.getLanguage())) {
-            return false;
-        }
-        return true;
-    }
-
     public void loadCurrentUsersConversations() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
@@ -167,100 +155,10 @@ public class DatabaseUser {
                 });
     }
 
-    public String downloadProfilePhoto() {
-
-        String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
-        storageReference = FirebaseStorage.getInstance().getReference();
-        riversRef = storageReference.child("images/" + downloadName);
-
-        try {
-            currentUserProfilpicture = File.createTempFile("images", downloadName);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Download profile photo via firebase database reference
-        riversRef.getFile(currentUserProfilpicture)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.d("Download", "Profil photo successfully downloaded");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                currentUserProfilpicture = null;
-                Log.d("Download", "Profil photo download failed");
-            }
-        });
-
-        return currentUserProfilpicture.toString();
-
-    }
-
-    /*
-
-    public void uploadProfilePhoto(Uri filepath) {
-
-        if (filepath != null) {
-
-            String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
-            storageReference = FirebaseStorage.getInstance().getReference();
-            riversRef = storageReference.child("images/" + downloadName);
-
-
-            riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    //Photo is successfully uploaded
-
-                    Uri downloadUri = taskSnapshot.getDownloadUrl();
-
-                    Log.d("Upload", "Upload successful");
-                    Toast.makeText(context, "File Uploaded!", Toast.LENGTH_SHORT).show();
-
-                    //Downloadink to profile photo will be stored within the corresponding user in the database
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("urlProfilephoto")
-                            .setValue(downloadUri.toString());
-
-                   //downloadProfilePhoto();
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                  //          progressDialog.dismiss();
-                            //Photo wasn't successfully uploaded
-
-                            Log.d("Upload", "Upload failed");
-
-
-                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-        } else {
-
-            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    */
-
-    public String getCurrentUserProfilpicture() {
-        return currentUserProfilpicture.getPath();
-    }
-
     private void deleteCurrentUser() {
         currentUser = null;
         currentUsersMatches = null;
         currentUsersConversations = null;
-        //currentUserProfilpicture = null;
     }
 
 }
