@@ -331,7 +331,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -367,7 +366,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         }
 
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

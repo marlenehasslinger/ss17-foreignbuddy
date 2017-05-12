@@ -75,14 +75,14 @@ public class GPS implements LocationListener {
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                     locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
-                //If Network ist activated, Network is used
-                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-                }
-
                 //If GPS is activated, GPS will be used or will be used too
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+                }
+
+                //If Network ist activated, Network is used
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
                 }
 
             } else {
