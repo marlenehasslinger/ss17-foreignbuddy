@@ -65,6 +65,7 @@ public class DatabaseUser {
     private StorageReference riversRef;
     private StorageReference storageReference;
     private Context context;
+    private File localFile = null;
 
     public void setContext(Context context) {
         this.context = context;
@@ -95,7 +96,7 @@ public class DatabaseUser {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentUser = dataSnapshot.getValue(User.class);
-                        currentUser.loadProfilePhoto();
+                        loadProfilePhoto();
                         currentUsersMatches = new ArrayList<>();
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
@@ -166,6 +167,32 @@ public class DatabaseUser {
 
                     }
                 });
+    }
+
+    public void loadProfilePhoto() {
+        String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = storageReference.child("images/" + downloadName);
+        try {
+            localFile = File.createTempFile("images", downloadName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Download profile photo via firebase database reference
+        riversRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Log.d("Download", "Profil photo successfully downloaded");
+                        currentUser.setProfilePhoto(localFile);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("Download", "Profil photo download failed");
+            }
+        });
     }
 
     private void deleteCurrentUser() {

@@ -107,7 +107,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         txt_location_profil = (TextView) view.findViewById(R.id.txt_location_user);
         txt_languages = (TextView) view.findViewById(R.id.txt_languages);
         txt_nativeLanguage = (TextView) view.findViewById(R.id.txt_nativeLanguage);
-        
+
         //Set Button Listener
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);

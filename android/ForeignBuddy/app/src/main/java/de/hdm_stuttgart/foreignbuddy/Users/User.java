@@ -41,8 +41,6 @@ public class User {
     public Map<String,Boolean> interests;
     public File profilePhoto;
 
-    File localFile = null;
-
     //Constructors
     public User (){}
     public User(String userID) {
@@ -59,9 +57,7 @@ public class User {
     public String getNativeLanguage() {
         return nativeLanguage;
     }
-    public String getLanguage() {
-        return language;
-    }
+    public String getLanguage() { return language;}
     public int getDistanceToMatch() {return distanceToMatch;}
     public File getProfilePhoto() {return profilePhoto;}
 
@@ -82,31 +78,5 @@ public class User {
     public void setDistanceToMatch(int distanceToMatch) {this.distanceToMatch = distanceToMatch;}
     public void setProfilePhoto(File profilePhoto) {
         this.profilePhoto = profilePhoto;
-    }
-
-    public void loadProfilePhoto() {
-        String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference riversRef = storageReference.child("images/" + downloadName);
-        try {
-            localFile = File.createTempFile("images", downloadName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Download profile photo via firebase database reference
-        riversRef.getFile(localFile)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.d("Download", "Profil photo successfully downloaded");
-                        profilePhoto = localFile;
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d("Download", "Profil photo download failed");
-            }
-        });
     }
 }
