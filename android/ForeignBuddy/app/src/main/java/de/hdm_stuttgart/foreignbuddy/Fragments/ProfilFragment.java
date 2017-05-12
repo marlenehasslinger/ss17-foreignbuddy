@@ -10,19 +10,14 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -46,9 +41,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -57,7 +50,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity;
 import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
@@ -73,19 +65,18 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     static final int CAM_REQUEST = 1;
     static final int CAMERA_REQUEST_CODE = 10;
+    static final int LOCATION_REQUEST_CODE = 22;
     private static final int PICK_IMAGE_REQUEST = 234;
     private static final int FILE_CHOOSER_REQUEST = 224;
-    static final int LOCATION_REQUEST_CODE = 22;
     private static final String APP_TAG = "CAMERA_TEST_APP";
     //Initialize size for thumbnails
     final int THUMBSIZE = 64;
-    private String photoFileName;
     Geocoder geocoder;
     List<Address> addresses;
     User myUser;
     //Für Fileprovider
     File fileWritten;
-    DatabaseReference mDatabase;
+    private String photoFileName;
     private StorageReference storageReference;
     private Button btn_choosePhoto, btn_takePhoto;
     private TextView txt_userName;
@@ -93,14 +84,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     private TextView txt_nativeLanguage;
     private TextView txt_languages;
     private ImageView imageView;
-    private Uri downloadUri;
+    // private Uri downloadUri;
     private Uri filepath;
     private String uploadName;
-    private File localFile = null;
     private StorageReference riversRef;
     private ProgressDialog progressDialog;
     private String manufacturer;
-    
+
     //Toolbar
     private Toolbar toolbar;
 
@@ -109,7 +99,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profil, container, false);
 
-        //WIDGETS
+        //Widgets
         imageView = (ImageView) view.findViewById(R.id.imageView);
         btn_choosePhoto = (Button) view.findViewById(R.id.btn_choosePhoto);
         btn_takePhoto = (Button) view.findViewById(R.id.btn_takePhoto);
@@ -117,8 +107,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         txt_location_profil = (TextView) view.findViewById(R.id.txt_location_user);
         txt_languages = (TextView) view.findViewById(R.id.txt_languages);
         txt_nativeLanguage = (TextView) view.findViewById(R.id.txt_nativeLanguage);
-
-
+        
         //Set Button Listener
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
@@ -148,12 +137,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
         //Set profile photo
         try {
-           //imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUserProfilpicture()));
-            downloadProfilePhoto();
+            imageView.setImageDrawable(Drawable.createFromPath(DatabaseUser.getInstance().getCurrentUser().getProfilePhoto()
+                    .getAbsolutePath()));
         } catch (Exception e) {
             imageView.setImageResource(R.drawable.user_male);
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
+
 
         //Get City
         GPS.getInstance().setContext(getActivity().getApplicationContext());
@@ -163,7 +153,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             public void onReceive(Context context, Intent intent) {
                 //Set city
                 String locationCity = intent.getStringExtra("city");
-                if (!locationCity.equals(myUser.lastKnownCity)){
+                if (!locationCity.equals(myUser.lastKnownCity)) {
                     DatabaseUser.getInstance().InstanceCurrentUser();
                 }
                 txt_location_profil.setText(locationCity);
@@ -173,37 +163,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         getLocation();
 
         return view;
-    }
-
-    public String downloadProfilePhoto() {
-
-        String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
-        storageReference = FirebaseStorage.getInstance().getReference();
-        riversRef = storageReference.child("images/" + downloadName);
-
-        try {
-            localFile = File.createTempFile("images", downloadName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Download profile photo via firebase database reference
-        riversRef.getFile(localFile)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Log.d("Download", "Profil photo successfully downloaded");
-                        imageView.setImageDrawable(Drawable.createFromPath(localFile.getAbsolutePath()));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d("Download", "Profil photo download failed");
-            }
-        });
-
-        return localFile.toString();
-
     }
 
     @Override
@@ -247,17 +206,17 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                         == PackageManager.PERMISSION_GRANTED) {
 
             //If permissions are granted already the location request starts
-           GPS.getInstance().startLocationRequest();
+            GPS.getInstance().startLocationRequest();
 
-        } else{
+        } else {
 
             //Missing permissions will be requested
-                Log.d("Permission", "Location Permission denied");
-                String[] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-                requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
-            }
+            Log.d("Permission", "Location Permission denied");
+            String[] permissionRequested = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+            requestPermissions(permissionRequested, LOCATION_REQUEST_CODE);
         }
-    
+    }
+
     private void showFileChooser() {
 
         //Checks if required permissions are already given
@@ -285,7 +244,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void startFileChooser(){
+    public void startFileChooser() {
 
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -372,13 +331,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-
         //User picks profile photo from gallery
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filepath = data.getData();
 
 
-            try{
+            try {
                 Bitmap takenImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
 
                 //Find ratio to scale
@@ -387,14 +345,14 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                 int outHeight;
                 int inWidth = takenImage.getWidth();
                 int inHeight = takenImage.getHeight();
-                if(inWidth > inHeight){
+                if (inWidth > inHeight) {
                     outWidth = maxSize;
                     outHeight = (inHeight * maxSize) / inWidth;
                 } else {
                     outHeight = maxSize;
                     outWidth = (inWidth * maxSize) / inHeight;
                 }
-                Log.e("Bild", "Orig. size: h:"+inHeight+ ",w:"+inWidth+" New size: h:"+outHeight+",w: "+outWidth );
+                Log.e("Bild", "Orig. size: h:" + inHeight + ",w:" + inWidth + " New size: h:" + outHeight + ",w: " + outWidth);
                 takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
                 //Create a new file so the original file won't be changed during compressing process
@@ -409,10 +367,12 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
+                //Set new Profile photo to current User
+                DatabaseUser.getInstance().getCurrentUser().setProfilePhoto(file);
                 filepath = Uri.fromFile(file);
                 uploadProfilePhoto(filepath);
 
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -435,7 +395,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                     int inWidth = takenImage.getWidth();
                     int inHeight = takenImage.getHeight();
 
-                    if(inWidth > inHeight){
+                    if (inWidth > inHeight) {
                         outWidth = maxSize;
                         outHeight = (inHeight * maxSize) / inWidth;
                     } else {
@@ -445,31 +405,31 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
 
 
                     //To fix a samsung camera orientation bug, the images for samsung devies will be rotated
-                    if("samsung".equals(manufacturer)){
+                    if ("samsung".equals(manufacturer)) {
 
                         ExifInterface exif = new ExifInterface(fileWritten.getAbsolutePath());
-                        Log.e("orientation", "image needs to be rotated. Exif:"+exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+                        Log.e("orientation", "image needs to be rotated. Exif:" + exif.getAttribute(ExifInterface.TAG_ORIENTATION));
 
                         //For photos taken in portrait mode
-                        if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("6")){
+                        if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("6")) {
                             takenImage = RotateBitmap.RotateBitmap(takenImage, 90);
-                            Log.e("orientation", "image rotated" );
+                            Log.e("orientation", "image rotated");
 
 
                         }
 
                         //For photos taken in landscape mode
-                        if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("3")){
+                        if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("3")) {
                             takenImage = RotateBitmap.RotateBitmap(takenImage, 180);
-                            Log.e("orientation", "image rotated" );
+                            Log.e("orientation", "image rotated");
 
 
                         }
 
                         //For photos taken with front cam
-                        if(exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("8")){
+                        if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equals("8")) {
                             takenImage = RotateBitmap.RotateBitmap(takenImage, 270);
-                            Log.e("orientation", "image rotated" );
+                            Log.e("orientation", "image rotated");
 
 
                         }
@@ -483,21 +443,20 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                     fOut.close();
 
 
-                    Log.e("Bild", "Orig. size: h:"+inHeight+ ",w:"+inWidth+" New size: h:"+outHeight+",w: "+outWidth );
+                    Log.e("Bild", "Orig. size: h:" + inHeight + ",w:" + inWidth + " New size: h:" + outHeight + ",w: " + outWidth);
 
                     takenImage = Bitmap.createScaledBitmap(takenImage, outWidth, outHeight, false);
 
-                    Log.e("Bild", "Scale image size: h: "+takenImage.getHeight()+", w: "+takenImage.getWidth() );
+                    Log.e("Bild", "Scale image size: h: " + takenImage.getHeight() + ", w: " + takenImage.getWidth());
 
 
-
-
-                } catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 // Load the taken image into a preview
                 imageView.setImageBitmap(takenImage);
+                DatabaseUser.getInstance().getCurrentUser().setProfilePhoto(fileWritten);
                 filepath = Uri.fromFile(fileWritten);
 
 
@@ -540,19 +499,13 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child("urlProfilephoto")
                             .setValue(downloadUri.toString());
-
-                    //downloadProfilePhoto();
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            //          progressDialog.dismiss();
                             //Photo wasn't successfully uploaded
-
                             Log.d("Upload", "Upload failed");
-
-
                             Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -589,7 +542,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         return null;
     }
 
-    private File getPhotoFile (String fileName) {
+    private File getPhotoFile(String fileName) {
         // Only continue if the SD Card is mounted
         if (isExternalStorageAvailable()) {
             // Get safe storage directory for photos
@@ -609,7 +562,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             // File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
             // wrap File object into a content provider
             // required for API >= 24
-           // Uri fileuri = FileProvider.getUriForFile(getActivity(), "com.codepath.fileprovider", file);
+            // Uri fileuri = FileProvider.getUriForFile(getActivity(), "com.codepath.fileprovider", file);
             return file;
         }
 

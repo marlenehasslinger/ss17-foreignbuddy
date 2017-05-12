@@ -65,7 +65,6 @@ public class DatabaseUser {
     private StorageReference riversRef;
     private StorageReference storageReference;
     private Context context;
-    //private ProgressDialog progressDialog;
 
     public void setContext(Context context) {
         this.context = context;
@@ -96,6 +95,7 @@ public class DatabaseUser {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentUser = dataSnapshot.getValue(User.class);
+                        currentUser.loadProfilePhoto();
                         currentUsersMatches = new ArrayList<>();
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
@@ -113,16 +113,29 @@ public class DatabaseUser {
 
     public void loadCurrentUsersMatches() {
         FirebaseDatabase.getInstance().getReference()
-                .child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                .child("users")
+                .child(currentUser.userID)
+                .child("matches")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> allMatches = dataSnapshot.getChildren();
+                for (DataSnapshot child : allMatches) {
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("users")
+                            .child(child.getKey())
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User user = dataSnapshot.getValue(User.class);
+                                    currentUsersMatches.add(user);
+                                }
 
-                Iterable<DataSnapshot> allUsers = dataSnapshot.getChildren();
-                for (DataSnapshot child : allUsers) {
-                    User user = child.getValue(User.class);
-                    if (!user.getUserID().equals(currentUser.getUserID())) {
-                        currentUsersMatches.add(user);
-                    }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                 }
             }
 
