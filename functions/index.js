@@ -23,9 +23,9 @@ exports.matches = functions.database
 					}
 				});	
 				matches = filter(matches, myUser);
-				var flag;
+				var justWait = admin.database().ref("/users/" + myUid + "/matches").remove();
 				for(var i = 0; i < matches.length; i++) {
-					//admin.database().ref("/users/" + myUid + "/matches/" + matches[i].userID).set(matches[i]);
+					var justWait2 = admin.database().ref("/users/" + myUid + "/matches/" + matches[i].userID).set(4);
 				}
   			});
 });
