@@ -126,7 +126,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         //Get current User
         myUser = DatabaseUser.getInstance().getCurrentUser();
 
-
         //Set current user values on widgets
         txt_userName.setText(myUser.getUsername());
         txt_nativeLanguage.setText(myUser.getNativeLanguage());

@@ -96,7 +96,7 @@ public class DatabaseUser {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentUser = dataSnapshot.getValue(User.class);
-                        loadProfilePhoto();
+                        loadProfilePhoto(currentUser);
                         currentUsersMatches = new ArrayList<>();
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
@@ -129,6 +129,8 @@ public class DatabaseUser {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     User user = dataSnapshot.getValue(User.class);
+                                    loadProfilePhoto(user);
+                                    user.setCommonInterests(currentUser);
                                     currentUsersMatches.add(user);
                                 }
 
@@ -169,23 +171,24 @@ public class DatabaseUser {
                 });
     }
 
-    public void loadProfilePhoto() {
-        String downloadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";
+    private void loadProfilePhoto(final User user) {
+        String downloadName = user.getEmail() + "_profilePhoto";
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference riversRef = storageReference.child("images/" + downloadName);
         try {
             localFile = File.createTempFile("images", downloadName);
+            user.setProfilePhoto(localFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //Download profile photo via firebase database reference
-        riversRef.getFile(localFile)
+        riversRef.getFile(user.getProfilePhoto())
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         Log.d("Download", "Profil photo successfully downloaded");
-                        currentUser.setProfilePhoto(localFile);
+                        user.setProfilePhoto(user.getProfilePhoto());
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

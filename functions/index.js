@@ -25,7 +25,8 @@ exports.matches = functions.database
 				matches = filter(matches, myUser);
 				var justWait = admin.database().ref("/users/" + myUid + "/matches").remove();
 				for(var i = 0; i < matches.length; i++) {
-					var justWait2 = admin.database().ref("/users/" + myUid + "/matches/" + matches[i].userID).set(4);
+					var commonInterests = compareInterest(matches[i], myUser);
+					justWait = admin.database().ref("/users/" + myUid + "/matches/" + matches[i].userID).set(commonInterests);
 				}
   			});
 });
@@ -82,4 +83,31 @@ function distanceOK(match, myUser) {
 }
 function deg2rad(deg) {
   return deg * (Math.PI/180)
+}
+
+function compareInterest(match, myUser){
+	var commonInterest = 0;
+	
+	if (myUser.interests.Culture == true && match.interests.Culture == true){
+		commonInterest++;
+	}
+	if (myUser.interests.Music == true && match.interests.Music == true){
+		commonInterest++;
+	}
+	if (myUser.interests.Nature == true && match.interests.Nature == true){
+		commonInterest++;
+	}
+	if (myUser.interests.Politics == true && match.interests.Politics == true){
+		commonInterest++;
+	}
+	if (myUser.interests.Reading == true && match.interests.Reading == true){
+		commonInterest++;
+	}
+	if (myUser.interests.Sports == true && match.interests.Sports == true){
+		commonInterest++;
+	}	
+	if (myUser.interests.Technology == true && match.interests.Technology == true){
+		commonInterest++;
+	}
+	return commonInterest;
 }

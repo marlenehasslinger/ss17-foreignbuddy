@@ -154,7 +154,7 @@ public class GPS implements LocationListener {
 
                 //Upload new Location to Firebase
                 FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .child("latitude").setValue(location.getLatitude());
                 FirebaseDatabase.getInstance().getReference().child("users")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

@@ -1,53 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_user_matches"
-        android:src="@drawable/user_male"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:maxHeight="20dp"
         android:maxWidth="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:src="@drawable/user_male"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="25dp" />
 
     <TextView
         android:id="@+id/txt_name_matches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
         android:text="Max Mustermann"
         android:textStyle="bold"
-        android:layout_alignTop="@+id/img_user_matches"
-        android:layout_toEndOf="@+id/img_user_matches"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"/>
-
-    <TextView
-        android:id="@+id/txt_location_matches"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="no Location"
-        android:layout_alignBottom="@+id/img_location_matches"
-        android:layout_toEndOf="@+id/img_location_matches" />
+        app:layout_constraintLeft_toRightOf="@+id/img_user_matches"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp" />
 
     <TextView
         android:id="@+id/txt_language_matches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Spanish"
-        android:layout_alignBaseline="@+id/txt_name_matches"
-        android:layout_alignBottom="@+id/txt_name_matches"
-        android:layout_toStartOf="@+id/btn_chat_matches"
-        android:layout_marginEnd="14dp" />
+        app:layout_constraintLeft_toRightOf="@+id/img_language_matches"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_interests_matches" />
+
 
     <ImageView
         android:id="@+id/img_location_matches"
@@ -58,19 +49,68 @@
         android:maxWidth="15dp"
         android:nestedScrollingEnabled="false"
         app:srcCompat="@drawable/location"
-        android:layout_below="@+id/txt_name_matches"
-        android:layout_alignStart="@+id/txt_name_matches" />
+        app:layout_constraintLeft_toRightOf="@+id/img_user_matches"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_matches" />
+
+    <TextView
+        android:id="@+id/txt_location_matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="no Location"
+        app:layout_constraintLeft_toRightOf="@+id/img_location_matches"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_matches" />
+
+    <ImageView
+        android:id="@+id/img_interests_matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:maxHeight="15dp"
+        android:maxWidth="15dp"
+        android:nestedScrollingEnabled="false"
+        app:srcCompat="@drawable/ic_interests"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/img_location_matches"
+        app:layout_constraintLeft_toRightOf="@+id/img_user_matches"
+        android:layout_marginLeft="16dp" />
+
+    <ImageView
+        android:id="@+id/img_language_matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:maxHeight="15dp"
+        android:maxWidth="15dp"
+        android:nestedScrollingEnabled="false"
+        app:srcCompat="@drawable/ic_language"
+        app:layout_constraintLeft_toRightOf="@+id/img_user_matches"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/img_interests_matches" />
+
+    <TextView
+        android:id="@+id/txt_interests_matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="6dp"
+        android:text="4 common interests"
+        app:layout_constraintLeft_toRightOf="@+id/img_interests_matches"
+        app:layout_constraintTop_toBottomOf="@+id/txt_location_matches" />
 
     <Button
         android:id="@+id/btn_chat_matches"
         style="@android:style/Widget.DeviceDefault.Light.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/img_location_matches"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="11dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="16dp"
-        android:text="Chat" />
+        android:text="Chat"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="42dp" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

@@ -3,6 +3,7 @@ package de.hdm_stuttgart.foreignbuddy.Fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,6 +47,7 @@ public class MatchesFragment extends Fragment {
     private TextView name;
     private TextView location;
     private TextView language;
+    private TextView interests;
     private Button btn_chat;
     private List<User> matches = new ArrayList<>();
     private ListView listView;
@@ -80,6 +85,7 @@ public class MatchesFragment extends Fragment {
 
         //get Matches and set in TableView
         matches = DatabaseUser.getInstance().getCurrentUsersMatches();
+        Collections.sort(matches);
         ArrayAdapter<User> matchesAdapter = new UserListAdapter();
         listView.setAdapter(matchesAdapter);
 
@@ -118,7 +124,6 @@ public class MatchesFragment extends Fragment {
             btn_chat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                     User user = (User) v.getTag();
                     intent.putExtra("UserID", user.userID);
@@ -136,10 +141,12 @@ public class MatchesFragment extends Fragment {
             name = (TextView) view.findViewById(R.id.txt_name_matches);
             location = (TextView) view.findViewById(R.id.txt_location_matches);
             language = (TextView) view.findViewById(R.id.txt_language_matches);
+            interests = (TextView)view.findViewById(R.id.txt_interests_matches);
 
             //Set Widget texts
             name.setText(currentMatch.username);
             language.setText(currentMatch.nativeLanguage);
+            interests.setText(currentMatch.getNumberOfCommonInterest() + " common interests");
             if (currentMatch.latitude == null || currentMatch.longitude == null) {
                 location.setText("- Km"); // If User has no location
             } else if (myUser.latitude == null || myUser.longitude == null) {
@@ -150,12 +157,12 @@ public class MatchesFragment extends Fragment {
                 location.setText(Double.toString(entfernung) + " Km"); //If both have location
             }
 
-            //Set picture
-            Picasso.with(getActivity()).
-                    load(currentMatch.urlProfilephoto)
-                    .placeholder(R.drawable.user_male)
-                    .error(R.drawable.user_male)
-                    .into(img_user);
+            try {
+                img_user.setImageDrawable(Drawable.createFromPath(currentMatch.getProfilePhoto().getAbsolutePath()));
+            } catch (Exception e) {
+                img_user.setImageResource(R.drawable.user_male);
+                Log.d("Download", "Current profil photo successfully downloaded and displayed");
+            }
 
             return view;
 

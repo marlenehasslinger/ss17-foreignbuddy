@@ -167,6 +167,9 @@ public class UserDetailsActivity extends AppCompatActivity {
                 }
 
                 //Get current interests
+                if (myUser.interests != null) {
+
+
                 if (myUser.interests.get("Nature")) {
                     cB_Nature.setChecked(true);
                 }
@@ -194,6 +197,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                 if (myUser.interests.get("Reading")) {
                     cB_Reading.setChecked(true);
                 }
+                }
 
             }
 
@@ -204,13 +208,6 @@ public class UserDetailsActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
-
 
     public void addUserDataToDatabase(){
 
