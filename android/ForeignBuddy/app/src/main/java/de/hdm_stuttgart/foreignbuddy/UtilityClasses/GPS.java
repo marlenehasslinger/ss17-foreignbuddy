@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 /**
  * Created by Marc-JulianFleck on 22.04.17.
@@ -46,8 +47,12 @@ public class GPS implements LocationListener {
         return instance;
     }
 
-    public static double distanceInKm(double lat1, double lon1, double lat2, double lon2) {
+    public static double distanceInKm(User u1, User u2) {
         final int radius = 6371;
+        final double lat1 = u1.latitude;
+        final double lon1 = u1.longitude;
+        final double lat2 = u2.latitude;
+        final double lon2 = u2.longitude;
 
         double lat = Math.toRadians(lat2 - lat1);
         double lon = Math.toRadians(lon2 - lon1);

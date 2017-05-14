@@ -14,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -35,10 +38,13 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
+import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.SortEntfernung;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.SortInterests;
 
 
 public class MatchesFragment extends Fragment {
@@ -85,7 +91,7 @@ public class MatchesFragment extends Fragment {
 
         //get Matches and set in TableView
         matches = DatabaseUser.getInstance().getCurrentUsersMatches();
-        Collections.sort(matches);
+        Collections.sort(matches, new SortInterests());
         ArrayAdapter<User> matchesAdapter = new UserListAdapter();
         listView.setAdapter(matchesAdapter);
 
@@ -99,6 +105,31 @@ public class MatchesFragment extends Fragment {
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_conversations);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setTitle("Matches");
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.toolbar_matches_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.tb_filterDistance_matches:
+                matches = DatabaseUser.getInstance().getCurrentUsersMatches();
+                Collections.sort(matches, new SortEntfernung());
+                ArrayAdapter<User> matchesAdapter = new UserListAdapter();
+                listView.setAdapter(matchesAdapter);
+                break;
+            case R.id.tb_filterInterests_matches:
+                matches = DatabaseUser.getInstance().getCurrentUsersMatches();
+                Collections.sort(matches, new SortInterests());
+                ArrayAdapter<User> matchesAdapter2 = new UserListAdapter();
+                listView.setAdapter(matchesAdapter2);
+        }
+        return true;
     }
 
     private class UserListAdapter extends ArrayAdapter<User> {
@@ -152,8 +183,7 @@ public class MatchesFragment extends Fragment {
             } else if (myUser.latitude == null || myUser.longitude == null) {
                 location.setText("In " + currentMatch.lastKnownCity); //If I have no location
             } else {
-                double entfernung = GPS.distanceInKm(myUser.latitude, myUser.longitude
-                        , currentMatch.latitude, currentMatch.longitude);
+                double entfernung = GPS.distanceInKm(myUser,currentMatch);
                 location.setText(Double.toString(entfernung) + " Km"); //If both have location
             }
 

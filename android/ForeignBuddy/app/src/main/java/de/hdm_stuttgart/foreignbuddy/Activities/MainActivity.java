@@ -1,10 +1,16 @@
 package de.hdm_stuttgart.foreignbuddy.Activities;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
@@ -12,8 +18,12 @@ import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
 import de.hdm_stuttgart.foreignbuddy.Fragments.MatchesFragment;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
+
+
+    public static final int LOCATION_REQUEST_CODE = 609596;
 
     //Declare Fragments
     final private ChatsFragment chat = new ChatsFragment();
@@ -62,7 +72,6 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             }
         });
-
     }
-
 }
+

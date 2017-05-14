@@ -2,6 +2,7 @@ package de.hdm_stuttgart.foreignbuddy.Users;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class User implements Comparable<User>{
     private File profilePhoto;
     private List<String> commonInterest = new ArrayList<>();
     private int numberOfCommonInterest;
+    private Double distanceToMyUser;
 
 
     //Constructors
@@ -111,6 +113,14 @@ public class User implements Comparable<User>{
 
     public int getNumberOfCommonInterest() {
         return numberOfCommonInterest;
+    }
+
+    public Double getDistanceToMyUser() {
+        return distanceToMyUser;
+    }
+
+    public void setDistanceToMyUser(Double distanceToMyUser) {
+        this.distanceToMyUser = distanceToMyUser;
     }
 
     @Override

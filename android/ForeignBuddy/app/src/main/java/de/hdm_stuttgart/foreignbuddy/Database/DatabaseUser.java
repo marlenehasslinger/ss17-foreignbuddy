@@ -39,6 +39,7 @@ import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
+import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
 /**
  * Created by Marc-JulianFleck on 19.04.17.
@@ -131,6 +132,7 @@ public class DatabaseUser {
                                     User user = dataSnapshot.getValue(User.class);
                                     loadProfilePhoto(user);
                                     user.setCommonInterests(currentUser);
+                                    user.setDistanceToMyUser(GPS.distanceInKm(currentUser, user));
                                     currentUsersMatches.add(user);
                                 }
 
