@@ -8,6 +8,9 @@ target 'ForeignBuddyIOS' do
   # Pods for ForeignBuddyIOS
 	pod 'Firebase/Core'
     pod 'Firebase/Auth'
+    pod 'Firebase/Storage'
+    pod 'Firebase/Database'
+    pod 'JSQMessagesViewController'
 
   target 'ForeignBuddyIOSTests' do
     inherit! :complete
