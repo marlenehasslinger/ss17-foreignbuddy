@@ -1,0 +1,6 @@
+framework module Pods_ForeignBuddyIOS_ForeignBuddyIOSTests {
+  umbrella header "Pods-ForeignBuddyIOS-ForeignBuddyIOSTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
