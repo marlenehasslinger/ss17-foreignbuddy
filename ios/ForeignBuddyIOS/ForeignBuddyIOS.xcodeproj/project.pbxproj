@@ -22,6 +22,9 @@
 		21ABE7281ECB074F00BEF53B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */; };
 		21ABE7291ECB074F00BEF53B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */; };
 		76BF1252D4D677C9AE6F57E7 /* Pods_ForeignBuddyIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33D60FBA173FA4159FC94F1D /* Pods_ForeignBuddyIOS.framework */; };
+		9655386E1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */; };
+		9655386F1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */; };
+		965538701ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */; };
 		966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */; };
 		966ABCFD1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */; };
 		966ABCFE1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */; };
@@ -68,6 +71,7 @@
 		33D60FBA173FA4159FC94F1D /* Pods_ForeignBuddyIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6011AF6ECCE354F894807BDC /* Pods-ForeignBuddyIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.release.xcconfig"; sourceTree = "<group>"; };
 		6354AC24053BB2E788AE9AD8 /* Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		A7B8EB7CBF1816965E2D79FD /* Pods-ForeignBuddyIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.debug.xcconfig"; sourceTree = "<group>"; };
 		E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +138,7 @@
 				218E24441ECB12FF00080321 /* LoginViewController.swift */,
 				2114EFF61ECB067C00D2CECA /* SecondViewController.swift */,
 				2114EFF81ECB067C00D2CECA /* Main.storyboard */,
+				9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */,
 				2114EFFB1ECB067C00D2CECA /* Assets.xcassets */,
 				2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */,
 				2114F0001ECB067C00D2CECA /* Info.plist */,
@@ -468,6 +473,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9655386E1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				2114EFF71ECB067C00D2CECA /* SecondViewController.swift in Sources */,
@@ -482,6 +488,7 @@
 			files = (
 				218E24461ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				2114F00A1ECB067C00D2CECA /* ForeignBuddyIOSTests.swift in Sources */,
+				9655386F1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				966ABCFD1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -492,6 +499,7 @@
 			files = (
 				218E24471ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				2114F0151ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift in Sources */,
+				965538701ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				966ABCFE1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

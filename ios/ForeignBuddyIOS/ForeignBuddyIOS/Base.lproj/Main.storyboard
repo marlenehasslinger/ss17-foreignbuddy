@@ -22,9 +22,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background2" translatesAutoresizingMaskIntoConstraints="NO" id="du0-je-El2">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background2" translatesAutoresizingMaskIntoConstraints="NO" id="du0-je-El2">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="wgc-UH-Jpr">
                                 <rect key="frame" x="16" y="200.5" width="343" height="267.5"/>
@@ -103,7 +102,11 @@
                         <color key="backgroundColor" red="0.95656444768171767" green="1" blue="0.89406115116114104" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.89441149500367556" green="0.7234620987672471" blue="0.089775131710919304" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="du0-je-El2" secondAttribute="trailing" id="IBj-LZ-Ai8"/>
+                            <constraint firstItem="du0-je-El2" firstAttribute="leading" secondItem="ILQ-5M-uA2" secondAttribute="leading" id="PLG-T2-BUd"/>
                             <constraint firstItem="wgc-UH-Jpr" firstAttribute="centerY" secondItem="ILQ-5M-uA2" secondAttribute="centerY" id="XHz-ay-3vQ"/>
+                            <constraint firstAttribute="bottom" secondItem="du0-je-El2" secondAttribute="bottom" id="baz-de-bh8"/>
+                            <constraint firstItem="du0-je-El2" firstAttribute="top" secondItem="ILQ-5M-uA2" secondAttribute="top" id="q62-PV-ZOl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="wgc-UH-Jpr" secondAttribute="trailing" id="vxM-c3-pNS"/>
                             <constraint firstItem="wgc-UH-Jpr" firstAttribute="leading" secondItem="ILQ-5M-uA2" secondAttribute="leadingMargin" id="wpJ-aN-XyW"/>
                         </constraints>
@@ -168,6 +171,7 @@
                             </label>
                             <pickerView contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2tX-7y-4ty">
                                 <rect key="frame" x="28" y="319" width="320" height="216"/>
+                                <color key="tintColor" red="0.89411764709999997" green="0.72156862749999995" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="oTV-Jo-3H0" id="Vqv-tS-CcP"/>
                                     <outlet property="delegate" destination="oTV-Jo-3H0" id="Pyg-Fk-lNI"/>
@@ -273,10 +277,10 @@
             </objects>
             <point key="canvasLocation" x="390" y="-1355"/>
         </scene>
-        <!--View Controller-->
+        <!--Profile View Controller-->
         <scene sceneID="I68-EC-iss">
             <objects>
-                <viewController id="fxD-u6-xE6" sceneMemberID="viewController">
+                <viewController id="fxD-u6-xE6" customClass="ProfileViewController" customModule="ForeignBuddyIOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gT3-fd-5zd"/>
                         <viewControllerLayoutGuide type="bottom" id="Hht-PX-P9R"/>
@@ -284,13 +288,29 @@
                     <view key="view" contentMode="scaleToFill" id="AK3-T3-sgl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDM-TN-a9f">
+                                <rect key="frame" x="16" y="553" width="343" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" red="0.89411764709999997" green="0.72156862749999995" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="btn_logout_clicked:" destination="fxD-u6-xE6" eventType="touchUpInside" id="sl5-xB-T8d"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" systemItem="contacts" id="MRa-di-kLf"/>
+                    <connections>
+                        <outlet property="btn_logout" destination="bDM-TN-a9f" id="3cz-e6-ZFy"/>
+                        <segue destination="VLr-fF-gxA" kind="show" identifier="goToLogin" id="Plg-E2-dG7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5uS-iF-zUV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="998" y="216"/>
+            <point key="canvasLocation" x="997.60000000000002" y="215.44227886056973"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="q5O-nn-pOV">
@@ -335,6 +355,6 @@
         <image name="background2" width="720" height="1280"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7YS-Aa-DJV"/>
+        <segue reference="ugR-L1-QtS"/>
     </inferredMetricsTieBreakers>
 </document>

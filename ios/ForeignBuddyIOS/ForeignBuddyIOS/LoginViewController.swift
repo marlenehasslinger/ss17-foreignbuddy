@@ -37,8 +37,14 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        FIRAuth.auth()!.addStateDidChangeListener() { auth, user in
 
-        // Do any additional setup after loading the view.
+            if user != nil {
+                self.performSegue(withIdentifier: "goToHome", sender: self)
+            }
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
