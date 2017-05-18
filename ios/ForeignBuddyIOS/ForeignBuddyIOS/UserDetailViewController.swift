@@ -10,11 +10,19 @@ import UIKit
 
 class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
+    @IBOutlet weak var buttonNext: UIButton!
     
-    @IBOutlet weak var nativeLanguagePickerView: UIPickerView!
+    @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var nativeLanguageLabel: UILabel!
+
+    @IBOutlet weak var nativeLanguagePickerView: UIPickerView!
     @IBOutlet weak var foreignLanguagePickerView: UIPickerView!
     
+    @IBAction func nextButtonClicked(_ sender: UIButton) {
+        
+        self.performSegue(withIdentifier: "goToHome", sender: self)
+        
+    }
     
     let nativeLanguages = ["German", "English", "Spanish", "French"]
     let foreignLanguages = ["German", "English", "Spanish", "French"]
@@ -61,6 +69,16 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        //Dismiss keyboard when the view is tapped on
+        userNameTextField.resignFirstResponder()
+    
+    }
+    
     
 
     /*

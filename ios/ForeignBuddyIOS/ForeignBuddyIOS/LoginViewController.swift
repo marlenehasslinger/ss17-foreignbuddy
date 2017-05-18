@@ -104,7 +104,7 @@ class LoginViewController: UIViewController {
                         
                     } else {
                      //Check Error and show message
-                           self.errorTextLabel.text = "Wrong Password or Email"
+                           self.errorTextLabel.text = "Something went wrong"
                     }
                     
                 })
