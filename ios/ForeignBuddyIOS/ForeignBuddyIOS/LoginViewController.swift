@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var signinSelector: UISegmentedControl!
     
-    @IBOutlet weak var signinLabel: UILabel!
+   // @IBOutlet weak var signinLabel: UILabel!
     
     
     @IBOutlet weak var emailTextField: UITextField!
@@ -54,11 +54,11 @@ class LoginViewController: UIViewController {
         //Check boolean and set the button and labels
         
         if isSignIn {
-        signinLabel.text = "Sign In"
+       // signinLabel.text = "Sign In"
         signinButton.setTitle("Sign In", for: .normal)
             
         }else {
-            signinLabel.text = "Register"
+         //   signinLabel.text = "Register"
             signinButton.setTitle("Register", for: .normal)
         
         }
@@ -98,7 +98,9 @@ class LoginViewController: UIViewController {
                     //Check that user isnt nil
                     if  user != nil{                        //User is found, go to homescreen
                         
-                        self.performSegue(withIdentifier: "goToHome", sender: self)
+                        self.performSegue(withIdentifier: "goToUserDetail", sender: self)
+
+                       // self.performSegue(withIdentifier: "goToHome", sender: self)
                         
                     } else {
                      //Check Error and show message

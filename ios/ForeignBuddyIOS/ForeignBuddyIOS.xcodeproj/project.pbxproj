@@ -22,6 +22,12 @@
 		21ABE7281ECB074F00BEF53B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */; };
 		21ABE7291ECB074F00BEF53B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */; };
 		76BF1252D4D677C9AE6F57E7 /* Pods_ForeignBuddyIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33D60FBA173FA4159FC94F1D /* Pods_ForeignBuddyIOS.framework */; };
+		966ABCF81ECB2A7B00EB8050 /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 966ABCF71ECB2A7B00EB8050 /* background2.png */; };
+		966ABCF91ECB2A7B00EB8050 /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 966ABCF71ECB2A7B00EB8050 /* background2.png */; };
+		966ABCFA1ECB2A7B00EB8050 /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = 966ABCF71ECB2A7B00EB8050 /* background2.png */; };
+		966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */; };
+		966ABCFD1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */; };
+		966ABCFE1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */; };
 		ABE2786117C3E09208305D93 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */; };
 		F2E3AABD7592A7281232548D /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */; };
 /* End PBXBuildFile section */
@@ -65,6 +71,8 @@
 		33D60FBA173FA4159FC94F1D /* Pods_ForeignBuddyIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6011AF6ECCE354F894807BDC /* Pods-ForeignBuddyIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.release.xcconfig"; sourceTree = "<group>"; };
 		6354AC24053BB2E788AE9AD8 /* Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		966ABCF71ECB2A7B00EB8050 /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background2.png; path = ../../../../background2.png; sourceTree = "<group>"; };
+		966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		A7B8EB7CBF1816965E2D79FD /* Pods-ForeignBuddyIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.debug.xcconfig"; sourceTree = "<group>"; };
 		E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +110,7 @@
 		2114EFE61ECB067C00D2CECA = {
 			isa = PBXGroup;
 			children = (
+				966ABCF71ECB2A7B00EB8050 /* background2.png */,
 				2114EFF11ECB067C00D2CECA /* ForeignBuddyIOS */,
 				2114F0081ECB067C00D2CECA /* ForeignBuddyIOSTests */,
 				2114F0131ECB067C00D2CECA /* ForeignBuddyIOSUITests */,
@@ -133,6 +142,7 @@
 				2114EFFB1ECB067C00D2CECA /* Assets.xcassets */,
 				2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */,
 				2114F0001ECB067C00D2CECA /* Info.plist */,
+				966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */,
 			);
 			path = ForeignBuddyIOS;
 			sourceTree = "<group>";
@@ -297,6 +307,7 @@
 			files = (
 				2114EFFF1ECB067C00D2CECA /* LaunchScreen.storyboard in Resources */,
 				21ABE7271ECB074F00BEF53B /* GoogleService-Info.plist in Resources */,
+				966ABCF81ECB2A7B00EB8050 /* background2.png in Resources */,
 				2114EFFC1ECB067C00D2CECA /* Assets.xcassets in Resources */,
 				2114EFFA1ECB067C00D2CECA /* Main.storyboard in Resources */,
 			);
@@ -306,6 +317,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				966ABCF91ECB2A7B00EB8050 /* background2.png in Resources */,
 				21ABE7281ECB074F00BEF53B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -314,6 +326,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				966ABCFA1ECB2A7B00EB8050 /* background2.png in Resources */,
 				21ABE7291ECB074F00BEF53B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */,
+				966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				2114EFF71ECB067C00D2CECA /* SecondViewController.swift in Sources */,
 				2114EFF31ECB067C00D2CECA /* AppDelegate.swift in Sources */,
 				2114EFF51ECB067C00D2CECA /* FirstViewController.swift in Sources */,
@@ -476,6 +490,7 @@
 			files = (
 				218E24461ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				2114F00A1ECB067C00D2CECA /* ForeignBuddyIOSTests.swift in Sources */,
+				966ABCFD1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,6 +500,7 @@
 			files = (
 				218E24471ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				2114F0151ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift in Sources */,
+				966ABCFE1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
