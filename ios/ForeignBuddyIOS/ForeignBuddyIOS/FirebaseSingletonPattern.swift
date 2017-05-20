@@ -18,6 +18,7 @@ class FirebaseSingletonPattern{
     var ref: FIRDatabaseReference? = FIRDatabase.database().reference()
    // var cnt = 0  //Variable to test Singleton pattern functionality
 
+
     //Constructor
     private init (){
     }
@@ -29,6 +30,7 @@ class FirebaseSingletonPattern{
 
     //Inserts current user to the Firebase database
     public func insertUser(){
+        
         /*
         //Snippet to test Singleton pattern functionality
         print("cnt#####################")
@@ -36,7 +38,38 @@ class FirebaseSingletonPattern{
         cnt = cnt + 1
          */
         let userID = FIRAuth.auth()!.currentUser!.uid
-        //print(userID)
         self.ref!.child("users").child(userID).child("userID").setValue(userID)
+        self.ref!.child("users").child(userID).child("email").setValue(FIRAuth.auth()!.currentUser?.email)
+
     }
+    
+    
+    //Database inserts for UserDetailViewController
+    public func insertUsername(username: String){
+        
+        let userID = FIRAuth.auth()!.currentUser!.uid
+        self.ref!.child("users").child(userID).child("username").setValue(username)
+ 
+    }
+    
+    public func insertNativeLanguage(nativeLanguage: String){
+        
+        let userID = FIRAuth.auth()!.currentUser!.uid
+        self.ref!.child("users").child(userID).child("nativeLanguage").setValue(nativeLanguage)
+        
+    }
+    
+    public func insertForeignLanguage(foreignLanguage: String){
+        
+        let userID = FIRAuth.auth()!.currentUser!.uid
+        self.ref!.child("users").child(userID).child("language").setValue(foreignLanguage)
+        
+    }
+    public func insertDistanceToMatch (distanceToMatch: Int){
+        
+        let userID = FIRAuth.auth()!.currentUser!.uid
+        self.ref!.child("users").child(userID).child("distanceToMatch").setValue(distanceToMatch)
+        
+    }
+
 }

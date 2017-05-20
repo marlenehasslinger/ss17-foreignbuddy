@@ -6,7 +6,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
@@ -19,14 +19,14 @@
             landmarkType = "3">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "ForeignBuddyIOS.UserDetailViewController.__deallocating_deinit"
                   moduleName = "ForeignBuddyIOS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
-                  timestampString = "516971141.557616"
+                  timestampString = "516973778.721506"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -34,14 +34,14 @@
                   offsetFromSymbolStart = "4">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "ForeignBuddyIOS.UserDetailViewController.init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; ForeignBuddyIOS.UserDetailViewController"
                   moduleName = "ForeignBuddyIOS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
-                  timestampString = "516971141.561505"
+                  timestampString = "516973778.725637"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "14"
@@ -49,14 +49,14 @@
                   offsetFromSymbolStart = "72">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "ForeignBuddyIOS.UserDetailViewController.__allocating_init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; ForeignBuddyIOS.UserDetailViewController"
                   moduleName = "ForeignBuddyIOS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
-                  timestampString = "516971141.565543"
+                  timestampString = "516973778.729286"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -64,14 +64,14 @@
                   offsetFromSymbolStart = "23">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "ForeignBuddyIOS.UserDetailViewController.__allocating_init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;ForeignBuddyIOS.UserDetailViewController&gt;"
                   moduleName = "ForeignBuddyIOS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
-                  timestampString = "516971141.569123"
+                  timestampString = "516973778.73349"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -79,14 +79,171 @@
                   offsetFromSymbolStart = "4">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "ForeignBuddyIOS.UserDetailViewController.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;ForeignBuddyIOS.UserDetailViewController&gt;"
                   moduleName = "ForeignBuddyIOS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
-                  timestampString = "516971141.572799"
+                  timestampString = "516973778.737465"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "31">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
+            timestampString = "517006041.759282"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
+            timestampString = "517006041.759282"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
+            timestampString = "517006041.759282"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
+            timestampString = "517006041.759282"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "didReceiveMemoryWarning()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
+            timestampString = "516973872.11725"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "UserDetailViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ForeignBuddyIOS.UserDetailViewController.__deallocating_deinit"
+                  moduleName = "ForeignBuddyIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
+                  timestampString = "516973872.123263"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ForeignBuddyIOS.UserDetailViewController.init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; ForeignBuddyIOS.UserDetailViewController"
+                  moduleName = "ForeignBuddyIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
+                  timestampString = "516973872.126811"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "72">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ForeignBuddyIOS.UserDetailViewController.__allocating_init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; ForeignBuddyIOS.UserDetailViewController"
+                  moduleName = "ForeignBuddyIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
+                  timestampString = "516973872.130658"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "23">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ForeignBuddyIOS.UserDetailViewController.__allocating_init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;ForeignBuddyIOS.UserDetailViewController&gt;"
+                  moduleName = "ForeignBuddyIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
+                  timestampString = "516973872.133432"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ForeignBuddyIOS.UserDetailViewController.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;ForeignBuddyIOS.UserDetailViewController&gt;"
+                  moduleName = "ForeignBuddyIOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Marlene/Desktop/git/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/UserDetailViewController.swift"
+                  timestampString = "516973872.136887"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "14"
@@ -103,76 +260,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ForeignBuddyIOS/LoginViewController.swift"
-            timestampString = "516970727.872727"
+            timestampString = "516988827.558359"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
-            landmarkName = "signinButtonTapped(_:)"
-            landmarkType = "7">
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "LoginViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ForeignBuddyIOS/LoginViewController.swift"
-            timestampString = "516970729.608854"
+            filePath = "ForeignBuddyIOS/FirebaseSingletonPattern.swift"
+            timestampString = "516997842.422727"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "signinButtonTapped(_:)"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "insertUsername(username:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
-            timestampString = "516971230.451946"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
-            timestampString = "516971231.885065"
+            timestampString = "517005767.396673"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ForeignBuddyIOS/UserDetailViewController.swift"
-            timestampString = "516971233.068309"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "distanceSlider(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
