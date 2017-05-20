@@ -7,16 +7,16 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseAuth
 
 
 class LoginViewController: UIViewController {
 
     
+ 
     
     @IBOutlet weak var signinSelector: UISegmentedControl!
-    
-   // @IBOutlet weak var signinLabel: UILabel!
     
     
     @IBOutlet weak var emailTextField: UITextField!
@@ -37,6 +37,10 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       // _ = FirebaseSingletonPattern.getInstance()
+    
+        
         
         FIRAuth.auth()!.addStateDidChangeListener() { auth, user in
 
@@ -102,11 +106,12 @@ class LoginViewController: UIViewController {
                 FIRAuth.auth()?.createUser(withEmail: email, password: pass, completion: { (user, error) in
                     
                     //Check that user isnt nil
-                    if  user != nil{                        //User is found, go to homescreen
-                        
+                    if  user != nil{
+                        //Save user to database
+                        let refFirebase = FirebaseSingletonPattern.getInstance()
+                        refFirebase.insertUser()
+                        //Go to user detail form,if no profile exist
                         self.performSegue(withIdentifier: "goToUserDetail", sender: self)
-
-                       // self.performSegue(withIdentifier: "goToHome", sender: self)
                         
                     } else {
                      //Check Error and show message

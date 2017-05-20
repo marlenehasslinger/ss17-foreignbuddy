@@ -7,9 +7,10 @@
 //
 
 import UIKit
-import FirebaseAuth
+import Firebase
 
 class ProfileViewController: UIViewController {
+ 
 
     @IBOutlet weak var btn_logout: UIButton!
     
@@ -33,6 +34,8 @@ class ProfileViewController: UIViewController {
         
         
     }
+    
+
 
     /*
     // MARK: - Navigation

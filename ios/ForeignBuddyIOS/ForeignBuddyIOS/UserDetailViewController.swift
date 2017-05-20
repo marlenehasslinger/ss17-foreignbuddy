@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
@@ -19,8 +20,7 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     @IBOutlet weak var foreignLanguagePickerView: UIPickerView!
     
     @IBAction func nextButtonClicked(_ sender: UIButton) {
-        
-        self.performSegue(withIdentifier: "goToHome", sender: self)
+      //  self.performSegue(withIdentifier: "goToHome", sender: self)
         
     }
     
@@ -47,7 +47,12 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView == nativeLanguagePickerView){
-        //DB Zugriff machen und Wert abspeichern
+
+            let rootRef = FIRDatabase.database().reference()
+            let userID = FIRAuth.auth()!.currentUser!.uid
+            rootRef.child("users").child(userID).child("nativeLanguage").setValue(nativeLanguages[row])
+            
+        
         }else{
             //DB Zugriff machen und Wert abspeichern
         }
@@ -61,7 +66,6 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     override func viewDidLoad() {
         super.viewDidLoad()
   
-
         // Do any additional setup after loading the view.
     }
 
