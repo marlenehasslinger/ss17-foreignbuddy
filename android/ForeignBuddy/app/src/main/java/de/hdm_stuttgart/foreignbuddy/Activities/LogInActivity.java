@@ -11,12 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.formats.NativeAppInstallAd;
+import com.google.android.gms.ads.formats.NativeContentAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import de.hdm_stuttgart.foreignbuddy.Database.Advertisement;
 import de.hdm_stuttgart.foreignbuddy.R;
 
 public class LogInActivity extends AppCompatActivity {
@@ -37,6 +44,10 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+        //Load one Ad
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544/2247696110");
+        Advertisement.getInstance().setAd(getApplicationContext());
 
         //Widgets
         txt_email_login = (EditText) findViewById(R.id.txt_email_login);
@@ -92,7 +103,6 @@ public class LogInActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
-
 
     public void btn_register_clicked(View v) {
         Log.d("Auth", "onAuthStateChanged:register:");

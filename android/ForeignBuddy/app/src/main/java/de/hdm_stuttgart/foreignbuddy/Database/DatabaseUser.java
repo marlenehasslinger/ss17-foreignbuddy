@@ -66,7 +66,7 @@ public class DatabaseUser {
     private StorageReference riversRef;
     private StorageReference storageReference;
     private Context context;
-    private File localFile = null;
+    //private File localFile = null;
 
     public void setContext(Context context) {
         this.context = context;
@@ -102,8 +102,6 @@ public class DatabaseUser {
                         loadCurrentUsersMatches();
                         currentUsersConversations = new ArrayList<>();
                         loadCurrentUsersConversations();
-                        //downloadProfilePhoto();
-
                     }
 
                     @Override
@@ -178,8 +176,8 @@ public class DatabaseUser {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference riversRef = storageReference.child("images/" + downloadName);
         try {
-            localFile = File.createTempFile("images", downloadName);
-            user.setProfilePhoto(localFile);
+            //localFile = File.createTempFile("images", downloadName);
+            user.setProfilePhoto(File.createTempFile("images", downloadName));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -196,6 +194,7 @@ public class DatabaseUser {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Log.d("Download", "Profil photo download failed");
+                user.setProfilePhoto(null);
             }
         });
     }
