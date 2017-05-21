@@ -45,7 +45,7 @@ public class ChatsFragment extends Fragment {
     private Toolbar toolbar;
     private ImageView img_user;
 
-    private List<Conversation> conversations;
+    private List<Conversation> conversations = new ArrayList<>();
 
 
     private ProgressDialog progressDialog;
@@ -56,9 +56,8 @@ public class ChatsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chats, container, false);
 
         chatOverview = (ListView)view.findViewById(R.id.ChatsOverview);
-        conversations = new ArrayList<>();
 
-        progressDialog = ProgressDialog.show(getActivity(), "Loading Conversations...", "Please wait...", true);
+        /*progressDialog = ProgressDialog.show(getActivity(), "Loading Conversations...", "Please wait...", true);
 
         //Set listener to firebase database so messages can be retrieved
         FirebaseDatabase.getInstance().getReference()
@@ -83,17 +82,11 @@ public class ChatsFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
-
-        /*if (DatabaseUser.haveCurrentUser() == false){
-            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
-            while (DatabaseUser.haveCurrentUser() == false) {}
-            progressDialog.dismiss();
-        }
-        conversations = DatabaseUser.getCurrentUsersConversations();
+        conversations = DatabaseUser.getInstance().getCurrentUsersConversations();
         ArrayAdapter<Conversation> conversationAdapter = new ConversationListAdapter();
-        chatOverview.setAdapter(conversationAdapter);*/
+        chatOverview.setAdapter(conversationAdapter);
 
         //Set onItemClickListener on list elements to open chats
         chatOverview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

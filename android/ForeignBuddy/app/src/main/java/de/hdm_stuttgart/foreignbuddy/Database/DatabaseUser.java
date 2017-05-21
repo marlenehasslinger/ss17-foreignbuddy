@@ -48,6 +48,8 @@ import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
 public class DatabaseUser {
 
+    public static final String FINISHED_LOADING = "FINISHED_LOADING";
+
     private static DatabaseUser instance;
 
     //Create and get Instance of DatabaseUser
@@ -74,6 +76,7 @@ public class DatabaseUser {
     private StorageReference riversRef;
     private StorageReference storageReference;
     private Context context;
+    private boolean firstLoading = true;
     //private File localFile = null;
 
     public User getCurrentUser() {
@@ -137,6 +140,12 @@ public class DatabaseUser {
 
                                 }
                             });
+                }
+                if (firstLoading == true) {
+                    firstLoading = false;
+                    Intent loadingIntent = new Intent();
+                    loadingIntent.setAction(FINISHED_LOADING);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
                 }
             }
 

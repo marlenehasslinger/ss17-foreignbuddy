@@ -2,12 +2,18 @@ package de.hdm_stuttgart.foreignbuddy.Activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     final private ProfilFragment profil = new ProfilFragment();
     final private MatchesFragment matches = new MatchesFragment();
 
+    //Progress Dialog
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +48,22 @@ public class MainActivity extends AppCompatActivity {
         //Load current User
         DatabaseUser.getInstance();
 
-        //Set First Fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment, chat);
-        transaction.commit();
+        progressDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
 
-        //BottomNavigationBar set Fragment
+        LocalBroadcastManager.getInstance(this.getApplicationContext()).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Set First Fragment
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment, chat);
+                transaction.commit();
+                progressDialog.dismiss();
+            }
+        }, new IntentFilter(DatabaseUser.FINISHED_LOADING));
+
+
+
+        //BottomNavigationBar; Fragments
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
