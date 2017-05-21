@@ -43,6 +43,7 @@ import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
 import de.hdm_stuttgart.foreignbuddy.Database.Advertisement;
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.Users.Match;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.SortEntfernung;
@@ -60,7 +61,7 @@ public class MatchesFragment extends Fragment {
     private TextView language;
     private TextView interests;
     private Button btn_chat;
-    private List<User> matches = new ArrayList<>();
+    private List<Match> matches = new ArrayList<>();
     private ListView listView;
     private Toolbar toolbar;
     private DatabaseReference mDatabase;
@@ -95,19 +96,19 @@ public class MatchesFragment extends Fragment {
         myUser = DatabaseUser.getInstance().getCurrentUser();
 
         //get Matches and set in TableView
-        for (User user : DatabaseUser.getInstance().getCurrentUsersMatches()) {
-            matches.add(user);
+        for (Match match : DatabaseUser.getInstance().getCurrentUsersMatches()) {
+            matches.add(match);
         }
         Collections.sort(matches, new SortInterests());
         if (Advertisement.getInstance().getAd() != null) {
             if (matches.size() > 4) {
-                matches.add(3, new User("Ad"));
+                matches.add(3, new Match("Ad"));
             } else {
-                matches.add(new User("Ad"));
+                matches.add(new Match("Ad"));
             }
         }
 
-        ArrayAdapter<User> matchesAdapter = new UserListAdapter();
+        ArrayAdapter<Match> matchesAdapter = new UserListAdapter();
         listView.setAdapter(matchesAdapter);
 
         return view;
@@ -141,19 +142,19 @@ public class MatchesFragment extends Fragment {
             case R.id.tb_filterDistance_matches:
                 matches = DatabaseUser.getInstance().getCurrentUsersMatches();
                 Collections.sort(matches, new SortEntfernung());
-                ArrayAdapter<User> matchesAdapter = new UserListAdapter();
+                ArrayAdapter<Match> matchesAdapter = new UserListAdapter();
                 listView.setAdapter(matchesAdapter);
                 break;
             case R.id.tb_filterInterests_matches:
                 matches = DatabaseUser.getInstance().getCurrentUsersMatches();
                 Collections.sort(matches, new SortInterests());
-                ArrayAdapter<User> matchesAdapter2 = new UserListAdapter();
+                ArrayAdapter<Match> matchesAdapter2 = new UserListAdapter();
                 listView.setAdapter(matchesAdapter2);
         }
         return true;
     }
 
-    private class UserListAdapter extends ArrayAdapter<User> {
+    private class UserListAdapter extends ArrayAdapter<Match> {
 
         public UserListAdapter() {
             super(getActivity(), R.layout.matches, matches);
@@ -168,7 +169,7 @@ public class MatchesFragment extends Fragment {
             } else {
                 view = convertView;
             }
-            final User currentMatch = matches.get(position);
+            final Match currentMatch = matches.get(position);
 
             if (currentMatch.getUserID().equals("Ad") == false) {
 
@@ -232,7 +233,6 @@ public class MatchesFragment extends Fragment {
                 img_interests_matches = (ImageView) view.findViewById(R.id.img_interests_matches);
 
                 final NativeAppInstallAd currentAd = Advertisement.getInstance().getAd();
-                AdRequest adRequest = new AdRequest.Builder().addCustomEventExtrasBundle();
 
                 img_language_matches.setVisibility(View.GONE);
                 img_interests_matches.setVisibility(View.GONE);

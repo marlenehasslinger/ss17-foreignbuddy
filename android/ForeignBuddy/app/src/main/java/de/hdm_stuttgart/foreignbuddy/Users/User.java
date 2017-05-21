@@ -11,7 +11,7 @@ import java.util.Map;
  * Created by Marc-JulianFleck on 29.03.17.
  */
 
-public class User implements Comparable<User>{
+public class User{
 
     public String userID;
     public String username;
@@ -25,15 +25,11 @@ public class User implements Comparable<User>{
     public int distanceToMatch;
     public Map<String, Boolean> interests;
     private File profilePhoto;
-    private List<String> commonInterest = new ArrayList<>();
-    private int numberOfCommonInterest;
-    private Double distanceToMyUser;
 
 
     //Constructors
     public User() {
     }
-
     public User(String userID) {
         this.userID = userID;
     }
@@ -93,39 +89,4 @@ public class User implements Comparable<User>{
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public void setCommonInterests(User myUser){
-        numberOfCommonInterest = 0;
-
-        for (Iterator it = interests.keySet().iterator(); it.hasNext(); ){
-            String interest = (String) it.next();
-            Boolean value = interests.get(interest);
-            if (value == true && myUser.interests.get(interest) == true) {
-                commonInterest.add(interest);
-                numberOfCommonInterest++;
-            }
-        }
-    }
-
-    public List<String> getCommonInterest() {
-        return commonInterest;
-    }
-
-    public int getNumberOfCommonInterest() {
-        return numberOfCommonInterest;
-    }
-
-    public Double getDistanceToMyUser() {
-        return distanceToMyUser;
-    }
-
-    public void setDistanceToMyUser(Double distanceToMyUser) {
-        this.distanceToMyUser = distanceToMyUser;
-    }
-
-    @Override
-    public int compareTo(User user) {
-        return Integer.compare(user.getNumberOfCommonInterest(), numberOfCommonInterest);
-    }
-
 }

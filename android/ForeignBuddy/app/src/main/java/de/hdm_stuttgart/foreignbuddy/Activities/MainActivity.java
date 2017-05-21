@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Load current User
-        DatabaseUser.getInstance().InstanceCurrentUser();
+        DatabaseUser.getInstance();
 
         //Set First Fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

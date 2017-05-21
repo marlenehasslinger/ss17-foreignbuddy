@@ -143,6 +143,9 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             Log.d("Download", "Current profil photo successfully downloaded and displayed");
         }
 
+        if (myUser.lastKnownCity != null) {
+            txt_location_profil.setText(myUser.lastKnownCity);
+        }
 
         //Get City
         GPS.getInstance().setContext(getActivity().getApplicationContext());
@@ -152,9 +155,6 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
             public void onReceive(Context context, Intent intent) {
                 //Set city
                 String locationCity = intent.getStringExtra("city");
-                if (!locationCity.equals(myUser.lastKnownCity)) {
-                    DatabaseUser.getInstance().InstanceCurrentUser();
-                }
                 txt_location_profil.setText(locationCity);
             }
         }, new IntentFilter(GPS.LOCATION_UPDATED));

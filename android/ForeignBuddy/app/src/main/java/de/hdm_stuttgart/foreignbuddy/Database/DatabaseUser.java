@@ -38,6 +38,7 @@ import java.util.Locale;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.Users.Match;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
@@ -53,14 +54,21 @@ public class DatabaseUser {
     public static synchronized DatabaseUser getInstance() {
         if (instance == null) {
             instance = new DatabaseUser();
+            instance.InstanceCurrentUser();
         }
         return instance;
+    }
+    private void InstanceCurrentUser() {
+        loadCurrentUser();
+    }
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     //User Data
     private User currentUser;
-    private List<User> currentUsersMatches;
-    private List<Conversation> currentUsersConversations;
+    private List<Match> currentUsersMatches = new ArrayList<>();
+    private List<Conversation> currentUsersConversations = new ArrayList<>();
 
     //Helper
     private StorageReference riversRef;
@@ -68,20 +76,11 @@ public class DatabaseUser {
     private Context context;
     //private File localFile = null;
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public void InstanceCurrentUser() {
-        deleteCurrentUser();
-        loadCurrentUser();
-    }
-
     public User getCurrentUser() {
         return currentUser;
     }
 
-    public List<User> getCurrentUsersMatches() {
+    public List<Match> getCurrentUsersMatches() {
         return currentUsersMatches;
     }
 
@@ -93,14 +92,12 @@ public class DatabaseUser {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentUser = dataSnapshot.getValue(User.class);
                         loadProfilePhoto(currentUser);
-                        currentUsersMatches = new ArrayList<>();
                         loadCurrentUsersMatches();
-                        currentUsersConversations = new ArrayList<>();
                         loadCurrentUsersConversations();
                     }
 
@@ -119,6 +116,7 @@ public class DatabaseUser {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                currentUsersMatches.clear();
                 Iterable<DataSnapshot> allMatches = dataSnapshot.getChildren();
                 for (DataSnapshot child : allMatches) {
                     FirebaseDatabase.getInstance().getReference()
@@ -127,11 +125,11 @@ public class DatabaseUser {
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User user = dataSnapshot.getValue(User.class);
-                                    loadProfilePhoto(user);
-                                    user.setCommonInterests(currentUser);
-                                    user.setDistanceToMyUser(GPS.distanceInKm(currentUser, user));
-                                    currentUsersMatches.add(user);
+                                    Match match =  dataSnapshot.getValue(Match.class);
+                                    loadProfilePhoto(match);
+                                    match.setCommonInterests(currentUser);
+                                    match.setDistanceToMyUser(GPS.distanceInKm(currentUser, match));
+                                    currentUsersMatches.add(match);
                                 }
 
                                 @Override
@@ -157,6 +155,7 @@ public class DatabaseUser {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        currentUsersConversations.clear();
                         Iterable<DataSnapshot> allConversations = dataSnapshot.getChildren();
                         for (DataSnapshot child : allConversations) {
                             Conversation conversation = child.getValue(Conversation.class);
@@ -197,12 +196,6 @@ public class DatabaseUser {
                 user.setProfilePhoto(null);
             }
         });
-    }
-
-    private void deleteCurrentUser() {
-        currentUser = null;
-        currentUsersMatches = null;
-        currentUsersConversations = null;
     }
 
 }
