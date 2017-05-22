@@ -16,6 +16,9 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let refFirebase = FirebaseSingletonPattern.getInstance()
+        refFirebase.loadCurrentUserData()
 
         // Do any additional setup after loading the view.
     }
@@ -35,8 +38,21 @@ class ProfileViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if(segue.identifier == "goToUserDetail") {
+            
+            let UserDetailViewController = (segue.destination as! UserDetailViewController)
+            UserDetailViewController.newUser = false
+            print("##############")
+            print(UserDetailViewController.newUser)
 
+            
+        
+    }
+    
 
+    }
     /*
     // MARK: - Navigation
 

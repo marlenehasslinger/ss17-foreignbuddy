@@ -11,8 +11,9 @@ import Firebase
 
 class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    
+        
     //UI Elemente
+    @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var nativeLanguageLabel: UILabel!
     @IBOutlet weak var nativeLanguagePickerView: UIPickerView!
@@ -21,11 +22,11 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     @IBOutlet weak var usernameTextField: UITextField!
     
     //Functional variables
-    var valueNativeLanguage: String = ""
-    var valueForeignLanguage: String = ""
-    var valueDistanceToMatches: Int = 50
+    var valueNativeLanguage: String = "German"
+    var valueForeignLanguage: String = "English"
+    var valueDistanceToMatches: Int = 100
+    var newUser: Bool = true
     
-
     //Database Referenece
     let refFirebase = FirebaseSingletonPattern.getInstance()
 
@@ -37,8 +38,8 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     @IBAction func distanceSlider(_ sender: UISlider) {
         
-        distanceLabel.text = String(Int((sender.value)*100))
-        valueDistanceToMatches = Int((sender.value)*100)
+        distanceLabel.text = String(Int((sender.value)))
+        valueDistanceToMatches = Int((sender.value))
         print(valueDistanceToMatches)
 
         
@@ -86,12 +87,22 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         }
     }
 
-
+    override func viewDidAppear(_ animated: Bool) {
+        
+        if !newUser{
+            getCurrentUserData()
+        } else {
+            setDefaultValues()
+        }
+    
+    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-  
+        
+    
+        
         // Do any additional setup after loading the view.
     }
 
@@ -109,6 +120,78 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     }
     
+    
+    func getCurrentUserData(){
+ 
+        let bufferUser = refFirebase.user
+
+        let tempDistanceToMatches = Float((bufferUser?.distanceToMatch!)!)
+
+        distanceLabel.text = String((bufferUser?.distanceToMatch!)!)
+
+        print(bufferUser?.username ?? "Couldnt set username")
+        
+        usernameTextField.text = bufferUser?.username
+        
+        
+       slider.setValue(tempDistanceToMatches, animated: true)
+    
+        switch ((refFirebase.user?.nativeLanguage)!) {
+            case "German":
+            nativeLanguagePickerView.selectRow(0, inComponent: 0, animated: false)
+
+            case "English":
+            nativeLanguagePickerView.selectRow(1, inComponent: 0, animated: false)
+
+            case "Spanish":
+            nativeLanguagePickerView.selectRow(2, inComponent: 0, animated: false)
+
+            case "French":
+            nativeLanguagePickerView.selectRow(3, inComponent: 0, animated: false)
+
+        default:
+            nativeLanguagePickerView.selectRow(0, inComponent: 0, animated: false)
+        }
+
+        switch ((refFirebase.user?.language)!) {
+        case "German":
+            foreignLanguagePickerView.selectRow(0, inComponent: 0, animated: false)
+            
+        case "English":
+            foreignLanguagePickerView.selectRow(1, inComponent: 0, animated: false)
+            
+        case "Spanish":
+            foreignLanguagePickerView.selectRow(2, inComponent: 0, animated: false)
+            
+        case "French":
+            foreignLanguagePickerView.selectRow(3, inComponent: 0, animated: false)
+            
+        default:
+            foreignLanguagePickerView.selectRow(1, inComponent: 0, animated: false)
+
+
+        }
+ 
+        
+        
+        
+        }
+        
+    
+    
+    
+    func setDefaultValues(){
+        
+        nativeLanguagePickerView.selectRow(0, inComponent: 0, animated: true)
+        foreignLanguagePickerView.selectRow(1, inComponent: 0, animated: true)
+        
+        let email = FIRAuth.auth()?.currentUser?.email
+        let usernameEmailArr = email?.components(separatedBy: "@")
+        let username: String = usernameEmailArr![0]
+        usernameTextField.text = username
+        
+    
+    }
     
 
     /*

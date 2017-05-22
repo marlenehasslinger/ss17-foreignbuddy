@@ -35,7 +35,7 @@ class LoginViewController: UIViewController {
         registerButton.isHidden = true
         signinButton.isHidden = false
         FIRAuth.auth()!.addStateDidChangeListener() { auth, user in
-            if user != nil {
+            if user != nil && self.isSignIn {
                 self.performSegue(withIdentifier: "leadsToHome", sender: self)
         
             }
@@ -59,59 +59,7 @@ class LoginViewController: UIViewController {
             registerButton.isHidden = false
         }
     }
-    /*
-     
-     
-     @IBAction func registerButtonTapped(_ sender: UIButton) {
-     
-     //Register the user with Firebase
-     if let email = emailTextField.text, let pass = passwordTextField.text {
-     FIRAuth.auth()?.createUser(
-     withEmail: email, password: pass, completion:
-     { (user, error) in
-     //Check that user isnt nil
-     if  user != nil{
-     //Save user to database
-     let refFirebase = FirebaseSingletonPattern.getInstance()
-     refFirebase.insertUser()
-     //Go to user detail form,if no profile exist
-     self.performSegue(withIdentifier: "goToUserDetail", sender: self)
-     } else {
-     //Check Error and show message
-     self.errorTextLabel.text = "Something went wrong"
-     }
-     }
-     )
-     }
-     }
 
-     
-     
-     
-    @IBAction func signinButtonTapped(_ sender: UIButton) {
-        //Do some form validation on email and password
-        if let email = emailTextField.text, let pass = passwordTextField.text{
-            //Check if its sign in or register
-            if isSignIn{
-                //Sign in the user with Firebase
-                FIRAuth.auth()?.signIn(
-                    withEmail: email, password: pass, completion:
-                    { (user, error) in
-                        //Check that user isnt nil
-                        if  user != nil{
-                            //User is found, go to homescreen
-                            self.errorTextLabel.text = " "
-                            self.performSegue(withIdentifier: "goToHome", sender: self)
-                        }else{
-                            //Check error and show message
-                            self.errorTextLabel.text = "Wrong Password or Email"
-                        }
-                    }
-                )
-            }
-        }
-    }*/
-    
     @IBAction func signinButtonClicked(_ sender: Any) {
         //Do some form validation on email and password
         if let email = emailTextField.text, let pass = passwordTextField.text{
@@ -137,6 +85,8 @@ class LoginViewController: UIViewController {
 
     }
     
+
+    
     @IBAction func registerButtonClicked(_ sender: Any) {
         if let email = emailTextField.text, let pass = passwordTextField.text {
             //Check if its sign in or register
@@ -150,7 +100,7 @@ class LoginViewController: UIViewController {
                         let refFirebase = FirebaseSingletonPattern.getInstance()
                         refFirebase.insertUser()
                         //Go to user detail form,if no profile exist
-                        self.performSegue(withIdentifier: "leadsToUserDetail", sender: self)                   
+                        self.performSegue(withIdentifier: "leadsToUserDetail", sender: self)
                     } else {
                         //Check Error and show message
                         self.errorTextLabel.text = "Something went wrong"
@@ -162,6 +112,7 @@ class LoginViewController: UIViewController {
         
         
     }
+ 
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
