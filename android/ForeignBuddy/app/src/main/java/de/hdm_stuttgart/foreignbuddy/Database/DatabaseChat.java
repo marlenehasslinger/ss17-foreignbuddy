@@ -57,8 +57,6 @@ public class DatabaseChat {
                         , currentUser.urlProfilephoto
                         , conversationID));
 
-        DatabaseUser.getInstance().loadCurrentUsersConversations();
-
         return conversationID;
     }
 

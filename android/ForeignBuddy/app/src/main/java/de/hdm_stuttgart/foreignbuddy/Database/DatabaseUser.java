@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -27,9 +28,15 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
@@ -38,6 +45,7 @@ import java.util.Locale;
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.Users.Match;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
@@ -47,41 +55,42 @@ import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 
 public class DatabaseUser {
 
+    public static final String FINISHED_LOADING = "FINISHED_LOADING";
+
     private static DatabaseUser instance;
 
     //Create and get Instance of DatabaseUser
     public static synchronized DatabaseUser getInstance() {
         if (instance == null) {
             instance = new DatabaseUser();
+            instance.InstanceCurrentUser();
         }
         return instance;
+    }
+    private void InstanceCurrentUser() {
+        loadCurrentUser();
+    }
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     //User Data
     private User currentUser;
-    private List<User> currentUsersMatches;
-    private List<Conversation> currentUsersConversations;
+    private List<Match> currentUsersMatches = new ArrayList<>();
+    private List<Conversation> currentUsersConversations = new ArrayList<>();
 
     //Helper
     private StorageReference riversRef;
     private StorageReference storageReference;
     private Context context;
-    private File localFile = null;
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public void InstanceCurrentUser() {
-        deleteCurrentUser();
-        loadCurrentUser();
-    }
+    private boolean firstLoading = true;
+    //private File localFile = null;
 
     public User getCurrentUser() {
         return currentUser;
     }
 
-    public List<User> getCurrentUsersMatches() {
+    public List<Match> getCurrentUsersMatches() {
         return currentUsersMatches;
     }
 
@@ -89,21 +98,17 @@ public class DatabaseUser {
         return currentUsersConversations;
     }
 
-    private void loadCurrentUser() {
+    private synchronized void loadCurrentUser() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentUser = dataSnapshot.getValue(User.class);
                         loadProfilePhoto(currentUser);
-                        currentUsersMatches = new ArrayList<>();
                         loadCurrentUsersMatches();
-                        currentUsersConversations = new ArrayList<>();
                         loadCurrentUsersConversations();
-                        //downloadProfilePhoto();
-
                     }
 
                     @Override
@@ -113,7 +118,7 @@ public class DatabaseUser {
                 });
     }
 
-    public void loadCurrentUsersMatches() {
+    private synchronized void  loadCurrentUsersMatches() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(currentUser.userID)
@@ -121,6 +126,7 @@ public class DatabaseUser {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                currentUsersMatches.clear();
                 Iterable<DataSnapshot> allMatches = dataSnapshot.getChildren();
                 for (DataSnapshot child : allMatches) {
                     FirebaseDatabase.getInstance().getReference()
@@ -129,11 +135,11 @@ public class DatabaseUser {
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User user = dataSnapshot.getValue(User.class);
-                                    loadProfilePhoto(user);
-                                    user.setCommonInterests(currentUser);
-                                    user.setDistanceToMyUser(GPS.distanceInKm(currentUser, user));
-                                    currentUsersMatches.add(user);
+                                    Match match =  dataSnapshot.getValue(Match.class);
+                                    loadProfilePhoto(match);
+                                    match.setCommonInterests(currentUser);
+                                    match.setDistanceToMyUser(GPS.distanceInKm(currentUser, match));
+                                    currentUsersMatches.add(match);
                                 }
 
                                 @Override
@@ -141,6 +147,12 @@ public class DatabaseUser {
 
                                 }
                             });
+                    if (firstLoading == true) {
+                        firstLoading = false;
+                        Intent loadingIntent = new Intent();
+                        loadingIntent.setAction(FINISHED_LOADING);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
+                    }
                 }
             }
 
@@ -151,7 +163,7 @@ public class DatabaseUser {
         });
     }
 
-    public void loadCurrentUsersConversations() {
+    private synchronized void loadCurrentUsersConversations() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -159,6 +171,7 @@ public class DatabaseUser {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        currentUsersConversations.clear();
                         Iterable<DataSnapshot> allConversations = dataSnapshot.getChildren();
                         for (DataSnapshot child : allConversations) {
                             Conversation conversation = child.getValue(Conversation.class);
@@ -178,8 +191,8 @@ public class DatabaseUser {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference riversRef = storageReference.child("images/" + downloadName);
         try {
-            localFile = File.createTempFile("images", downloadName);
-            user.setProfilePhoto(localFile);
+            //localFile = File.createTempFile("images", downloadName);
+            user.setProfilePhoto(File.createTempFile("images", downloadName));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -196,14 +209,9 @@ public class DatabaseUser {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Log.d("Download", "Profil photo download failed");
+                user.setProfilePhoto(null);
             }
         });
-    }
-
-    private void deleteCurrentUser() {
-        currentUser = null;
-        currentUsersMatches = null;
-        currentUsersConversations = null;
     }
 
 }

@@ -2,10 +2,10 @@ package de.hdm_stuttgart.foreignbuddy.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,22 +25,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.formats.NativeAppInstallAd;
+import com.google.android.gms.ads.formats.NativeContentAd;
+import com.google.android.gms.ads.mediation.customevent.CustomEvent;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.ChatActivity;
-import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
+import de.hdm_stuttgart.foreignbuddy.Database.Advertisement;
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
+import de.hdm_stuttgart.foreignbuddy.Users.Match;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.SortEntfernung;
@@ -50,12 +53,15 @@ import de.hdm_stuttgart.foreignbuddy.UtilityClasses.SortInterests;
 public class MatchesFragment extends Fragment {
 
     private ImageView img_user;
+    private ImageView img_location_matches;
+    private ImageView img_language_matches;
+    private ImageView img_interests_matches;
     private TextView name;
     private TextView location;
     private TextView language;
     private TextView interests;
     private Button btn_chat;
-    private List<User> matches = new ArrayList<>();
+    private List<Match> matches = new ArrayList<>();
     private ListView listView;
     private Toolbar toolbar;
     private DatabaseReference mDatabase;
@@ -90,9 +96,19 @@ public class MatchesFragment extends Fragment {
         myUser = DatabaseUser.getInstance().getCurrentUser();
 
         //get Matches and set in TableView
-        matches = DatabaseUser.getInstance().getCurrentUsersMatches();
+        for (Match match : DatabaseUser.getInstance().getCurrentUsersMatches()) {
+            matches.add(match);
+        }
         Collections.sort(matches, new SortInterests());
-        ArrayAdapter<User> matchesAdapter = new UserListAdapter();
+        if (Advertisement.getInstance().getAd() != null) {
+            if (matches.size() > 4) {
+                matches.add(3, new Match("Ad"));
+            } else {
+                matches.add(new Match("Ad"));
+            }
+        }
+
+        ArrayAdapter<Match> matchesAdapter = new UserListAdapter();
         listView.setAdapter(matchesAdapter);
 
         return view;
@@ -109,6 +125,12 @@ public class MatchesFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        matches.clear();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.toolbar_matches_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -120,19 +142,19 @@ public class MatchesFragment extends Fragment {
             case R.id.tb_filterDistance_matches:
                 matches = DatabaseUser.getInstance().getCurrentUsersMatches();
                 Collections.sort(matches, new SortEntfernung());
-                ArrayAdapter<User> matchesAdapter = new UserListAdapter();
+                ArrayAdapter<Match> matchesAdapter = new UserListAdapter();
                 listView.setAdapter(matchesAdapter);
                 break;
             case R.id.tb_filterInterests_matches:
                 matches = DatabaseUser.getInstance().getCurrentUsersMatches();
                 Collections.sort(matches, new SortInterests());
-                ArrayAdapter<User> matchesAdapter2 = new UserListAdapter();
+                ArrayAdapter<Match> matchesAdapter2 = new UserListAdapter();
                 listView.setAdapter(matchesAdapter2);
         }
         return true;
     }
 
-    private class UserListAdapter extends ArrayAdapter<User> {
+    private class UserListAdapter extends ArrayAdapter<Match> {
 
         public UserListAdapter() {
             super(getActivity(), R.layout.matches, matches);
@@ -147,59 +169,96 @@ public class MatchesFragment extends Fragment {
             } else {
                 view = convertView;
             }
+            final Match currentMatch = matches.get(position);
 
-            final User currentMatch = matches.get(position);
+            if (currentMatch.getUserID().equals("Ad") == false) {
 
-            btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
-            btn_chat.setTag(currentMatch);
-            btn_chat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    User user = (User) v.getTag();
-                    intent.putExtra("UserID", user.userID);
-                    intent.putExtra("Username", user.username);
-                    intent.putExtra("URLPhoto", user.urlProfilephoto);
-                    startActivity(intent);
+                btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
+                btn_chat.setTag(currentMatch);
+                btn_chat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), ChatActivity.class);
+                        User user = (User) v.getTag();
+                        intent.putExtra("UserID", user.userID);
+                        intent.putExtra("Username", user.username);
+                        intent.putExtra("URLPhoto", user.urlProfilephoto);
+                        startActivity(intent);
+                    }
+                });
+
+                //For Profilephoto
+                //uploadName = currentMatch.email + "_profilePhoto";
+
+                //Widgets
+                img_user = (ImageView) view.findViewById(R.id.img_user_matches);
+                name = (TextView) view.findViewById(R.id.txt_name_matches);
+                location = (TextView) view.findViewById(R.id.txt_location_matches);
+                language = (TextView) view.findViewById(R.id.txt_language_matches);
+                interests = (TextView) view.findViewById(R.id.txt_interests_matches);
+
+                //Set Widget texts
+                name.setText(currentMatch.username);
+                language.setText(currentMatch.nativeLanguage);
+                interests.setText(currentMatch.getNumberOfCommonInterest() + " common interests");
+                if (currentMatch.latitude == null || currentMatch.longitude == null) {
+                    location.setText("- Km"); // If User has no location
+                } else if (myUser.latitude == null || myUser.longitude == null) {
+                    location.setText("In " + currentMatch.lastKnownCity); //If I have no location
+                } else {
+                    double entfernung = GPS.distanceInKm(myUser, currentMatch);
+                    location.setText(Double.toString(entfernung) + " Km"); //If both have location
                 }
-            });
 
-            //For Profilephoto
-            uploadName = currentMatch.email + "_profilePhoto";
+                try {
+                    if (currentMatch.getProfilePhoto() != null) {
+                        img_user.setImageDrawable(Drawable.createFromPath(currentMatch.getProfilePhoto().getAbsolutePath()));
+                    } else {
+                        img_user.setImageResource(R.drawable.user_male);
+                    }
 
-            //Widgets
-            img_user = (ImageView) view.findViewById(R.id.img_user_matches);
-            name = (TextView) view.findViewById(R.id.txt_name_matches);
-            location = (TextView) view.findViewById(R.id.txt_location_matches);
-            language = (TextView) view.findViewById(R.id.txt_language_matches);
-            interests = (TextView)view.findViewById(R.id.txt_interests_matches);
-
-            //Set Widget texts
-            name.setText(currentMatch.username);
-            language.setText(currentMatch.nativeLanguage);
-            interests.setText(currentMatch.getNumberOfCommonInterest() + " common interests");
-            if (currentMatch.latitude == null || currentMatch.longitude == null) {
-                location.setText("- Km"); // If User has no location
-            } else if (myUser.latitude == null || myUser.longitude == null) {
-                location.setText("In " + currentMatch.lastKnownCity); //If I have no location
+                } catch (Exception e) {
+                    img_user.setImageResource(R.drawable.user_male);
+                    Log.d("Download", "Current profil photo successfully downloaded and displayed");
+                }
             } else {
-                double entfernung = GPS.distanceInKm(myUser,currentMatch);
-                location.setText(Double.toString(entfernung) + " Km"); //If both have location
-            }
+                //Widgets
+                img_user = (ImageView) view.findViewById(R.id.img_user_matches);
+                name = (TextView) view.findViewById(R.id.txt_name_matches);
+                location = (TextView) view.findViewById(R.id.txt_location_matches);
+                language = (TextView) view.findViewById(R.id.txt_language_matches);
+                interests = (TextView) view.findViewById(R.id.txt_interests_matches);
+                img_location_matches = (ImageView) view.findViewById(R.id.img_location_matches);
+                img_language_matches = (ImageView) view.findViewById(R.id.img_language_matches);
+                img_interests_matches = (ImageView) view.findViewById(R.id.img_interests_matches);
 
-            try {
-                img_user.setImageDrawable(Drawable.createFromPath(currentMatch.getProfilePhoto().getAbsolutePath()));
-            } catch (Exception e) {
-                img_user.setImageResource(R.drawable.user_male);
-                Log.d("Download", "Current profil photo successfully downloaded and displayed");
-            }
+                final NativeAppInstallAd currentAd = Advertisement.getInstance().getAd();
 
+                img_language_matches.setVisibility(View.GONE);
+                img_interests_matches.setVisibility(View.GONE);
+                img_location_matches.setVisibility(View.GONE);
+                language.setVisibility(View.GONE);
+                interests.setVisibility(View.GONE);
+
+                name.setText(currentAd.getHeadline());
+                img_user.setImageDrawable(currentAd.getIcon().getDrawable());
+                location.setText(currentAd.getBody());
+
+                btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
+                btn_chat.setTag(currentAd);
+                btn_chat.setText(currentAd.getCallToAction());
+                btn_chat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.daimler.moovel.android"));
+                        NativeAppInstallAd ad = (NativeAppInstallAd) v.getTag();
+                        startActivity(intent);
+                    }
+                });
+
+
+            }
             return view;
-
         }
     }
-
 }
-
-
-

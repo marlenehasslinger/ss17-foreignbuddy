@@ -1,6 +1,11 @@
 package de.hdm_stuttgart.foreignbuddy.Chat;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.File;
 
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
@@ -19,14 +24,11 @@ public class Conversation {
     public Conversation() {
 
     }
-
     public  Conversation(String UserID, String username, String urlProfilephoto, String conversationID){
         this.UserID = UserID;
         this.username = username;
         this.urlProfilephoto = urlProfilephoto;
         this.conversationID = conversationID;
     }
-
-
 
 }
