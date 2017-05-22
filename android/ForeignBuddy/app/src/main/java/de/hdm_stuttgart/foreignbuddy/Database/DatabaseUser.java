@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -27,9 +28,15 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
@@ -91,7 +98,7 @@ public class DatabaseUser {
         return currentUsersConversations;
     }
 
-    private void loadCurrentUser() {
+    private synchronized void loadCurrentUser() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -111,7 +118,7 @@ public class DatabaseUser {
                 });
     }
 
-    public void loadCurrentUsersMatches() {
+    private synchronized void  loadCurrentUsersMatches() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(currentUser.userID)
@@ -140,12 +147,12 @@ public class DatabaseUser {
 
                                 }
                             });
-                }
-                if (firstLoading == true) {
-                    firstLoading = false;
-                    Intent loadingIntent = new Intent();
-                    loadingIntent.setAction(FINISHED_LOADING);
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
+                    if (firstLoading == true) {
+                        firstLoading = false;
+                        Intent loadingIntent = new Intent();
+                        loadingIntent.setAction(FINISHED_LOADING);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
+                    }
                 }
             }
 
@@ -156,7 +163,7 @@ public class DatabaseUser {
         });
     }
 
-    public void loadCurrentUsersConversations() {
+    private synchronized void loadCurrentUsersConversations() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2659" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VLr-fF-gxA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VLr-fF-gxA">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -293,7 +293,7 @@
             </objects>
             <point key="canvasLocation" x="-1250" y="958"/>
         </scene>
-        <!--View Controller-->
+        <!--Chats-->
         <scene sceneID="gfW-E0-v6k">
             <objects>
                 <viewController id="VT7-km-ZWC" sceneMemberID="viewController">
@@ -317,13 +317,13 @@
                             <constraint firstItem="ZDf-ER-jxc" firstAttribute="leading" secondItem="dXk-JD-zgf" secondAttribute="leading" id="i7y-jW-tdw"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="history" id="pxe-Zp-AqF"/>
+                    <tabBarItem key="tabBarItem" title="Chats" image="Chats" id="pxe-Zp-AqF"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tSG-o6-5Wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="389.60000000000002" y="-1355.1724137931035"/>
         </scene>
-        <!--Profile View Controller-->
+        <!--Matches-->
         <scene sceneID="I68-EC-iss">
             <objects>
                 <viewController id="fxD-u6-xE6" customClass="ProfileViewController" customModule="ForeignBuddyIOS" customModuleProvider="target" sceneMemberID="viewController">
@@ -332,11 +332,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Hht-PX-P9R"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AK3-T3-sgl">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background2" translatesAutoresizingMaskIntoConstraints="NO" id="Mjj-jy-9lC">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDM-TN-a9f">
                                 <rect key="frame" x="16" y="553" width="343" height="30"/>
@@ -365,7 +365,7 @@
                             <constraint firstAttribute="trailing" secondItem="Mjj-jy-9lC" secondAttribute="trailing" id="i8C-cw-1cl"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="contacts" id="MRa-di-kLf"/>
+                    <tabBarItem key="tabBarItem" title="Matches" image="Matches" id="MRa-di-kLf"/>
                     <connections>
                         <outlet property="btn_logout" destination="bDM-TN-a9f" id="3cz-e6-ZFy"/>
                         <segue destination="VLr-fF-gxA" kind="show" identifier="goToLogin" id="Plg-E2-dG7"/>
@@ -375,7 +375,7 @@
             </objects>
             <point key="canvasLocation" x="997.60000000000002" y="215.44227886056973"/>
         </scene>
-        <!--View Controller-->
+        <!--My Profil-->
         <scene sceneID="q5O-nn-pOV">
             <objects>
                 <viewController id="7BU-bc-0lj" sceneMemberID="viewController">
@@ -399,7 +399,9 @@
                             <constraint firstItem="qhj-VS-GHc" firstAttribute="leading" secondItem="dsq-7n-hWj" secondAttribute="leading" id="uOi-hV-1D0"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="e16-bj-bI9"/>
+                    <tabBarItem key="tabBarItem" title="My Profil" image="MyProfile" id="e16-bj-bI9">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQQ-8X-SMB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -426,6 +428,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Chats" width="28" height="32"/>
+        <image name="Matches" width="32" height="29"/>
+        <image name="MyProfile" width="24" height="32"/>
         <image name="background2" width="720" height="1280"/>
     </resources>
     <inferredMetricsTieBreakers>

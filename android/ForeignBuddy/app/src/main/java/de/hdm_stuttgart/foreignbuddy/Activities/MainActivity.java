@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Load current User
-        DatabaseUser.getInstance();
+        DatabaseUser.getInstance().setContext(this);
 
         progressDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
 
