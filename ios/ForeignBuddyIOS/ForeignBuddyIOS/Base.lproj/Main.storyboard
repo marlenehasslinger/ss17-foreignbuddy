@@ -429,7 +429,6 @@
         <!--Chats-->
         <scene sceneID="gfW-E0-v6k">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tSG-o6-5Wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="VT7-km-ZWC" customClass="ChatsOverviewViewController" customModule="ForeignBuddyIOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="faj-LY-gz6"/>
@@ -456,7 +455,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bv3-tm-Jm7" id="wTJ-eZ-E7q">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -492,6 +491,7 @@
                         <segue destination="dPI-Gk-F3c" kind="show" identifier="ChatSegue" id="TlE-Sc-c4u"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tSG-o6-5Wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="998" y="-1469"/>
         </scene>
