@@ -465,21 +465,21 @@
                         <viewControllerLayoutGuide type="bottom" id="Hht-PX-P9R"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AK3-T3-sgl">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background2" translatesAutoresizingMaskIntoConstraints="NO" id="Mjj-jy-9lC">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Klg-Hy-xhh">
-                                <rect key="frame" x="164" y="222" width="46" height="30"/>
+                                <rect key="frame" x="164" y="755" width="46" height="30"/>
                                 <state key="normal" title="UserDetail"/>
                                 <connections>
                                     <segue destination="oTV-Jo-3H0" kind="show" identifier="goToUserDetail" id="l9C-hq-3MO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDM-TN-a9f">
-                                <rect key="frame" x="0.0" y="260" width="343" height="30"/>
+                                <rect key="frame" x="0.0" y="793" width="343" height="30"/>
                                 <state key="normal" title="Logout">
                                     <color key="titleColor" red="0.89411764709999997" green="0.72156862749999995" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -508,7 +508,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5uS-iF-zUV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="997.60000000000002" y="215.44227886056973"/>
+            <point key="canvasLocation" x="1106" y="523"/>
         </scene>
         <!--My Profil-->
         <scene sceneID="q5O-nn-pOV">
@@ -569,8 +569,8 @@
         <image name="background2" width="720" height="1280"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="VV0-MG-f3e"/>
         <segue reference="l9C-hq-3MO"/>
+        <segue reference="VV0-MG-f3e"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.89411764709999997" green="0.72156862749999995" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

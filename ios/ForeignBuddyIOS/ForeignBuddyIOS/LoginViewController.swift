@@ -32,14 +32,21 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+            }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
         registerButton.isHidden = true
         signinButton.isHidden = false
         FIRAuth.auth()!.addStateDidChangeListener() { auth, user in
             if user != nil && self.isSignIn {
                 self.performSegue(withIdentifier: "leadsToHome", sender: self)
-        
+                
             }
         }
+
+      
+        
     }
 
     override func didReceiveMemoryWarning() {

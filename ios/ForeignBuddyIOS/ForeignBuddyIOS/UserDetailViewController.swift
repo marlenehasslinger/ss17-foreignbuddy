@@ -174,32 +174,53 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         distanceLabel.text = String((bufferUser?.distanceToMatch!)!)
         slider.setValue(tempDistanceToMatches, animated: true)
         
-     /*
+     
         
         //Set interest switches
         if (refFirebase.user?.interests?[0])! {
             cultureSwitch.setOn(true, animated: true)
+        } else {
+            cultureSwitch.setOn(false, animated: true)
+
         }
         if (refFirebase.user?.interests?[1])! {
             musicSwitch.setOn(true, animated: true)
+        } else {
+            cultureSwitch.setOn(false, animated: true)
+            
         }
         if (refFirebase.user?.interests?[2])! {
             natureSwitch.setOn(true, animated: true)
+        } else {
+            natureSwitch.setOn(false, animated: true)
+            
         }
         if (refFirebase.user?.interests?[3])! {
             politicsSwitch.setOn(true, animated: true)
+        } else {
+            politicsSwitch.setOn(false, animated: true)
+            
         }
         if (refFirebase.user?.interests?[4])! {
             readingSwitch.setOn(true, animated: true)
+        } else {
+            readingSwitch.setOn(false, animated: true)
+            
         }
         if (refFirebase.user?.interests?[5])! {
             sportsSwitch.setOn(true, animated: true)
+        } else {
+            sportsSwitch.setOn(false, animated: true)
+            
         }
         if (refFirebase.user?.interests?[6])! {
             technologySwitch.setOn(true, animated: true)
+        } else {
+            cultureSwitch.setOn(false, animated: true)
+            
         }
         
- */
+ 
         
         //Set native language
         switch ((refFirebase.user?.nativeLanguage)!) {
