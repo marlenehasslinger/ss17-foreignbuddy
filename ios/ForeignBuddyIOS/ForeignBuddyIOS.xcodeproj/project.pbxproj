@@ -13,6 +13,7 @@
 		2114EFFF1ECB067C00D2CECA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */; };
 		2114F00A1ECB067C00D2CECA /* ForeignBuddyIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2114F0091ECB067C00D2CECA /* ForeignBuddyIOSTests.swift */; };
 		2114F0151ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2114F0141ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift */; };
+		2189B1C31ED322210078D596 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2189B1C21ED322210078D596 /* CoreLocation.framework */; };
 		218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
 		218E24461ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
 		218E24471ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
@@ -66,6 +67,7 @@
 		2114F0101ECB067C00D2CECA /* ForeignBuddyIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ForeignBuddyIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2114F0141ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeignBuddyIOSUITests.swift; sourceTree = "<group>"; };
 		2114F0161ECB067C00D2CECA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2189B1C21ED322210078D596 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		218E24441ECB12FF00080321 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28564B31D6C311C098FF2C5F /* Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2189B1C31ED322210078D596 /* CoreLocation.framework in Frameworks */,
 				76BF1252D4D677C9AE6F57E7 /* Pods_ForeignBuddyIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,6 +188,7 @@
 		80E6542482BC8DAE42344F1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2189B1C21ED322210078D596 /* CoreLocation.framework */,
 				33D60FBA173FA4159FC94F1D /* Pods_ForeignBuddyIOS.framework */,
 				E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */,
 				EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */,

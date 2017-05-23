@@ -90,8 +90,6 @@ class FirebaseSingletonPattern{
     //Retrieve from database
     public func loadCurrentUserData() {
         
-        //var bool = false
-        
         let userID = FIRAuth.auth()!.currentUser!.uid
         let ref = FIRDatabase.database().reference()
         let userRef = ref.child("users").child(userID)
@@ -117,11 +115,8 @@ class FirebaseSingletonPattern{
          //   print("\((value?[1]))")
                 self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch)
             
-            // print("#########")
             print(self.user ??  "#####################defaultValueUsername")
-            // print(self.user?.username ?? "#####################defaultValueUsernameHAcker")
             
-            // ...
         }) { (error) in
             
             print(error.localizedDescription)
