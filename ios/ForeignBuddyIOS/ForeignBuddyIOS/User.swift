@@ -18,9 +18,11 @@ var language: String?
 var urlProfilephoto: String?
 var lastKnownCity: String?
 var distanceToMatch: Int?
+var interests: Array<Bool>?
 
 
 init(username: String?, nativeLanguage: String?, language: String?, distanceToMatch: Int?){
+    
 self.username = username
 self.nativeLanguage = nativeLanguage
 self.language = language
