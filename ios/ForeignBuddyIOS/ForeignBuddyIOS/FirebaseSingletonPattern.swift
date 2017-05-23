@@ -90,6 +90,9 @@ class FirebaseSingletonPattern{
     //Retrieve from database
     public func loadCurrentUserData() {
         
+        var interessen = [Bool]()
+
+        
         let userID = FIRAuth.auth()!.currentUser!.uid
         let ref = FIRDatabase.database().reference()
         let userRef = ref.child("users").child(userID)
@@ -102,18 +105,29 @@ class FirebaseSingletonPattern{
                         let inter = v.value as! NSDictionary
                         for i in inter {
                             print("key \(i.key) value: \(i.value)")
+                            
+                            if (i.value as! Bool) {
+                                interessen.append(true)
+                            }
+                                
+                            else {
+                                interessen.append(false)
+                            }
+
 
                                 }
                     }
                 }
                 
+                
+                
             let username = value?["username"] as? String ?? ""
             let nativeLanguage = value?["nativeLanguage"] as? String ?? ""
             let language = value?["language"] as? String ?? ""
             let distanceToMatch = value?["distanceToMatch"] as? Int
-            let interests = value?["interests"]
-         //   print("\((value?[1]))")
-                self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch)
+                         self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch, interests: interessen)
+                
+
             
             print(self.user ??  "#####################defaultValueUsername")
             
@@ -121,50 +135,7 @@ class FirebaseSingletonPattern{
             
             print(error.localizedDescription)
         }
-  
-        //User wird nicht mehr richtig runtergeladen, wenn zwei Observer Methoden da sind
-        //Wie wird oben dann array erzeugt?
-        
-        /*
-         METHODE 1
-         
-         let ref = FIRDatabase.database().reference().child("list")
-         
-         ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
-         if let objects = snapshot.children.allObjects as? [FIRDataSnapshot] {
-         print(objects)
-         }
-         })
-         
-         */
-        
-        
-        
-        /*
-         METHODE 2
-        
-        userRef.child("interests").observeSingleEvent(of: .value, with: { (snapshot) in
-            let value = snapshot.value as? NSDictionary
-            let culture = value?["Culture"] as? Bool
-            let music = value?["Music"] as? Bool
-            let nature = value?["Nature"] as? Bool
-            let politics = value?["Politics"] as? Bool
-            let reading = value?["Reading"] as? Bool
-            let sports = value?["Sports"] as? Bool
-            let technology = value?["Technology"] as? Bool
-            
-            var interessen = [culture, music, nature, politics, reading, sports, technology]
-
-            self.user?.interests = interessen as! Array<Bool>
-            
-        }) { (error) in
-            
-            print(error.localizedDescription)
-        }
-
-        
-        */
-        
+          
 }
     
 
