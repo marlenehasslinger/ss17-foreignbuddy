@@ -533,17 +533,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background2" translatesAutoresizingMaskIntoConstraints="NO" id="Mjj-jy-9lC">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Klg-Hy-xhh">
-                                <rect key="frame" x="164" y="222" width="46" height="30"/>
+                                <rect key="frame" x="164" y="173" width="46" height="30"/>
                                 <state key="normal" title="UserDetail"/>
                                 <connections>
                                     <segue destination="oTV-Jo-3H0" kind="show" identifier="goToUserDetail" id="l9C-hq-3MO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDM-TN-a9f">
-                                <rect key="frame" x="0.0" y="260" width="343" height="30"/>
+                                <rect key="frame" x="0.0" y="211" width="343" height="30"/>
                                 <state key="normal" title="Logout">
                                     <color key="titleColor" red="0.89411764709999997" green="0.72156862749999995" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -551,6 +551,13 @@
                                     <action selector="btn_logout_clicked:" destination="fxD-u6-xE6" eventType="touchUpInside" id="sl5-xB-T8d"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="loading location ..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4d2-tA-kyA">
+                                <rect key="frame" x="16" y="437" width="343" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -567,12 +574,13 @@
                     <tabBarItem key="tabBarItem" title="Matches" image="Matches" id="MRa-di-kLf"/>
                     <connections>
                         <outlet property="btn_logout" destination="bDM-TN-a9f" id="3cz-e6-ZFy"/>
+                        <outlet property="lblLocation" destination="4d2-tA-kyA" id="bDa-k7-JmE"/>
                         <segue destination="VLr-fF-gxA" kind="show" identifier="goToLogin" id="Plg-E2-dG7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5uS-iF-zUV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="997.60000000000002" y="215.44227886056973"/>
+            <point key="canvasLocation" x="1106" y="523"/>
         </scene>
         <!--My Profil-->
         <scene sceneID="q5O-nn-pOV">

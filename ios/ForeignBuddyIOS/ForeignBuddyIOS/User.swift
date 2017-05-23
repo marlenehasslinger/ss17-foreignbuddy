@@ -21,14 +21,15 @@ var distanceToMatch: Int?
 var interests: Array<Bool>?
 
 
-init(username: String?, nativeLanguage: String?, language: String?, distanceToMatch: Int?){
-    
+init(username: String?, nativeLanguage: String?, language: String?, distanceToMatch: Int?,interests: Array<Bool>?){
+        
 self.username = username
 self.nativeLanguage = nativeLanguage
 self.language = language
 self.distanceToMatch = distanceToMatch
-
-}
+self.interests = interests
+        
+    }
 
 /*
 let latitude;
