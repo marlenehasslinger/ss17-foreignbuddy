@@ -34,6 +34,8 @@
 		967C63DA1ED1F6D0006A914E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967C63D71ED1F6D0006A914E /* User.swift */; };
 		9697E6E61ED03638006317B5 /* FirebaseSingletonPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */; };
 		ABE2786117C3E09208305D93 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */; };
+		EA4655A61ED42AA900BEE1EF /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4655A51ED42AA900BEE1EF /* ChatsOverviewViewController.swift */; };
+		EA4655A81ED43E8200BEE1EF /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */; };
 		F2E3AABD7592A7281232548D /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +83,8 @@
 		9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseSingletonPattern.swift; sourceTree = "<group>"; };
 		A7B8EB7CBF1816965E2D79FD /* Pods-ForeignBuddyIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.debug.xcconfig"; sourceTree = "<group>"; };
 		E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA4655A51ED42AA900BEE1EF /* ChatsOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatsOverviewViewController.swift; path = "../../../../../jan-niklas/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/ChatsOverviewViewController.swift"; sourceTree = "<group>"; };
+		EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F903629F127B11DA9DD1344A /* Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests/Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,6 +154,8 @@
 				2114EFFB1ECB067C00D2CECA /* Assets.xcassets */,
 				2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */,
 				2114F0001ECB067C00D2CECA /* Info.plist */,
+				EA4655A51ED42AA900BEE1EF /* ChatsOverviewViewController.swift */,
+				EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */,
 			);
 			path = ForeignBuddyIOS;
 			sourceTree = "<group>";
@@ -483,9 +489,11 @@
 			files = (
 				9655386E1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */,
+				EA4655A81ED43E8200BEE1EF /* ChatViewController.swift in Sources */,
 				967C63D81ED1F6D0006A914E /* User.swift in Sources */,
 				966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				2114EFF31ECB067C00D2CECA /* AppDelegate.swift in Sources */,
+				EA4655A61ED42AA900BEE1EF /* ChatsOverviewViewController.swift in Sources */,
 				9697E6E61ED03638006317B5 /* FirebaseSingletonPattern.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
