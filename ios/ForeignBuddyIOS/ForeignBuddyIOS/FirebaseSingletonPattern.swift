@@ -74,6 +74,19 @@ class FirebaseSingletonPattern{
         
     }
     
+    public func insertInterests (interests: Array<Any>){
+        let userID = FIRAuth.auth()!.currentUser!.uid
+        self.ref.child("users").child(userID).child("interests").child("Culture").setValue(interests[0])
+        self.ref.child("users").child(userID).child("interests").child("Music").setValue(interests[1])
+        self.ref.child("users").child(userID).child("interests").child("Nature").setValue(interests[2])
+        self.ref.child("users").child(userID).child("interests").child("Politics").setValue(interests[3])
+        self.ref.child("users").child(userID).child("interests").child("Reading").setValue(interests[4])
+        self.ref.child("users").child(userID).child("interests").child("Sports").setValue(interests[5])
+        self.ref.child("users").child(userID).child("interests").child("Technology").setValue(interests[6])
+    }
+    
+    
+    
     //Retrieve from database
     public func loadCurrentUserData() {
         
@@ -89,7 +102,7 @@ class FirebaseSingletonPattern{
             let nativeLanguage = value?["nativeLanguage"] as? String ?? ""
             let language = value?["language"] as? String ?? ""
             let distanceToMatch = value?["distanceToMatch"] as? Int
-            
+            //let interests = value?["interests"] as? Array<Bool>
             self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch)
             
             // print("#########")
@@ -101,11 +114,49 @@ class FirebaseSingletonPattern{
             
             print(error.localizedDescription)
         }
+  
+        //User wird nicht mehr richtig runtergeladen, wenn zwei Observer Methoden da sind
+        //Wie wird oben dann array erzeugt?
+        
+        /*
+         METHODE 1
+         
+         let ref = FIRDatabase.database().reference().child("list")
+         
+         ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
+         if let objects = snapshot.children.allObjects as? [FIRDataSnapshot] {
+         print(objects)
+         }
+         })
+         
+         */
         
         
-            //return bool
         
-    
+        /*
+         METHODE 2
+        
+        userRef.child("interests").observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            let culture = value?["Culture"] as? Bool
+            let music = value?["Music"] as? Bool
+            let nature = value?["Nature"] as? Bool
+            let politics = value?["Politics"] as? Bool
+            let reading = value?["Reading"] as? Bool
+            let sports = value?["Sports"] as? Bool
+            let technology = value?["Technology"] as? Bool
+            
+            var interessen = [culture, music, nature, politics, reading, sports, technology]
+
+            self.user?.interests = interessen as! Array<Bool>
+            
+        }) { (error) in
+            
+            print(error.localizedDescription)
+        }
+
+        
+        */
         
 }
     

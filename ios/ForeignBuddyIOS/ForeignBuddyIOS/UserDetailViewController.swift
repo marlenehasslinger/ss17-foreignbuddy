@@ -11,7 +11,18 @@ import Firebase
 
 class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-        
+    //Interest Switches
+    @IBOutlet weak var cultureSwitch: UISwitch!
+    @IBOutlet weak var musicSwitch: UISwitch!
+    @IBOutlet weak var natureSwitch: UISwitch!
+    @IBOutlet weak var politicsSwitch: UISwitch!
+    @IBOutlet weak var readingSwitch: UISwitch!
+    @IBOutlet weak var sportsSwitch: UISwitch!
+    @IBOutlet weak var technologySwitch: UISwitch!
+
+    
+    
+    
     //UI Elemente
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var distanceLabel: UILabel!
@@ -27,7 +38,10 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     var valueDistanceToMatches: Int = 100
     var newUser: Bool = true
     
-    //Database Referenece
+    //Array for interests boolean werte
+        var interests = [false, false, false, false, false, false, false]
+    
+    //Database Referenece via FirebaseSingletonPattern
     let refFirebase = FirebaseSingletonPattern.getInstance()
 
     
@@ -56,6 +70,33 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         if let username = usernameTextField.text{
             refFirebase.insertUsername(username: username)
         }
+        
+
+
+        if cultureSwitch.isOn {
+            self.interests[0] = true
+        }
+        if musicSwitch.isOn {
+            self.interests[1] = true
+        }
+        if natureSwitch.isOn {
+              self.interests[2] = true
+        }
+        if politicsSwitch.isOn {
+              self.interests[3] = true
+        }
+        if readingSwitch.isOn {
+            self.interests[4] = true
+        }
+        if sportsSwitch.isOn {
+              self.interests[5] = true
+        }
+        if technologySwitch.isOn {
+              self.interests[6] = true
+        }
+        
+        refFirebase.insertInterests(interests: interests)
+        
         
         self.performSegue(withIdentifier: "goToHome", sender: self)
     }
@@ -88,7 +129,7 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        
+        //Depending on if user just registrated or already has data in firebase database default values or the prior defined user settings will be loaded
         if !newUser{
             getCurrentUserData()
         } else {
@@ -100,11 +141,7 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-    
-        
-        // Do any additional setup after loading the view.
-    }
+        }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -123,19 +160,48 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     func getCurrentUserData(){
  
+        //Load bufferUser from Firebase via SingletonPattern reference
         let bufferUser = refFirebase.user
-
-        let tempDistanceToMatches = Float((bufferUser?.distanceToMatch!)!)
-
-        distanceLabel.text = String((bufferUser?.distanceToMatch!)!)
-
-        print(bufferUser?.username ?? "Couldnt set username")
         
+        //print(bufferUser?.username ?? "Couldnt set username")
+    
+        //Set username in textedit
         usernameTextField.text = bufferUser?.username
         
+        //Cast Int value from database to float so it works in the switch
+        let tempDistanceToMatches = Float((bufferUser?.distanceToMatch!)!)
+        //Set label and slider for distance to matches
+        distanceLabel.text = String((bufferUser?.distanceToMatch!)!)
+        slider.setValue(tempDistanceToMatches, animated: true)
         
-       slider.setValue(tempDistanceToMatches, animated: true)
-    
+     /*
+        
+        //Set interest switches
+        if (refFirebase.user?.interests?[0])! {
+            cultureSwitch.setOn(true, animated: true)
+        }
+        if (refFirebase.user?.interests?[1])! {
+            musicSwitch.setOn(true, animated: true)
+        }
+        if (refFirebase.user?.interests?[2])! {
+            natureSwitch.setOn(true, animated: true)
+        }
+        if (refFirebase.user?.interests?[3])! {
+            politicsSwitch.setOn(true, animated: true)
+        }
+        if (refFirebase.user?.interests?[4])! {
+            readingSwitch.setOn(true, animated: true)
+        }
+        if (refFirebase.user?.interests?[5])! {
+            sportsSwitch.setOn(true, animated: true)
+        }
+        if (refFirebase.user?.interests?[6])! {
+            technologySwitch.setOn(true, animated: true)
+        }
+        
+ */
+        
+        //Set native language
         switch ((refFirebase.user?.nativeLanguage)!) {
             case "German":
             nativeLanguagePickerView.selectRow(0, inComponent: 0, animated: false)
@@ -153,6 +219,7 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
             nativeLanguagePickerView.selectRow(0, inComponent: 0, animated: false)
         }
 
+        //Set foreign language
         switch ((refFirebase.user?.language)!) {
         case "German":
             foreignLanguagePickerView.selectRow(0, inComponent: 0, animated: false)
@@ -190,6 +257,15 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         let username: String = usernameEmailArr![0]
         usernameTextField.text = username
         
+
+        //Set interest switches to false
+        cultureSwitch.setOn(false, animated: true)
+        musicSwitch.setOn(false, animated: true)
+        natureSwitch.setOn(false, animated: true)
+        politicsSwitch.setOn(false, animated: true)
+        readingSwitch.setOn(false, animated: true)
+        sportsSwitch.setOn(false, animated: true)
+        technologySwitch.setOn(false, animated: true)
     
     }
     
