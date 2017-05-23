@@ -13,6 +13,9 @@
 		2114EFFF1ECB067C00D2CECA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */; };
 		2114F00A1ECB067C00D2CECA /* ForeignBuddyIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2114F0091ECB067C00D2CECA /* ForeignBuddyIOSTests.swift */; };
 		2114F0151ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2114F0141ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift */; };
+		21629FBD1ED4561F00B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FBC1ED4561F00B53EBC /* ChatsOverviewViewController.swift */; };
+		21629FBE1ED4561F00B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FBC1ED4561F00B53EBC /* ChatsOverviewViewController.swift */; };
+		21629FBF1ED4561F00B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FBC1ED4561F00B53EBC /* ChatsOverviewViewController.swift */; };
 		2189B1C31ED322210078D596 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2189B1C21ED322210078D596 /* CoreLocation.framework */; };
 		218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
 		218E24461ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
@@ -34,7 +37,6 @@
 		967C63DA1ED1F6D0006A914E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967C63D71ED1F6D0006A914E /* User.swift */; };
 		9697E6E61ED03638006317B5 /* FirebaseSingletonPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */; };
 		ABE2786117C3E09208305D93 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */; };
-		EA4655A61ED42AA900BEE1EF /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4655A51ED42AA900BEE1EF /* ChatsOverviewViewController.swift */; };
 		EA4655A81ED43E8200BEE1EF /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */; };
 		F2E3AABD7592A7281232548D /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */; };
 /* End PBXBuildFile section */
@@ -69,6 +71,7 @@
 		2114F0101ECB067C00D2CECA /* ForeignBuddyIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ForeignBuddyIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2114F0141ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeignBuddyIOSUITests.swift; sourceTree = "<group>"; };
 		2114F0161ECB067C00D2CECA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21629FBC1ED4561F00B53EBC /* ChatsOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatsOverviewViewController.swift; path = ../../../../../Desktop/ChatsOverviewViewController.swift; sourceTree = "<group>"; };
 		2189B1C21ED322210078D596 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		218E24441ECB12FF00080321 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -83,7 +86,6 @@
 		9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseSingletonPattern.swift; sourceTree = "<group>"; };
 		A7B8EB7CBF1816965E2D79FD /* Pods-ForeignBuddyIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.debug.xcconfig"; sourceTree = "<group>"; };
 		E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA4655A51ED42AA900BEE1EF /* ChatsOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatsOverviewViewController.swift; path = "../../../../../jan-niklas/ss17-foreignbuddy/ios/ForeignBuddyIOS/ForeignBuddyIOS/ChatsOverviewViewController.swift"; sourceTree = "<group>"; };
 		EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F903629F127B11DA9DD1344A /* Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests/Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -154,8 +156,8 @@
 				2114EFFB1ECB067C00D2CECA /* Assets.xcassets */,
 				2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */,
 				2114F0001ECB067C00D2CECA /* Info.plist */,
-				EA4655A51ED42AA900BEE1EF /* ChatsOverviewViewController.swift */,
 				EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */,
+				21629FBC1ED4561F00B53EBC /* ChatsOverviewViewController.swift */,
 			);
 			path = ForeignBuddyIOS;
 			sourceTree = "<group>";
@@ -493,8 +495,8 @@
 				967C63D81ED1F6D0006A914E /* User.swift in Sources */,
 				966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				2114EFF31ECB067C00D2CECA /* AppDelegate.swift in Sources */,
-				EA4655A61ED42AA900BEE1EF /* ChatsOverviewViewController.swift in Sources */,
 				9697E6E61ED03638006317B5 /* FirebaseSingletonPattern.swift in Sources */,
+				21629FBD1ED4561F00B53EBC /* ChatsOverviewViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +509,7 @@
 				967C63D91ED1F6D0006A914E /* User.swift in Sources */,
 				9655386F1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				965F3B641ED04BA7003F67FC /* FirebaseSingletonPattern.swift in Sources */,
+				21629FBE1ED4561F00B53EBC /* ChatsOverviewViewController.swift in Sources */,
 				966ABCFD1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -520,6 +523,7 @@
 				967C63DA1ED1F6D0006A914E /* User.swift in Sources */,
 				965538701ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				965F3B651ED04BA8003F67FC /* FirebaseSingletonPattern.swift in Sources */,
+				21629FBF1ED4561F00B53EBC /* ChatsOverviewViewController.swift in Sources */,
 				966ABCFE1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
