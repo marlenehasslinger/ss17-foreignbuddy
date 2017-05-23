@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var btn_logout: UIButton!
    
     @IBOutlet weak var lblLocation: UILabel!
+   
     
     let locationManager =  CLLocationManager()
     
@@ -75,14 +76,12 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    @IBAction func btn_logout_clicked(_ sender: UIButton) {
-        
+    @IBAction func btnLogout_clicked(_ sender: UIButton) {
         try! FIRAuth.auth()!.signOut()
         
         self.performSegue(withIdentifier: "goToLogin", sender: self)
-        
     }
+
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

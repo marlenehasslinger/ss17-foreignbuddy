@@ -216,7 +216,7 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         if (refFirebase.user?.interests?[6])! {
             technologySwitch.setOn(true, animated: true)
         } else {
-            cultureSwitch.setOn(false, animated: true)
+            technologySwitch.setOn(false, animated: true)
             
         }
         
