@@ -98,12 +98,24 @@ class FirebaseSingletonPattern{
         
             userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
+            
+                for v in value! {
+                    if("interests" == v.key as! String) {
+                        let inter = v.value as! NSDictionary
+                        for i in inter {
+                            print("key \(i.key) value: \(i.value)")
+
+                                }
+                    }
+                }
+                
             let username = value?["username"] as? String ?? ""
             let nativeLanguage = value?["nativeLanguage"] as? String ?? ""
             let language = value?["language"] as? String ?? ""
             let distanceToMatch = value?["distanceToMatch"] as? Int
-            //let interests = value?["interests"] as? Array<Bool>
-            self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch)
+            let interests = value?["interests"]
+         //   print("\((value?[1]))")
+                self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch)
             
             // print("#########")
             print(self.user ??  "#####################defaultValueUsername")
