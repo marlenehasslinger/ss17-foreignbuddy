@@ -85,6 +85,13 @@ class FirebaseSingletonPattern{
         self.ref.child("users").child(userID).child("interests").child("Technology").setValue(interests[6])
     }
     
+    public func insertProfilePhotoUrl(photoUrl: String){
+        let userID = FIRAuth.auth()!.currentUser!.uid
+        self.ref.child("users").child(userID).child("urlProfilephoto").setValue(photoUrl)
+
+
+    }
+    
     
     
     //Retrieve from database

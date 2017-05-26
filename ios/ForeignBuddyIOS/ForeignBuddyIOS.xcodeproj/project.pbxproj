@@ -27,6 +27,9 @@
 		9655386E1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */; };
 		9655386F1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */; };
 		965538701ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */; };
+		965AAA4E1ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965AAA4D1ED6FA76003B8B15 /* ProfileViewController+handlers.swift */; };
+		965AAA4F1ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965AAA4D1ED6FA76003B8B15 /* ProfileViewController+handlers.swift */; };
+		965AAA501ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965AAA4D1ED6FA76003B8B15 /* ProfileViewController+handlers.swift */; };
 		965F3B641ED04BA7003F67FC /* FirebaseSingletonPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */; };
 		965F3B651ED04BA8003F67FC /* FirebaseSingletonPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */; };
 		966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */; };
@@ -81,6 +84,7 @@
 		6011AF6ECCE354F894807BDC /* Pods-ForeignBuddyIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.release.xcconfig"; sourceTree = "<group>"; };
 		6354AC24053BB2E788AE9AD8 /* Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		965AAA4D1ED6FA76003B8B15 /* ProfileViewController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProfileViewController+handlers.swift"; sourceTree = "<group>"; };
 		966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		967C63D71ED1F6D0006A914E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseSingletonPattern.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 				2114F0001ECB067C00D2CECA /* Info.plist */,
 				EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */,
 				21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */,
+				965AAA4D1ED6FA76003B8B15 /* ProfileViewController+handlers.swift */,
 			);
 			path = ForeignBuddyIOS;
 			sourceTree = "<group>";
@@ -491,6 +496,7 @@
 			files = (
 				9655386E1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */,
+				965AAA4E1ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */,
 				EA4655A81ED43E8200BEE1EF /* ChatViewController.swift in Sources */,
 				967C63D81ED1F6D0006A914E /* User.swift in Sources */,
 				966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
@@ -506,6 +512,7 @@
 			files = (
 				218E24461ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				2114F00A1ECB067C00D2CECA /* ForeignBuddyIOSTests.swift in Sources */,
+				965AAA4F1ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */,
 				967C63D91ED1F6D0006A914E /* User.swift in Sources */,
 				9655386F1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				965F3B641ED04BA7003F67FC /* FirebaseSingletonPattern.swift in Sources */,
@@ -520,6 +527,7 @@
 			files = (
 				218E24471ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				2114F0151ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift in Sources */,
+				965AAA501ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */,
 				967C63DA1ED1F6D0006A914E /* User.swift in Sources */,
 				965538701ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				965F3B651ED04BA8003F67FC /* FirebaseSingletonPattern.swift in Sources */,

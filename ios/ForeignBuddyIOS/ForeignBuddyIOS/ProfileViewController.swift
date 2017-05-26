@@ -12,21 +12,31 @@ import CoreLocation
 
 
 class ProfileViewController: UIViewController, CLLocationManagerDelegate {
-    
-    
+        
+    @IBOutlet weak var iv_profilePhoto: UIImageView!
     @IBOutlet weak var btn_logout: UIButton!
-   
-    @IBOutlet weak var lblLocation: UILabel!
-   
+    @IBOutlet weak var lbl_Location: UILabel!
+    @IBOutlet weak var lbl_NativeLanguage: UILabel!
+    @IBOutlet weak var lbl_Username: UILabel!
+    @IBOutlet weak var lbl_ForeignLanguage: UILabel!
+    let refFirebase = FirebaseSingletonPattern.getInstance()
     
     let locationManager =  CLLocationManager()
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        refFirebase.loadCurrentUserData()
+        //Set UI Labels with user data
+        lbl_Username.text = refFirebase.user?.username
+        lbl_NativeLanguage.text = refFirebase.user?.nativeLanguage
+        lbl_ForeignLanguage.text = refFirebase.user?.language
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let refFirebase = FirebaseSingletonPattern.getInstance()
-        refFirebase.loadCurrentUserData()
-        
+    
+        //Set Location
         locationManager.requestWhenInUseAuthorization()
         
         
@@ -40,13 +50,13 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            lblLocation.text = String(location.coordinate.latitude)
+            lbl_Location.text = String(location.coordinate.latitude)
             CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placmark, error) in
                 if (error != nil) {
                     print("Error occured while resolving location")
                 } else {
                     if let place = placmark?[0] {
-                        self.lblLocation.text = place.locality
+                        self.lbl_Location.text = place.locality
                         self.locationManager.stopUpdatingLocation()
                     }
                 }
@@ -83,6 +93,20 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     
+    
+    @IBAction func btn_choosePhoto(_ sender: UIButton) {
+        
+       handleSelectProfileImageView()
+    }
+    
+    
+    @IBAction func btn_takePhoto(_ sender: UIButton) {
+    }
+    
+    
+    func uploadPhoto() {
+        
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         

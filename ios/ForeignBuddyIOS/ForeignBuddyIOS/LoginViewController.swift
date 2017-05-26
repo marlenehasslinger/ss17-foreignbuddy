@@ -14,21 +14,16 @@ import FirebaseAuth
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var signinSelector: UISegmentedControl!
-    
-    
     @IBOutlet weak var emailTextField: UITextField!
-    
-    
     @IBOutlet weak var passwordTextField: UITextField!
-    
-    
     @IBOutlet weak var signinButton: UIButton!
-    
     @IBOutlet weak var registerButton: UIButton!
-    
     @IBOutlet weak var errorTextLabel: UILabel!
     
     var isSignIn:Bool = true
+    
+    let refFirebase = FirebaseSingletonPattern.getInstance()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +35,7 @@ class LoginViewController: UIViewController {
         signinButton.isHidden = false
         FIRAuth.auth()!.addStateDidChangeListener() { auth, user in
             if user != nil && self.isSignIn {
+                self.refFirebase.loadCurrentUserData()
                 self.performSegue(withIdentifier: "leadsToHome", sender: self)
                 
             }
