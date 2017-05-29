@@ -29,7 +29,6 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     @IBOutlet weak var nativeLanguageLabel: UILabel!
     @IBOutlet weak var nativeLanguagePickerView: UIPickerView!
     @IBOutlet weak var foreignLanguagePickerView: UIPickerView!
-    
     @IBOutlet weak var usernameTextField: UITextField!
     
     //Functional variables

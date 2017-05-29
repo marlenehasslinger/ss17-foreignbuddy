@@ -35,6 +35,13 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        iv_profilePhoto.setRounded()
+        
+       /*
+        iv_profilePhoto.layer.cornerRadius=iv_profilePhoto.frame.size.width/2
+        iv_profilePhoto.clipsToBounds = true
+         */
+        
     
         //Set Location
         locationManager.requestWhenInUseAuthorization()
@@ -47,6 +54,9 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
         }
         
     }
+    
+
+    
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
