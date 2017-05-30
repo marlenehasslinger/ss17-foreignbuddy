@@ -9,6 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 import FirebaseAuth
+import SDWebImage
 
 class ChatViewController: JSQMessagesViewController {
     
@@ -35,6 +36,11 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
+        
+        let urlProfilePhoto = refFirebase.user?.urlProfilephoto
+        
+        let urlString = ("\(urlProfilePhoto!)")
+        
         return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "MyProfile"), diameter: 30) // Change for dbUse
     }
     

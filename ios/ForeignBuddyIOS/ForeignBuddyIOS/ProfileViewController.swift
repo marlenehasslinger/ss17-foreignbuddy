@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 import CoreLocation
-
+import SDWebImage
 
 class ProfileViewController: UIViewController, CLLocationManagerDelegate {
         
@@ -30,6 +30,43 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
         lbl_Username.text = refFirebase.user?.username
         lbl_NativeLanguage.text = refFirebase.user?.nativeLanguage
         lbl_ForeignLanguage.text = refFirebase.user?.language
+        
+        
+        
+        let urlProfilephoto = refFirebase.user?.urlProfilephoto
+            
+        let url = URL(string: urlProfilephoto!)
+        
+        iv_profilePhoto.sd_setImage(with: url!)
+        
+        
+        //Set imageview with image from Firebase Database
+        
+        /*
+        if let urlProfilephoto = refFirebase.user?.urlProfilephoto {
+        
+            let url = URL(string: urlProfilephoto)
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+            
+                if error != nil {
+                    print(error ?? "Profile photo download went wrong")
+                    return
+                }
+            
+                
+                let backgroundQueue = DispatchQueue(label: "de.hdm-stuttgart.ForeignBuddyIOS",
+                                                    qos: .background,
+                                                    target: nil)
+                
+                backgroundQueue.async {
+                  self.iv_profilePhoto?.image = UIImage(data: data!)
+                }
+                
+                
+            })
+        }
+        
+        */
     }
     
     override func viewDidLoad() {
@@ -111,12 +148,13 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
     
     
     @IBAction func btn_takePhoto(_ sender: UIButton) {
-    }
-    
-    
-    func uploadPhoto() {
+        
+        handleTakePhoto()
         
     }
+    
+    
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         

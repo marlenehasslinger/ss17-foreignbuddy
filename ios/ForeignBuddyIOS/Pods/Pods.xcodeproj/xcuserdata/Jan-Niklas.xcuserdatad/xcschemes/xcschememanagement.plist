@@ -39,6 +39,11 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
+		<key>SDWebImage.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -52,7 +57,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>429690C8AEBEB01183B112C3D51886CE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>66AF7226E900DE2CE029733E41A7E051</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7445E43A564C6DD3F14377590149C31</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BA9E588FD8A79982363846FEF2A62B31</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -68,6 +88,11 @@
 			<true/>
 		</dict>
 		<key>D0581AF7BF4A6DA140D280B19ECC7BFF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D5E37A802F62E984E6C44988939EE753</key>
 		<dict>
 			<key>primary</key>
 			<true/>

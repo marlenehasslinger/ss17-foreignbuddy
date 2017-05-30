@@ -38,24 +38,8 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         if let selectedImage = selectedImageFromPicker{
             iv_profilePhoto.image = selectedImage
             
+            uploadPhoto()
             
-            let storageRef = FIRStorage.storage().reference().child((FIRAuth.auth()?.currentUser?.email)! + "_profilePhoto.png")
-            
-            let uploadData = UIImagePNGRepresentation(self.iv_profilePhoto.image!)
-            
-            storageRef.put(uploadData!, metadata: nil, completion: { (metadata, error) in
-                
-                if error != nil {
-                print(error ?? "Something went wrong")
-                    return
-                }
-                
-                
-                let downloadURLString = "\(metadata!.downloadURL()!)"
-
-                self.refFirebase.insertProfilePhotoUrl(photoUrl: downloadURLString)
-                print(metadata ?? "Metadata default")
-            })
         }
         
         
@@ -63,6 +47,42 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 
     }
     
+    func handleTakePhoto(){
+        
+        let picker = UIImagePickerController()
+        
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = .camera
+        
+        present(picker, animated:true, completion: nil)
+        
+    }
+    
+
+    
+    
+    func uploadPhoto() {
+        
+        let storageRef = FIRStorage.storage().reference().child((FIRAuth.auth()?.currentUser?.email)! + "_profilePhoto.png")
+        
+        let uploadData = UIImagePNGRepresentation(self.iv_profilePhoto.image!)
+        
+        storageRef.put(uploadData!, metadata: nil, completion: { (metadata, error) in
+            
+            if error != nil {
+                print(error ?? "Something went wrong")
+                return
+            }
+            
+            
+            let downloadURLString = "\(metadata!.downloadURL()!)"
+            
+            self.refFirebase.insertProfilePhotoUrl(photoUrl: downloadURLString)
+            print(metadata ?? "Metadata default")
+        })
+    
+    }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         print ("cancel")
