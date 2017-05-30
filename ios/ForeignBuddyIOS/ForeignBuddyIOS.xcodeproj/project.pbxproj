@@ -13,6 +13,9 @@
 		2114EFFF1ECB067C00D2CECA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */; };
 		2114F00A1ECB067C00D2CECA /* ForeignBuddyIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2114F0091ECB067C00D2CECA /* ForeignBuddyIOSTests.swift */; };
 		2114F0151ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2114F0141ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift */; };
+		213C12731EDDA8BD00721500 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213C12721EDDA8BD00721500 /* Location.swift */; };
+		213C12741EDDA8BD00721500 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213C12721EDDA8BD00721500 /* Location.swift */; };
+		213C12751EDDA8BD00721500 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213C12721EDDA8BD00721500 /* Location.swift */; };
 		21629FC11ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */; };
 		21629FC21ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */; };
 		21629FC31ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */; };
@@ -20,9 +23,6 @@
 		218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
 		218E24461ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
 		218E24471ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
-		21A82E5E1EDDA4DC002B72EC /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A82E5D1EDDA4DC002B72EC /* Location.swift */; };
-		21A82E5F1EDDA4DC002B72EC /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A82E5D1EDDA4DC002B72EC /* Location.swift */; };
-		21A82E601EDDA4DC002B72EC /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A82E5D1EDDA4DC002B72EC /* Location.swift */; };
 		21ABE7271ECB074F00BEF53B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */; };
 		21ABE7281ECB074F00BEF53B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */; };
 		21ABE7291ECB074F00BEF53B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */; };
@@ -82,10 +82,10 @@
 		2114F0101ECB067C00D2CECA /* ForeignBuddyIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ForeignBuddyIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2114F0141ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForeignBuddyIOSUITests.swift; sourceTree = "<group>"; };
 		2114F0161ECB067C00D2CECA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		213C12721EDDA8BD00721500 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsOverviewViewController.swift; sourceTree = "<group>"; };
 		2189B1C21ED322210078D596 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		218E24441ECB12FF00080321 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		21A82E5D1EDDA4DC002B72EC /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = ../../../../../Desktop/Location.swift; sourceTree = "<group>"; };
 		21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28564B31D6C311C098FF2C5F /* Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests/Pods-ForeignBuddyIOS-ForeignBuddyIOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		2CEB778570A4E035C7276B50 /* Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests/Pods-ForeignBuddyIOS-ForeignBuddyIOSUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -176,9 +176,9 @@
 				EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */,
 				21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */,
 				965AAA4D1ED6FA76003B8B15 /* ProfileViewController+handlers.swift */,
+				213C12721EDDA8BD00721500 /* Location.swift */,
 				EAAAFFE31EDD76C700751D8A /* MessagesHandler.swift */,
 				EAAAFFE51EDD8B9700751D8A /* DBChatProvider.swift */,
-				21A82E5D1EDDA4DC002B72EC /* Location.swift */,
 			);
 			path = ForeignBuddyIOS;
 			sourceTree = "<group>";
@@ -516,7 +516,7 @@
 				965AAA4E1ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */,
 				EAAAFFE61EDD8B9700751D8A /* DBChatProvider.swift in Sources */,
 				EA4655A81ED43E8200BEE1EF /* ChatViewController.swift in Sources */,
-				21A82E5E1EDDA4DC002B72EC /* Location.swift in Sources */,
+				213C12731EDDA8BD00721500 /* Location.swift in Sources */,
 				967C63D81ED1F6D0006A914E /* User.swift in Sources */,
 				966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				2114EFF31ECB067C00D2CECA /* AppDelegate.swift in Sources */,
@@ -532,7 +532,7 @@
 			files = (
 				218E24461ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				2114F00A1ECB067C00D2CECA /* ForeignBuddyIOSTests.swift in Sources */,
-				21A82E5F1EDDA4DC002B72EC /* Location.swift in Sources */,
+				213C12741EDDA8BD00721500 /* Location.swift in Sources */,
 				965AAA4F1ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */,
 				967C63D91ED1F6D0006A914E /* User.swift in Sources */,
 				9655386F1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
@@ -549,7 +549,7 @@
 			files = (
 				218E24471ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				2114F0151ECB067C00D2CECA /* ForeignBuddyIOSUITests.swift in Sources */,
-				21A82E601EDDA4DC002B72EC /* Location.swift in Sources */,
+				213C12751EDDA8BD00721500 /* Location.swift in Sources */,
 				965AAA501ED6FA76003B8B15 /* ProfileViewController+handlers.swift in Sources */,
 				967C63DA1ED1F6D0006A914E /* User.swift in Sources */,
 				965538701ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
