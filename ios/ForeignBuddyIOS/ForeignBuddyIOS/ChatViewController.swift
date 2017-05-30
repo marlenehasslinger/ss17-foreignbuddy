@@ -8,20 +8,22 @@
 
 import UIKit
 import JSQMessagesViewController
-
+import FirebaseAuth
 
 class ChatViewController: JSQMessagesViewController {
     
      private var messages = [JSQMessage]();
+    let refFirebase = FirebaseSingletonPattern.getInstance()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.senderId = "1";
-        self.senderDisplayName = "Test" //need to change for db use
+        self.senderId = FIRAuth.auth()!.currentUser!.uid
+        self.senderDisplayName = refFirebase.user?.username //need to change for db use
         
-        // Do any additional setup after loading the view.
+        
+        
     }
     
     // Collection View Functions
@@ -55,9 +57,14 @@ class ChatViewController: JSQMessagesViewController {
     //Sending Buttons Functions
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
-        
-        messages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text))
+   
+
+        messages.append(JSQMessage(senderId: senderId, senderDisplayName: senderDisplayName , date: date,text: text))
         collectionView.reloadData()
+
+        
+        //MessagesHandler.Instance.sendMessage(senderID: senderId, senderName: senderDisplayName, text: text, date: date)
+        
         
         //remove text from textfield
         finishSendingMessage()
