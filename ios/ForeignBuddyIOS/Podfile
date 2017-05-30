@@ -12,6 +12,7 @@ target 'ForeignBuddyIOS' do
     pod 'Firebase/Database'
     pod 'JSQMessagesViewController'
 
+    pod 'SDWebImage', '~>3.8'
   target 'ForeignBuddyIOSTests' do
     inherit! :complete
     # Pods for testing
