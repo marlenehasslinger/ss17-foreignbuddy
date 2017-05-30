@@ -133,11 +133,12 @@ class FirebaseSingletonPattern{
             let language = value?["language"] as? String ?? ""
             let distanceToMatch = value?["distanceToMatch"] as? Int
             let urlProfilephoto = value?["urlProfilephoto"] as? String ?? ""
+            let lastKnownCity = value?["lastKnownCity"] as? String ?? ""
             
                 
                 print(urlProfilephoto)
                 
-                self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch, interests: interessen, urlProfilephoto: urlProfilephoto)
+                self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch, interests: interessen, urlProfilephoto: urlProfilephoto, lastKnownCity: lastKnownCity)
                 
 
             
