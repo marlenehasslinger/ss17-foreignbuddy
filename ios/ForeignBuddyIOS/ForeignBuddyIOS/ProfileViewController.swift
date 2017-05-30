@@ -11,7 +11,7 @@ import Firebase
 import CoreLocation
 import SDWebImage
 
-class ProfileViewController: UIViewController, CLLocationManagerDelegate {
+class ProfileViewController: UIViewController {
         
     @IBOutlet weak var iv_profilePhoto: UIImageView!
     @IBOutlet weak var btn_logout: UIButton!
@@ -20,8 +20,7 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var lbl_Username: UILabel!
     @IBOutlet weak var lbl_ForeignLanguage: UILabel!
     let refFirebase = FirebaseSingletonPattern.getInstance()
-    
-    let locationManager =  CLLocationManager()
+
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -30,6 +29,7 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
         lbl_Username.text = refFirebase.user?.username
         lbl_NativeLanguage.text = refFirebase.user?.nativeLanguage
         lbl_ForeignLanguage.text = refFirebase.user?.language
+        lbl_Location.text = refFirebase.user?.lastKnownCity
         
         
         
@@ -67,6 +67,14 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         */
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(Location.LOCATION_UPDATED), object: nil, queue: nil) { notification in
+            self.lbl_Location.text = self.refFirebase.user?.lastKnownCity
+            print("Location updated")
+        }
+        
+        Location.getInstance().startLocationUpdate()
+
     }
     
     override func viewDidLoad() {
@@ -79,57 +87,8 @@ class ProfileViewController: UIViewController, CLLocationManagerDelegate {
         iv_profilePhoto.clipsToBounds = true
          */
         
-    
-        //Set Location
-        locationManager.requestWhenInUseAuthorization()
-        
-        
-        if CLLocationManager.locationServicesEnabled(){
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
-        }
-        
     }
-    
 
-    
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            lbl_Location.text = String(location.coordinate.latitude)
-            CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placmark, error) in
-                if (error != nil) {
-                    print("Error occured while resolving location")
-                } else {
-                    if let place = placmark?[0] {
-                        self.lbl_Location.text = place.locality
-                        self.locationManager.stopUpdatingLocation()
-                    }
-                }
-            })
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if (status == CLAuthorizationStatus.denied) {
-            let alertControler = UIAlertController(title: "Location is denied",
-                                                   message: "In order to find matches we need your Location",
-                                                   preferredStyle: .alert)
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertControler.addAction(cancelAction)
-            
-            let openAction = UIAlertAction(title: "Open Settings", style: .default, handler: { (action) in
-                if let url = URL(string: UIApplicationOpenSettingsURLString) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-            })
-            alertControler.addAction(openAction)
-            self.present(alertControler, animated: true, completion: nil)
-        }
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
