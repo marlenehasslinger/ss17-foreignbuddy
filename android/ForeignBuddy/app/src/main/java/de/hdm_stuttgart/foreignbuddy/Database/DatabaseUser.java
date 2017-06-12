@@ -98,7 +98,7 @@ public class DatabaseUser {
         return currentUsersConversations;
     }
 
-    private synchronized void loadCurrentUser() {
+    private void loadCurrentUser() {
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -109,6 +109,12 @@ public class DatabaseUser {
                         loadProfilePhoto(currentUser);
                         loadCurrentUsersMatches();
                         loadCurrentUsersConversations();
+                        if (firstLoading == true) {
+                            firstLoading = false;
+                            Intent loadingIntent = new Intent();
+                            loadingIntent.setAction(FINISHED_LOADING);
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
+                        }
                     }
 
                     @Override
@@ -147,12 +153,6 @@ public class DatabaseUser {
 
                                 }
                             });
-                    if (firstLoading == true) {
-                        firstLoading = false;
-                        Intent loadingIntent = new Intent();
-                        loadingIntent.setAction(FINISHED_LOADING);
-                        LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
-                    }
                 }
             }
 

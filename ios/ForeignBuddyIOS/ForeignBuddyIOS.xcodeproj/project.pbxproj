@@ -19,6 +19,12 @@
 		21629FC11ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */; };
 		21629FC21ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */; };
 		21629FC31ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */; };
+		217652B91EED8E19000830DE /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217652B81EED8E19000830DE /* MatchesViewController.swift */; };
+		217652BA1EED8E19000830DE /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217652B81EED8E19000830DE /* MatchesViewController.swift */; };
+		217652BB1EED8E19000830DE /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217652B81EED8E19000830DE /* MatchesViewController.swift */; };
+		217652BD1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217652BC1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift */; };
+		217652BE1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217652BC1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift */; };
+		217652BF1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217652BC1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift */; };
 		2189B1C31ED322210078D596 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2189B1C21ED322210078D596 /* CoreLocation.framework */; };
 		218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
 		218E24461ECB12FF00080321 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E24441ECB12FF00080321 /* LoginViewController.swift */; };
@@ -84,6 +90,8 @@
 		2114F0161ECB067C00D2CECA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		213C12721EDDA8BD00721500 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		21629FC01ED4597900B53EBC /* ChatsOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsOverviewViewController.swift; sourceTree = "<group>"; };
+		217652B81EED8E19000830DE /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
+		217652BC1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewControllerTableViewCell.swift; sourceTree = "<group>"; };
 		2189B1C21ED322210078D596 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		218E24441ECB12FF00080321 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -164,6 +172,7 @@
 				2114EFF21ECB067C00D2CECA /* AppDelegate.swift */,
 				21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */,
 				2114EFF81ECB067C00D2CECA /* Main.storyboard */,
+				217652BC1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift */,
 				96225E561EDF36DC00C95454 /* DBZugriffe */,
 				96225E551EDF369D00C95454 /* ViewController */,
 				96225E541EDF366100C95454 /* Extensions */,
@@ -231,6 +240,7 @@
 		96225E551EDF369D00C95454 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				217652B81EED8E19000830DE /* MatchesViewController.swift */,
 				EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */,
 				966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */,
 				9655386D1ECDE87C001EF5F8 /* ProfileViewController.swift */,
@@ -534,8 +544,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				217652B91EED8E19000830DE /* MatchesViewController.swift in Sources */,
 				EAAAFFE41EDD76C700751D8A /* MessagesHandler.swift in Sources */,
 				9655386E1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
+				217652BD1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift in Sources */,
 				218E24451ECB12FF00080321 /* LoginViewController.swift in Sources */,
 				965AAA4E1ED6FA76003B8B15 /* extentionProfileViewController.swift in Sources */,
 				EAAAFFE61EDD8B9700751D8A /* DBChatProvider.swift in Sources */,
@@ -559,6 +571,8 @@
 				213C12741EDDA8BD00721500 /* Location.swift in Sources */,
 				965AAA4F1ED6FA76003B8B15 /* extentionProfileViewController.swift in Sources */,
 				967C63D91ED1F6D0006A914E /* User.swift in Sources */,
+				217652BA1EED8E19000830DE /* MatchesViewController.swift in Sources */,
+				217652BE1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift in Sources */,
 				9655386F1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				965F3B641ED04BA7003F67FC /* FirebaseSingletonPattern.swift in Sources */,
 				21629FC21ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */,
@@ -576,6 +590,8 @@
 				213C12751EDDA8BD00721500 /* Location.swift in Sources */,
 				965AAA501ED6FA76003B8B15 /* extentionProfileViewController.swift in Sources */,
 				967C63DA1ED1F6D0006A914E /* User.swift in Sources */,
+				217652BB1EED8E19000830DE /* MatchesViewController.swift in Sources */,
+				217652BF1EED91CF000830DE /* MatchesViewControllerTableViewCell.swift in Sources */,
 				965538701ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				965F3B651ED04BA8003F67FC /* FirebaseSingletonPattern.swift in Sources */,
 				21629FC31ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */,
