@@ -16,7 +16,7 @@ class FirebaseSingletonPattern{
     //Fields
     static let instance = FirebaseSingletonPattern()
     let ref: FIRDatabaseReference = FIRDatabase.database().reference()
-    let userID = FIRAuth.auth()!.currentUser!.uid
+   // let userID = FIRAuth.auth()!.currentUser!.uid
    // var cnt = 0  //Variable to test Singleton pattern functionality
 
 
