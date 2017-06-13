@@ -18,11 +18,12 @@ class User{
     var urlProfilephoto: String?
     var lastKnownCity: String?
     var distanceToMatch: Int?
+    var latitude: Double?
+    var longitude: Double?
     var interests: Array<Bool>?
 
 
-    init(username: String?, nativeLanguage: String?, language: String?, distanceToMatch: Int?,interests: Array<Bool>?, urlProfilephoto: String?, lastKnownCity: String?){
-        
+    init(username: String?, nativeLanguage: String?, language: String?, distanceToMatch: Int?,interests: Array<Bool>?, urlProfilephoto: String?, lastKnownCity: String?, latitude: Double?, longitude : Double?){
         self.username = username
         self.nativeLanguage = nativeLanguage
         self.language = language
@@ -30,8 +31,16 @@ class User{
         self.interests = interests
         self.urlProfilephoto = urlProfilephoto
         self.lastKnownCity = lastKnownCity
-        
+        self.latitude = latitude
+        self.longitude = longitude
     }
+    
+    init(username: String?, nativeLanguage: String?, urlProfilephoto: String?){
+        self.username = username
+        self.nativeLanguage = nativeLanguage
+        self.urlProfilephoto = urlProfilephoto
+    }
+    
 
 /*
 let latitude;
