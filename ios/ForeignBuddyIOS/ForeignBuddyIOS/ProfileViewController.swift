@@ -34,10 +34,13 @@ class ProfileViewController: UIViewController {
         
         let urlProfilephoto = refFirebase.user?.urlProfilephoto
             
-        let url = URL(string: urlProfilephoto!)
         
-        iv_profilePhoto.sd_setImage(with: url!)
-        
+        if !(urlProfilephoto!.isEmpty) {
+            let url = URL(string: urlProfilephoto!)
+            iv_profilePhoto.sd_setImage(with: url!)
+        } else {
+            iv_profilePhoto.image = UIImage(named: "user_male")
+        }
         
         //Set imageview with image from Firebase Database
         
