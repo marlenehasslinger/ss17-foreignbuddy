@@ -45,6 +45,7 @@
 		967C63D91ED1F6D0006A914E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967C63D71ED1F6D0006A914E /* User.swift */; };
 		967C63DA1ED1F6D0006A914E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967C63D71ED1F6D0006A914E /* User.swift */; };
 		9697E6E61ED03638006317B5 /* FirebaseSingletonPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */; };
+		96A62D911EEFFBC10084AEEF /* extentionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A62D901EEFFBC10084AEEF /* extentionUIImage.swift */; };
 		ABE2786117C3E09208305D93 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */; };
 		EA4655A81ED43E8200BEE1EF /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */; };
 		EAAAFFE41EDD76C700751D8A /* MessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAAFFE31EDD76C700751D8A /* MessagesHandler.swift */; };
@@ -98,6 +99,7 @@
 		966ABCFB1ECB74B600EB8050 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		967C63D71ED1F6D0006A914E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseSingletonPattern.swift; sourceTree = "<group>"; };
+		96A62D901EEFFBC10084AEEF /* extentionUIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extentionUIImage.swift; sourceTree = "<group>"; };
 		A7B8EB7CBF1816965E2D79FD /* Pods-ForeignBuddyIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.debug.xcconfig"; sourceTree = "<group>"; };
 		E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 			children = (
 				965AAA4D1ED6FA76003B8B15 /* extentionProfileViewController.swift */,
 				965AAA511ED843EF003B8B15 /* extentionImageView.swift */,
+				96A62D901EEFFBC10084AEEF /* extentionUIImage.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				EA4655A81ED43E8200BEE1EF /* ChatViewController.swift in Sources */,
 				213C12731EDDA8BD00721500 /* Location.swift in Sources */,
 				967C63D81ED1F6D0006A914E /* User.swift in Sources */,
+				96A62D911EEFFBC10084AEEF /* extentionUIImage.swift in Sources */,
 				966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				2114EFF31ECB067C00D2CECA /* AppDelegate.swift in Sources */,
 				9697E6E61ED03638006317B5 /* FirebaseSingletonPattern.swift in Sources */,

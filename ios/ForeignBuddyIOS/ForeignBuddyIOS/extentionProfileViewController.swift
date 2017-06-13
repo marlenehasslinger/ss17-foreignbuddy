@@ -36,7 +36,10 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         }
         
         if let selectedImage = selectedImageFromPicker{
-            iv_profilePhoto.image = selectedImage
+            
+            let myThumb1 = selectedImage.resized(withPercentage: 0.3)
+            
+            iv_profilePhoto.image = myThumb1
             
             uploadPhoto()
             
@@ -64,8 +67,8 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func uploadPhoto() {
         
-        let storageRef = FIRStorage.storage().reference().child((FIRAuth.auth()?.currentUser?.email)! + "_profilePhoto.png")
-        
+        let storageRef = FIRStorage.storage().reference().child("images").child((FIRAuth.auth()?.currentUser?.email)! + "_profilePhoto.png")
+
         let uploadData = UIImagePNGRepresentation(self.iv_profilePhoto.image!)
         
         storageRef.put(uploadData!, metadata: nil, completion: { (metadata, error) in
