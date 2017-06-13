@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
-class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MatchesViewController: UIViewController
+
+//,  UITableViewDataSource, UITableViewDelegate
+
+{
     
     let matches = ["Marc-Julian Fleck", "Jan-Niklas Dittrich", "Marlene Hasslinger"]
     
@@ -26,8 +30,10 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         return matches.count
     }
    
+    /*
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
     }
 
+ */
 }
