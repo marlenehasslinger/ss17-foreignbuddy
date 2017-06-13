@@ -37,11 +37,11 @@ class ChatViewController: JSQMessagesViewController {
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
         
-        let urlProfilePhoto = refFirebase.user?.urlProfilephoto
+       
         
-        let urlString = ("\(urlProfilePhoto!)")
+       
         
-        return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "MyProfile"), diameter: 30) // Change for dbUse
+        return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "user_male"), diameter: 30) // Change for dbUse
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
@@ -69,7 +69,7 @@ class ChatViewController: JSQMessagesViewController {
         collectionView.reloadData()
 
         
-        //MessagesHandler.Instance.sendMessage(senderID: senderId, senderName: senderDisplayName, text: text, date: date)
+        MessagesHandler.Instance.sendMessage(senderID: senderId, senderName: senderDisplayName, text: text, date: date)
         
         
         //remove text from textfield

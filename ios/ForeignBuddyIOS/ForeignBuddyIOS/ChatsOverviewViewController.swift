@@ -13,6 +13,8 @@ class ChatsOverviewViewController: UIViewController, UITableViewDelegate, UITabl
     private let CELL_ID = "Cell"
     private let CHAT_SEQUE = "ChatSegue"
     
+    var names = ["Marc-Julian", "Marlene", "Jan-Niklas"]
+    
     
     @IBOutlet weak var ChatsTable: UITableView!
     
@@ -28,14 +30,16 @@ class ChatsOverviewViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1;
+        return names.count;
         
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath)
-           cell.textLabel?.text = "works" //need to change for db use
+           cell.textLabel?.text = names[indexPath.row] // change for dbUse
+        
         return cell;
     }
     

@@ -18,13 +18,14 @@ class MessagesHandler {
     }
     
     func sendMessage(senderID: String, senderName: String, text: String, date: Date) {
-        
+       
+        /*
         let data: Dictionary<String, Any> = ["Sender_ID": senderID, "Sender_Name": senderName, "Date": date, "Text": text]
         
 
         DBChatProvider.Instance.messageRef.childByAutoId().setValue(data)
-   // FIRDatabase.database().reference().child("chats").child("PVNtBWp1c1Zs99EWUmtKHz1G44N2_LrefvFdYxFcIOpDxSXGtnkVCm9L2").child(NSData()).setValue(date)
-        
+    FIRDatabase.database().reference().child("chats").child("PVNtBWp1c1Zs99EWUmtKHz1G44N2_LrefvFdYxFcIOpDxSXGtnkVCm9L2").child(NSData()).setValue(date)
+        */
     }
 
 
