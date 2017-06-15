@@ -594,6 +594,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
     }
 
     private void logout() {
+        DatabaseUser.removeActualInstance();
         FirebaseAuth.getInstance().signOut();
         Log.d("Auth", FirebaseAuth.getInstance().getCurrentUser() + "is logged out");
         Intent i = new Intent(getActivity(), LogInActivity.class);

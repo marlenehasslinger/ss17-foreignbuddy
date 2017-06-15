@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VLr-fF-gxA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VLr-fF-gxA">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -575,9 +575,18 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMy-ro-cZU">
+                                                    <rect key="frame" x="304" y="32" width="63" height="36"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Chat"/>
+                                                    <connections>
+                                                        <segue destination="dPI-Gk-F3c" kind="show" id="5aq-eQ-k1C"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="btn_chat" destination="WMy-ro-cZU" id="H5i-sV-STn"/>
                                             <outlet property="img_profilePhoto" destination="ybz-qD-uSM" id="zml-LO-gd8"/>
                                             <outlet property="lbl_distance" destination="3wo-Fy-ELb" id="2GF-MJ-HlS"/>
                                             <outlet property="lbl_language" destination="aLX-8V-SGc" id="DJl-g9-Jgu"/>
@@ -777,6 +786,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="selectedImageTintColor" red="1" green="0.79215686269999996" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="fxD-u6-xE6" kind="relationship" relationship="viewControllers" id="G53-wu-pSX"/>
@@ -821,6 +831,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="jgH-ys-J9U"/>
         <segue reference="gS7-qa-4ab"/>
+        <segue reference="5aq-eQ-k1C"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.89411764709999997" green="0.72156862749999995" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

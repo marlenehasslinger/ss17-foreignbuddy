@@ -4,7 +4,7 @@ admin.initializeApp(functions.config().firebase);
 
 //Matching Algoirithm
 exports.matches = functions.database
-	.ref('/users/{userID}/lastKnownCity')
+	.ref('/users/{userID}/longitude')
 	.onWrite(event => {
 		const myUid = event.params.userID; // Actual UserID
 		var matches = new Array();

@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
-import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
 /**
@@ -158,17 +157,16 @@ public class GPS implements LocationListener {
                 LocalBroadcastManager.getInstance(context).sendBroadcast(locationIntent);
 
                 //Upload new Location to Firebase if changed
-                if (!city.equals(DatabaseUser.getInstance().getCurrentUser().lastKnownCity)) {
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("latitude").setValue(location.getLatitude());
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("longitude").setValue(location.getLongitude());
-                    FirebaseDatabase.getInstance().getReference().child("users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .child("lastKnownCity").setValue(city);
-                }
+                FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("latitude").setValue(location.getLatitude());
+                FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("longitude").setValue(location.getLongitude());
+                FirebaseDatabase.getInstance().getReference().child("users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("lastKnownCity").setValue(city);
+
 
             }
 

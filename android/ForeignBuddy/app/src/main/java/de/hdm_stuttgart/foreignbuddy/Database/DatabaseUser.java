@@ -1,50 +1,28 @@
 package de.hdm_stuttgart.foreignbuddy.Database;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.location.Geocoder;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
-import java.util.Locale;
 
 import de.hdm_stuttgart.foreignbuddy.Chat.Conversation;
-import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
-import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.Match;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
@@ -67,6 +45,9 @@ public class DatabaseUser {
         }
         return instance;
     }
+    public static synchronized void removeActualInstance(){
+        instance = null;
+    }
     private void InstanceCurrentUser() {
         loadCurrentUser();
     }
@@ -83,7 +64,7 @@ public class DatabaseUser {
     private StorageReference riversRef;
     private StorageReference storageReference;
     private Context context;
-    private boolean firstLoading = true;
+    private boolean initalLoading = true;
     //private File localFile = null;
 
     public User getCurrentUser() {
@@ -109,10 +90,10 @@ public class DatabaseUser {
                         loadProfilePhoto(currentUser);
                         loadCurrentUsersMatches();
                         loadCurrentUsersConversations();
-                        if (firstLoading == true) {
-                            firstLoading = false;
+                        if (initalLoading == true) {
+                            initalLoading = false;
                             Intent loadingIntent = new Intent();
-                            loadingIntent.setAction(FINISHED_LOADING);
+                            loadingIntent.setAction(DatabaseUser.FINISHED_LOADING);
                             LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
                         }
                     }
@@ -214,4 +195,7 @@ public class DatabaseUser {
         });
     }
 
+    public void setInitalLoading(boolean initalLoading) {
+        this.initalLoading = initalLoading;
+    }
 }

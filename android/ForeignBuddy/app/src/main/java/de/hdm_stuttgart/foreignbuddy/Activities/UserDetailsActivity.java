@@ -17,9 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
-import de.hdm_stuttgart.foreignbuddy.Fragments.ProfilFragment;
+import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
 
@@ -378,8 +376,8 @@ public class UserDetailsActivity extends AppCompatActivity {
 
 
     public  void btn_next_clicked(View v) {
-
         addUserDataToDatabase();
+        DatabaseUser.removeActualInstance();
         Intent i =  new Intent(UserDetailsActivity.this, MainActivity.class);
         startActivity(i);
     }

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Load current User
-        DatabaseUser.getInstance().setContext(getApplicationContext());
+        DatabaseUser.getInstance().setContext(getApplicationContext()); //Instance Database User and set current Context
 
         progressDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
 
@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 //Set First Fragment
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.add(R.id.fragment, chat);
-                transaction.commit();
+                //transaction.commit();
+                transaction.commitAllowingStateLoss();
                 progressDialog.dismiss();
             }
         }, new IntentFilter(DatabaseUser.FINISHED_LOADING));

@@ -18,6 +18,7 @@ class MatchesTableViewCell: UITableViewCell {
     
     @IBOutlet weak var lbl_language: UILabel!
     
+    @IBOutlet weak var btn_chat: UIButton!
     
     
     override func awakeFromNib() {
