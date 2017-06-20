@@ -15,6 +15,8 @@ class ChatsOverviewViewController: UIViewController, UITableViewDelegate, UITabl
     
     var names = ["Marc-Julian", "Marlene", "Jan-Niklas"]
     
+    var urls = []
+    
     
     @IBOutlet weak var ChatsTable: UITableView!
     
@@ -38,7 +40,7 @@ class ChatsOverviewViewController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath)
-           cell.textLabel?.text = names[indexPath.row] // change for dbUse. hardcoded for presentation purposes.
+         //  lbl_MatchesUsername.text = names[indexPath.row] // change for dbUse. hardcoded for presentation purposes.
         
         return cell;
     }

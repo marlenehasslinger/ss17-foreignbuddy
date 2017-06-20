@@ -190,7 +190,7 @@ public class DatabaseUser {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.d("Download", "Profil photo download failed");
+                Log.d("Download", "Profil photo download failed xxxxxxxx");
                 user.setProfilePhoto(null);
                 if (initalLoading == true) {
                     initalLoading = false;
