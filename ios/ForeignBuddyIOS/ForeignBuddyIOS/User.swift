@@ -35,10 +35,12 @@ class User{
         self.longitude = longitude
     }
     
-    init(username: String?, nativeLanguage: String?, urlProfilephoto: String?){
+    init(username: String?, nativeLanguage: String?, urlProfilephoto: String?, latitude: Double?, longitude : Double?){
         self.username = username
         self.nativeLanguage = nativeLanguage
         self.urlProfilephoto = urlProfilephoto
+        self.latitude = latitude
+        self.longitude = longitude
     }
     
 

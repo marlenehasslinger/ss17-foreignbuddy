@@ -47,6 +47,7 @@ class Location : NSObject, CLLocationManagerDelegate {
                 } else {
                     if let place = placmark?[0] {
                         refFirebase.user?.lastKnownCity = place.locality
+                        refFirebase.insertLocationUpdate(lastKnownCity: place.locality!, longitude: (locations.first?.coordinate.longitude)!, latitude: (locations.first?.coordinate.latitude)!)
                         NotificationCenter.default.post(name: NSNotification.Name(Location.LOCATION_UPDATED), object: nil)
                     }
                 }
