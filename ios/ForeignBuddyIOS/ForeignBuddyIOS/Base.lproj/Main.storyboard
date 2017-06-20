@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VLr-fF-gxA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VLr-fF-gxA">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -445,7 +445,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="82" id="Bv3-tm-Jm7">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ConversationTableViewCell" rowHeight="82" id="Bv3-tm-Jm7" customClass="ConversationTableViewCell" customModule="ForeignBuddyIOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bv3-tm-Jm7" id="wTJ-eZ-E7q">
@@ -465,11 +465,16 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="img_profilePhoto" destination="dSf-C0-zFO" id="z3c-6P-1zC"/>
+                                            <outlet property="lbl_username" destination="YoR-qD-0VU" id="fZV-eS-JL4"/>
+                                            <segue destination="dPI-Gk-F3c" kind="show" id="w7V-Yn-Nhi"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="VT7-km-ZWC" id="BCU-Su-Y9b"/>
-                                    <outlet property="delegate" destination="VT7-km-ZWC" id="cf9-CF-Xtx"/>
+                                    <outlet property="dataSource" destination="VT7-km-ZWC" id="wta-aD-WXr"/>
+                                    <outlet property="delegate" destination="VT7-km-ZWC" id="WKB-ov-mwU"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -493,12 +498,6 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Chats" image="Chats" id="pxe-Zp-AqF"/>
-                    <connections>
-                        <outlet property="ChatsTable" destination="YRM-nc-ikW" id="X4i-jr-1Q9"/>
-                        <outlet property="iv_matchesPhoto" destination="dSf-C0-zFO" id="8vM-FU-6Ty"/>
-                        <outlet property="lbl_MatchesUsername" destination="YoR-qD-0VU" id="joe-RP-ZVP"/>
-                        <segue destination="dPI-Gk-F3c" kind="show" identifier="ChatSegue" id="TlE-Sc-c4u"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tSG-o6-5Wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -859,7 +858,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="jgH-ys-J9U"/>
         <segue reference="gS7-qa-4ab"/>
-        <segue reference="TlE-Sc-c4u"/>
+        <segue reference="w7V-Yn-Nhi"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.89411764709999997" green="0.72156862749999995" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

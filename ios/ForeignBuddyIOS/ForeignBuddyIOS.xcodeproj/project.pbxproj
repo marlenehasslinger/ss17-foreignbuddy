@@ -52,6 +52,9 @@
 		967C63DA1ED1F6D0006A914E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967C63D71ED1F6D0006A914E /* User.swift */; };
 		9697E6E61ED03638006317B5 /* FirebaseSingletonPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */; };
 		96A62D911EEFFBC10084AEEF /* extentionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A62D901EEFFBC10084AEEF /* extentionUIImage.swift */; };
+		96D0F5D31EF96F50004134FF /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0F5D21EF96F50004134FF /* ConversationTableViewCell.swift */; };
+		96D0F5D41EF96F50004134FF /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0F5D21EF96F50004134FF /* ConversationTableViewCell.swift */; };
+		96D0F5D51EF96F50004134FF /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D0F5D21EF96F50004134FF /* ConversationTableViewCell.swift */; };
 		ABE2786117C3E09208305D93 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE62D88D78DCA1511ACDD271 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSUITests.framework */; };
 		EA4655A81ED43E8200BEE1EF /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */; };
 		EAAAFFE41EDD76C700751D8A /* MessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAAFFE31EDD76C700751D8A /* MessagesHandler.swift */; };
@@ -108,6 +111,7 @@
 		967C63D71ED1F6D0006A914E /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseSingletonPattern.swift; sourceTree = "<group>"; };
 		96A62D901EEFFBC10084AEEF /* extentionUIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extentionUIImage.swift; sourceTree = "<group>"; };
+		96D0F5D21EF96F50004134FF /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		A7B8EB7CBF1816965E2D79FD /* Pods-ForeignBuddyIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeignBuddyIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForeignBuddyIOS/Pods-ForeignBuddyIOS.debug.xcconfig"; sourceTree = "<group>"; };
 		E8659F6C7A8AEAABE3BF61C4 /* Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForeignBuddyIOS_ForeignBuddyIOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA4655A71ED43E8200BEE1EF /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 				2114EFF21ECB067C00D2CECA /* AppDelegate.swift */,
 				21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */,
 				2114EFF81ECB067C00D2CECA /* Main.storyboard */,
+				96D0F5D21EF96F50004134FF /* ConversationTableViewCell.swift */,
 				219170081EF00FA400344321 /* MatchesTableViewCell.swift */,
 				96225E561EDF36DC00C95454 /* DBZugriffe */,
 				96225E551EDF369D00C95454 /* ViewController */,
@@ -559,6 +564,7 @@
 				966ABCFC1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				2114EFF31ECB067C00D2CECA /* AppDelegate.swift in Sources */,
 				9697E6E61ED03638006317B5 /* FirebaseSingletonPattern.swift in Sources */,
+				96D0F5D31EF96F50004134FF /* ConversationTableViewCell.swift in Sources */,
 				219170051EF0088100344321 /* MatchesViewController.swift in Sources */,
 				219170091EF00FA400344321 /* MatchesTableViewCell.swift in Sources */,
 				21629FC11ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */,
@@ -579,6 +585,7 @@
 				219170061EF0088100344321 /* MatchesViewController.swift in Sources */,
 				9655386F1ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				965F3B641ED04BA7003F67FC /* FirebaseSingletonPattern.swift in Sources */,
+				96D0F5D41EF96F50004134FF /* ConversationTableViewCell.swift in Sources */,
 				21629FC21ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */,
 				966ABCFD1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				965AAA531ED843EF003B8B15 /* extentionImageView.swift in Sources */,
@@ -598,6 +605,7 @@
 				219170071EF0088100344321 /* MatchesViewController.swift in Sources */,
 				965538701ECDE87C001EF5F8 /* ProfileViewController.swift in Sources */,
 				965F3B651ED04BA8003F67FC /* FirebaseSingletonPattern.swift in Sources */,
+				96D0F5D51EF96F50004134FF /* ConversationTableViewCell.swift in Sources */,
 				21629FC31ED4597900B53EBC /* ChatsOverviewViewController.swift in Sources */,
 				966ABCFE1ECB74B600EB8050 /* UserDetailViewController.swift in Sources */,
 				965AAA541ED843EF003B8B15 /* extentionImageView.swift in Sources */,
