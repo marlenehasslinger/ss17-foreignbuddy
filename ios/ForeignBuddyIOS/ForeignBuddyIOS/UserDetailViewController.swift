@@ -11,18 +11,6 @@ import Firebase
 
 class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    //Interest Switches
-    @IBOutlet weak var cultureSwitch: UISwitch!
-    @IBOutlet weak var musicSwitch: UISwitch!
-    @IBOutlet weak var natureSwitch: UISwitch!
-    @IBOutlet weak var politicsSwitch: UISwitch!
-    @IBOutlet weak var readingSwitch: UISwitch!
-    @IBOutlet weak var sportsSwitch: UISwitch!
-    @IBOutlet weak var technologySwitch: UISwitch!
-
-    
-    
-    
     //UI Elemente
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var distanceLabel: UILabel!
@@ -31,10 +19,24 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     @IBOutlet weak var foreignLanguagePickerView: UIPickerView!
     @IBOutlet weak var usernameTextField: UITextField!
     
+    //Interest Switches
+    @IBOutlet weak var cultureSwitch: UISwitch!
+    @IBOutlet weak var musicSwitch: UISwitch!
+    @IBOutlet weak var natureSwitch: UISwitch!
+    @IBOutlet weak var politicsSwitch: UISwitch!
+    @IBOutlet weak var readingSwitch: UISwitch!
+    @IBOutlet weak var sportsSwitch: UISwitch!
+    @IBOutlet weak var technologySwitch: UISwitch!
+    
     //Functional variables
     var valueNativeLanguage: String = "German"
     var valueForeignLanguage: String = "English"
     var valueDistanceToMatches: Int = 100
+    //the variable 'newUser' is used to keep keep track of if the UserDetailViewController is called
+    //within the registration process or from the users profile when he  wants to change his current profile settings
+    //In order to load the correct data (either default values in case of the registration process
+    //or the current user data from data base if the user opens the view from his profile)
+    //into the profileViewController this variable is used.
     var newUser: Bool = true
     
     //Array for interests boolean werte
@@ -50,28 +52,22 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
 
     
     @IBAction func distanceSlider(_ sender: UISlider) {
-        
+        //set textlabel for distance to matches slider
         distanceLabel.text = String(Int((sender.value)))
         valueDistanceToMatches = Int((sender.value))
-        print(valueDistanceToMatches)
-
-        
-        
     }
     
     @IBAction func nextBtnClicked(_ sender: Any) {
+        //Insert user data into database
         refFirebase.insertNativeLanguage(nativeLanguage: valueNativeLanguage)
-        
         refFirebase.insertForeignLanguage(foreignLanguage: valueForeignLanguage)
-        
         refFirebase.insertDistanceToMatch(distanceToMatch: valueDistanceToMatches)
         
         if let username = usernameTextField.text{
             refFirebase.insertUsername(username: username)
         }
         
-
-
+        //Fill boolean array with interests of user
         if cultureSwitch.isOn {
             self.interests[0] = true
         }
@@ -94,9 +90,10 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
               self.interests[6] = true
         }
         
+        //Insert interests array to firebase
         refFirebase.insertInterests(interests: interests)
         
-        
+        //Go back to Homescreen
         self.performSegue(withIdentifier: "goToHome", sender: self)
     }
   
@@ -150,10 +147,8 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         //Dismiss keyboard when the view is tapped on
         usernameTextField.resignFirstResponder()
-    
     }
     
     
@@ -162,8 +157,6 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         //Load bufferUser from Firebase via SingletonPattern reference
         let bufferUser = refFirebase.user
         
-        //print(bufferUser?.username ?? "Couldnt set username")
-    
         //Set username in textedit
         usernameTextField.text = bufferUser?.username
         
@@ -219,8 +212,6 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
             
         }
         
- 
-        
         //Set native language
         switch ((refFirebase.user?.nativeLanguage)!) {
             case "German":
@@ -255,29 +246,23 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
             
         default:
             foreignLanguagePickerView.selectRow(1, inComponent: 0, animated: false)
-
-
         }
  
+    }
         
-        
-        
-        }
-        
-    
-    
     
     func setDefaultValues(){
         
+        //Set default languages
         nativeLanguagePickerView.selectRow(0, inComponent: 0, animated: true)
         foreignLanguagePickerView.selectRow(1, inComponent: 0, animated: true)
         
+        //Get default user name from email adress of user
         let email = FIRAuth.auth()?.currentUser?.email
         let usernameEmailArr = email?.components(separatedBy: "@")
         let username: String = usernameEmailArr![0]
         usernameTextField.text = username
         
-
         //Set interest switches to false
         cultureSwitch.setOn(false, animated: true)
         musicSwitch.setOn(false, animated: true)
@@ -286,7 +271,6 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         readingSwitch.setOn(false, animated: true)
         sportsSwitch.setOn(false, animated: true)
         technologySwitch.setOn(false, animated: true)
-    
     }
     
 

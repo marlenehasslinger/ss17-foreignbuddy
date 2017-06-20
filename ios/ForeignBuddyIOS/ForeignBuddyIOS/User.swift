@@ -10,6 +10,7 @@ import Foundation
 
 class User{
 
+    //Fields
     var userID:String?
     var username: String?
     var email: String?
@@ -23,6 +24,7 @@ class User{
     var interests: Array<Bool>?
 
 
+    //Constructors
     init(username: String?, nativeLanguage: String?, language: String?, distanceToMatch: Int?,interests: Array<Bool>?, urlProfilephoto: String?, lastKnownCity: String?, latitude: Double?, longitude : Double?){
         self.username = username
         self.nativeLanguage = nativeLanguage
@@ -42,17 +44,6 @@ class User{
         self.latitude = latitude
         self.longitude = longitude
     }
-    
-
-/*
-let latitude;
-let longitude;
-let interests;
-let profilePhoto;
-let commonInterest = new ArrayList<>();
-let numberOfCommonInterest;
-let Double distanceToMyUser;
-*/
     
     
 }
