@@ -9,11 +9,11 @@
 import UIKit
 
 class ConversationTableViewCell: UITableViewCell {
-
     
-    @IBOutlet weak var lbl_username: UILabel!
     
     @IBOutlet weak var img_profilePhoto: UIImageView!
+    
+    @IBOutlet weak var lbl_name: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

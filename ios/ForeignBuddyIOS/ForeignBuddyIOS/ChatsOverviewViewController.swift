@@ -18,8 +18,6 @@ class ChatsOverviewViewController: UIViewController, UITableViewDataSource, UITa
     var picturesURLS = [String]()
     
 
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,25 +33,21 @@ class ChatsOverviewViewController: UIViewController, UITableViewDataSource, UITa
         // Dispose of any resources that can be recreated.
     }
 
-    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return names.count
     }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationTableViewCell", for: indexPath) as! ConversationTableViewCell
         
-        cell.lbl_username.text = names[indexPath.row]
-        
+        cell.lbl_name.text = names[indexPath.row]
         let url = URL(string: picturesURLS[indexPath.row])
         cell.img_profilePhoto.sd_setImage(with: url!)
-        
         cell.img_profilePhoto.setRounded()
         
         return (cell)
     }
-
-
 
 
 }
