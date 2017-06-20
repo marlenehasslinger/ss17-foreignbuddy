@@ -74,6 +74,16 @@ class FirebaseSingletonPattern{
         
     }
     
+    public func insertLocationUpdate (lastKnownCity: String, longitude: Double, latitude: Double ){
+        let userID = FIRAuth.auth()!.currentUser!.uid
+        self.ref.child("users").child(userID).child("latitude").setValue(latitude)
+        self.ref.child("users").child(userID).child("longitude").setValue(longitude)
+        self.ref.child("users").child(userID).child("lastKnownCity").setValue(lastKnownCity)
+        
+    }
+    
+    
+    
     public func insertInterests (interests: Array<Any>){
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("interests").child("Culture").setValue(interests[0])

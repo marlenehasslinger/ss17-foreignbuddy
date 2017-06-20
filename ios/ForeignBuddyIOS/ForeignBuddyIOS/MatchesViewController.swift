@@ -31,9 +31,11 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
                     let username = valueMatch?["username"] as? String ?? ""
                     let nativeLanguage = valueMatch?["nativeLanguage"] as? String ?? ""
                     let urlProfilePhoto = valueMatch?["urlProfilephoto"] as? String ?? ""
+                    let longitude = valueMatch?["longitude"] as? Double ?? nil
+                    let latitude = valueMatch?["latitude"] as? Double ?? nil
                     
                     
-                    let newMatch = User(username: username, nativeLanguage: nativeLanguage, urlProfilephoto: urlProfilePhoto)
+                    let newMatch = User(username: username, nativeLanguage: nativeLanguage, urlProfilephoto: urlProfilePhoto, latitude:latitude, longitude: longitude)
                     self.matches.append(newMatch)
                     
                     self.matchesTableView.reloadData()
@@ -59,6 +61,17 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
        
         cell.lbl_userName.text = matches[indexPath.row].username
         cell.lbl_language.text = matches[indexPath.row].nativeLanguage
+        
+        //START Calculate Distance between two locations
+        let refFirebase = FirebaseSingletonPattern.getInstance()
+        let ownLocation = CLLocation(latitude: (refFirebase.user?.latitude)!, longitude: (refFirebase.user?.longitude)!)
+        let matchLocation = CLLocation(latitude: matches[indexPath.row].latitude!, longitude: matches[indexPath.row].longitude!)
+        
+        let distanceInMeters = ownLocation.distance(from: matchLocation)
+        let distance = Double(round(100*(distanceInMeters/1000))/100)
+        cell.lbl_distance.text = "\(distance) km"
+        //END Calculate Distance between two locations
+
         
         
         if !(matches[indexPath.row].urlProfilephoto!.isEmpty) {
