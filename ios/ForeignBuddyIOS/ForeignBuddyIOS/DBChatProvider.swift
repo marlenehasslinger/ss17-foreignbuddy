@@ -9,6 +9,8 @@
 import Foundation
 import FirebaseDatabase
 
+
+//References to the Database
 class DBChatProvider{
     private static let _instance = DBChatProvider()
     private init() {}

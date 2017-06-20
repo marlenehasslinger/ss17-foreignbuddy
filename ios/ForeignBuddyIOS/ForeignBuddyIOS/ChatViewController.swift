@@ -29,17 +29,14 @@ class ChatViewController: JSQMessagesViewController {
     
     // Collection View Functions
     
+    //Set Message Bubble
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let bubbleFactory = JSQMessagesBubbleImageFactory()
-       // let message = messages[indexPath.item]
         return bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor.darkGray)
     }
     
+    //Set User Image
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
-        
-       
-        
-       
         
         return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "user_male"), diameter: 30) // Change for dbUse
     }
@@ -62,9 +59,10 @@ class ChatViewController: JSQMessagesViewController {
     
     //Sending Buttons Functions
     
+    //When sendButton is pressed append a new Message.
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
    
-
+        
         messages.append(JSQMessage(senderId: senderId, senderDisplayName: senderDisplayName , date: date,text: text))
         collectionView.reloadData()
 

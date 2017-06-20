@@ -16,7 +16,7 @@ class MessagesHandler {
     static var Instance: MessagesHandler {
         return _instance;
     }
-    
+    //Function would have been used in further development for sendig messages to the database
     func sendMessage(senderID: String, senderName: String, text: String, date: Date) {
        
         /*
