@@ -13,7 +13,7 @@ import SDWebImage
 
 class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     
-    var matches : Array<User> = []
+    var matches : Array<User> = [] // Arrays for all current matches(=users)
 
     @IBOutlet weak var matchesTableView: UITableView!
     
@@ -22,6 +22,7 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        //Download of all matches(=users) of the database
         FIRDatabase.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
@@ -36,10 +37,11 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
                     let longitude = valueMatch?["longitude"] as? Double ?? nil
                     let latitude = valueMatch?["latitude"] as? Double ?? nil
                     
-                    
+                    //instance new match as user
                     let newMatch = User(username: username, nativeLanguage: nativeLanguage, urlProfilephoto: urlProfilePhoto, latitude:latitude, longitude: longitude)
                     self.matches.append(newMatch)
                     
+                    //set table
                     self.matchesTableView.reloadData()
                 })
                 
@@ -60,6 +62,7 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        //initialize cell of type MatchesTableViewCell
         let cell = tableView.dequeueReusableCell(withIdentifier: "MatchesTableCell", for: indexPath) as! MatchesTableViewCell
        
         cell.lbl_userName.text = matches[indexPath.row].username
