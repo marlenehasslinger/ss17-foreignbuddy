@@ -19,7 +19,9 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         FIRDatabase.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
@@ -42,9 +44,9 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
                 })
                 
             }
-        
+            
         })
-        
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,12 +67,17 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         
         //START Calculate Distance between two locations
         let refFirebase = FirebaseSingletonPattern.getInstance()
-        let ownLocation = CLLocation(latitude: (refFirebase.user?.latitude)!, longitude: (refFirebase.user?.longitude)!)
-        let matchLocation = CLLocation(latitude: matches[indexPath.row].latitude!, longitude: matches[indexPath.row].longitude!)
-        
-        let distanceInMeters = ownLocation.distance(from: matchLocation)
-        let distance = Double(round(100*(distanceInMeters/1000))/100)
-        cell.lbl_distance.text = "\(distance) km"
+        if (refFirebase.user?.latitude != nil && matches[indexPath.row].latitude! != nil) {
+            let ownLocation = CLLocation(latitude: (refFirebase.user?.latitude)!, longitude: (refFirebase.user?.longitude)!)
+            let matchLocation = CLLocation(latitude: matches[indexPath.row].latitude!, longitude: matches[indexPath.row].longitude!)
+            
+            let distanceInMeters = ownLocation.distance(from: matchLocation)
+            let distance = Double(round(100*(distanceInMeters/1000))/100)
+            cell.lbl_distance.text = "\(distance) km"
+
+        } else {
+            cell.lbl_distance.text = "distance not available"
+        }
         //END Calculate Distance between two locations
 
         

@@ -177,18 +177,16 @@
 			children = (
 				2114EFF21ECB067C00D2CECA /* AppDelegate.swift */,
 				21ABE7261ECB074F00BEF53B /* GoogleService-Info.plist */,
-				2114EFF81ECB067C00D2CECA /* Main.storyboard */,
-				96D0F5D21EF96F50004134FF /* ConversationTableViewCell.swift */,
-				219170081EF00FA400344321 /* MatchesTableViewCell.swift */,
-				96225E561EDF36DC00C95454 /* DBZugriffe */,
-				96225E551EDF369D00C95454 /* ViewController */,
-				96225E541EDF366100C95454 /* Extensions */,
-				967C63D71ED1F6D0006A914E /* User.swift */,
-				2114EFFB1ECB067C00D2CECA /* Assets.xcassets */,
-				2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */,
 				2114F0001ECB067C00D2CECA /* Info.plist */,
-				213C12721EDDA8BD00721500 /* Location.swift */,
-				EAAAFFE31EDD76C700751D8A /* MessagesHandler.swift */,
+				2114EFF81ECB067C00D2CECA /* Main.storyboard */,
+				2114EFFD1ECB067C00D2CECA /* LaunchScreen.storyboard */,
+				96225E551EDF369D00C95454 /* ViewController */,
+				21B3B1A51EF98CF80098F9D5 /* TableViewCells */,
+				96225E561EDF36DC00C95454 /* DatabaseConnection */,
+				21B3B1A41EF98CDB0098F9D5 /* User */,
+				96225E541EDF366100C95454 /* Extensions */,
+				21B3B1A61EF98DD00098F9D5 /* UtilityClasses */,
+				2114EFFB1ECB067C00D2CECA /* Assets.xcassets */,
 			);
 			path = ForeignBuddyIOS;
 			sourceTree = "<group>";
@@ -209,6 +207,32 @@
 				2114F0161ECB067C00D2CECA /* Info.plist */,
 			);
 			path = ForeignBuddyIOSUITests;
+			sourceTree = "<group>";
+		};
+		21B3B1A41EF98CDB0098F9D5 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				967C63D71ED1F6D0006A914E /* User.swift */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		21B3B1A51EF98CF80098F9D5 /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				96D0F5D21EF96F50004134FF /* ConversationTableViewCell.swift */,
+				219170081EF00FA400344321 /* MatchesTableViewCell.swift */,
+			);
+			name = TableViewCells;
+			sourceTree = "<group>";
+		};
+		21B3B1A61EF98DD00098F9D5 /* UtilityClasses */ = {
+			isa = PBXGroup;
+			children = (
+				213C12721EDDA8BD00721500 /* Location.swift */,
+				EAAAFFE31EDD76C700751D8A /* MessagesHandler.swift */,
+			);
+			name = UtilityClasses;
 			sourceTree = "<group>";
 		};
 		685BF9DAF7A2D62234CA73B4 /* Pods */ = {
@@ -258,13 +282,13 @@
 			name = ViewController;
 			sourceTree = "<group>";
 		};
-		96225E561EDF36DC00C95454 /* DBZugriffe */ = {
+		96225E561EDF36DC00C95454 /* DatabaseConnection */ = {
 			isa = PBXGroup;
 			children = (
 				9697E6E51ED03638006317B5 /* FirebaseSingletonPattern.swift */,
 				EAAAFFE51EDD8B9700751D8A /* DBChatProvider.swift */,
 			);
-			name = DBZugriffe;
+			name = DatabaseConnection;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

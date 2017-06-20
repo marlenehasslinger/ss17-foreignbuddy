@@ -93,6 +93,8 @@ class UserDetailViewController: UIViewController, UIPickerViewDataSource, UIPick
         //Insert interests array to firebase
         refFirebase.insertInterests(interests: interests)
         
+        refFirebase.loadCurrentUserData()
+        
         //Go back to Homescreen
         self.performSegue(withIdentifier: "goToHome", sender: self)
     }

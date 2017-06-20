@@ -46,7 +46,10 @@ class Location : NSObject, CLLocationManagerDelegate {
                     print("Error occured while resolving location")
                 } else {
                     if let place = placmark?[0] {
+                        let refFirebase = FirebaseSingletonPattern.getInstance()
                         refFirebase.user?.lastKnownCity = place.locality
+                        refFirebase.user?.latitude = locations.first?.coordinate.latitude
+                        refFirebase.user?.longitude = locations.first?.coordinate.longitude
                         refFirebase.insertLocationUpdate(lastKnownCity: place.locality!, longitude: (locations.first?.coordinate.longitude)!, latitude: (locations.first?.coordinate.latitude)!)
                         NotificationCenter.default.post(name: NSNotification.Name(Location.LOCATION_UPDATED), object: nil)
                     }

@@ -14,7 +14,7 @@ import Firebase
 class FirebaseSingletonPattern{
     
     //Fields
-    static let instance = FirebaseSingletonPattern()
+    static var instance = FirebaseSingletonPattern()
     let ref: FIRDatabaseReference = FIRDatabase.database().reference()
 
     //Variable user holds current user and works as buffer so less database requests are needed and better performance is provided
