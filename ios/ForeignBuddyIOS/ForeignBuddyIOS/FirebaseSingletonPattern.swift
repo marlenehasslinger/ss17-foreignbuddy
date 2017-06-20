@@ -16,14 +16,9 @@ class FirebaseSingletonPattern{
     //Fields
     static let instance = FirebaseSingletonPattern()
     let ref: FIRDatabaseReference = FIRDatabase.database().reference()
-   // let userID = FIRAuth.auth()!.currentUser!.uid
-   // var cnt = 0  //Variable to test Singleton pattern functionality
-
 
     //Variable user holds current user and works as buffer so less database requests are needed and better performance is provided
     public var user: User? = nil
-    //var email: String?
-    
     
     //Constructor
     private init (){
@@ -31,22 +26,13 @@ class FirebaseSingletonPattern{
     
     public static func getInstance() -> FirebaseSingletonPattern{
         return instance
-    
     }
 
-    //Inserts current user to the Firebase database
+    //Inserts current user into the Firebase database
     public func insertUser(){
-        
-        /*
-        //Snippet to test Singleton pattern functionality
-        print("cnt#####################")
-        print(cnt)
-        cnt = cnt + 1
-         */
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("userID").setValue(userID)
         self.ref.child("users").child(userID).child("email").setValue(FIRAuth.auth()!.currentUser?.email)
-
     }
     
     
@@ -54,36 +40,35 @@ class FirebaseSingletonPattern{
     public func insertUsername(username: String){
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("username").setValue(username)
- 
     }
     
+    //Inserts users native language into the Firebase database
     public func insertNativeLanguage(nativeLanguage: String){
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("nativeLanguage").setValue(nativeLanguage)
-        
     }
     
+    //Inserts users foreign language into the Firebase database
     public func insertForeignLanguage(foreignLanguage: String){
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("language").setValue(foreignLanguage)
-        
     }
+    
+    //Inserts users desired distance to matches into the Firebase database
     public func insertDistanceToMatch (distanceToMatch: Int){
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("distanceToMatch").setValue(distanceToMatch)
-        
     }
     
+    //Inserts users location into the Firebase database
     public func insertLocationUpdate (lastKnownCity: String, longitude: Double, latitude: Double ){
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("latitude").setValue(latitude)
         self.ref.child("users").child(userID).child("longitude").setValue(longitude)
         self.ref.child("users").child(userID).child("lastKnownCity").setValue(lastKnownCity)
-        
     }
     
-    
-    
+    //Inserts users interests into the Firebase database
     public func insertInterests (interests: Array<Any>){
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("interests").child("Culture").setValue(interests[0])
@@ -95,11 +80,10 @@ class FirebaseSingletonPattern{
         self.ref.child("users").child(userID).child("interests").child("Technology").setValue(interests[6])
     }
     
+    //Inserts users profile photos download URL into the Firebase database
     public func insertProfilePhotoUrl(photoUrl: String){
         let userID = FIRAuth.auth()!.currentUser!.uid
         self.ref.child("users").child(userID).child("urlProfilephoto").setValue(photoUrl)
-
-
     }
     
     
@@ -114,6 +98,7 @@ class FirebaseSingletonPattern{
         let ref = FIRDatabase.database().reference()
         let userRef = ref.child("users").child(userID)
         
+        //Retrieve interests array from firebase database
             userRef.observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
             
@@ -136,8 +121,7 @@ class FirebaseSingletonPattern{
                     }
                 }
                 
-                
-                
+            //Declare downloaded user data as variables so they can be used to create an instance of user
             let username = value?["username"] as? String ?? ""
             let nativeLanguage = value?["nativeLanguage"] as? String ?? ""
             let language = value?["language"] as? String ?? ""
@@ -147,15 +131,10 @@ class FirebaseSingletonPattern{
             let latitude = value?["latitude"] as? Double ?? nil
             let longitude = value?["longitude"] as? Double ?? nil
             
-                
-                print(urlProfilephoto)
-                
+                //create an instance of user
                 self.user = User.init(username: username, nativeLanguage:nativeLanguage, language:language, distanceToMatch: distanceToMatch, interests: interessen, urlProfilephoto: urlProfilephoto, lastKnownCity: lastKnownCity, latitude: latitude, longitude: longitude)
                 
 
-            
-            print(self.user ??  "#####################defaultValueUsername")
-            
         }) { (error) in
             
             print(error.localizedDescription)

@@ -13,6 +13,7 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
+    //UI Elemente
     @IBOutlet weak var signinSelector: UISegmentedControl!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -20,8 +21,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var errorTextLabel: UILabel!
     
+    //When the view first appears the Sign in functionality shall be displayed.
+    //This boolean is used to keep track of which element of the selector is selected
     var isSignIn:Bool = true
     
+    //Get instance of firebasereference via SingletonPattern
     let refFirebase = FirebaseSingletonPattern.getInstance()
 
     
@@ -31,24 +35,19 @@ class LoginViewController: UIViewController {
     
     
     override func viewDidAppear(_ animated: Bool) {
+        //When the view first appears the Sign in button shall be displayed
         registerButton.isHidden = true
         signinButton.isHidden = false
+        
+        //If user is already logged in, he will be lead to the homescreen and his user data will be downloaded
         FIRAuth.auth()!.addStateDidChangeListener() { auth, user in
             if user != nil && self.isSignIn {
                 self.refFirebase.loadCurrentUserData()
                 self.performSegue(withIdentifier: "leadsToHome", sender: self)
-                
             }
         }
-
-      
-        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     @IBAction func signinSelectorChanged(_ sender: UISegmentedControl) {
         //Flip boolean
@@ -123,6 +122,11 @@ class LoginViewController: UIViewController {
         //Dismiss keyboard when the view is tapped on
         emailTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 
     /*
