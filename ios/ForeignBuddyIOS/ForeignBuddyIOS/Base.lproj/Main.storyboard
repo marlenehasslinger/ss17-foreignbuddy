@@ -451,19 +451,6 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bv3-tm-Jm7" id="wTJ-eZ-E7q">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="81.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user_male" translatesAutoresizingMaskIntoConstraints="NO" id="dSf-C0-zFO">
-                                                    <rect key="frame" x="8" y="6" width="69" height="69"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YoR-qD-0VU">
-                                                    <rect key="frame" x="94" y="30" width="119" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -495,8 +482,6 @@
                     <tabBarItem key="tabBarItem" title="Chats" image="Chats" id="pxe-Zp-AqF"/>
                     <connections>
                         <outlet property="ChatsTable" destination="YRM-nc-ikW" id="X4i-jr-1Q9"/>
-                        <outlet property="iv_matchesPhoto" destination="dSf-C0-zFO" id="8vM-FU-6Ty"/>
-                        <outlet property="lbl_MatchesUsername" destination="YoR-qD-0VU" id="joe-RP-ZVP"/>
                         <segue destination="dPI-Gk-F3c" kind="show" identifier="ChatSegue" id="TlE-Sc-c4u"/>
                     </connections>
                 </viewController>
