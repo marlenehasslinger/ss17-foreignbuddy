@@ -20,27 +20,10 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var lbl_ForeignLanguage: UILabel!
     let refFirebase = FirebaseSingletonPattern.getInstance()
 
-    
+    var profileImage : UIImage?
+    var imageChanged = false
     
     override func viewDidAppear(_ animated: Bool) {
-        refFirebase.loadCurrentUserData()
-        //Set UI Labels with user data
-        lbl_Username.text = refFirebase.user?.username
-        lbl_NativeLanguage.text = refFirebase.user?.nativeLanguage
-        lbl_ForeignLanguage.text = refFirebase.user?.language
-        lbl_Location.text = refFirebase.user?.lastKnownCity
-        
-        
-        
-        let urlProfilephoto = refFirebase.user?.urlProfilephoto
-            
-        
-        if !(urlProfilephoto!.isEmpty) {
-            let url = URL(string: urlProfilephoto!)
-            iv_profilePhoto.sd_setImage(with: url!)
-        } else {
-            iv_profilePhoto.image = UIImage(named: "user_male")
-        }
         
         //Set imageview with image from Firebase Database
         
@@ -81,7 +64,28 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        refFirebase.loadCurrentUserData()
+        //Set UI Labels with user data
+        lbl_Username.text = refFirebase.user?.username
+        lbl_NativeLanguage.text = refFirebase.user?.nativeLanguage
+        lbl_ForeignLanguage.text = refFirebase.user?.language
+        lbl_Location.text = refFirebase.user?.lastKnownCity
         
+        
+        
+        let urlProfilephoto = refFirebase.user?.urlProfilephoto
+        
+        
+        if !(urlProfilephoto!.isEmpty) {
+            let url = URL(string: urlProfilephoto!)
+            if (!imageChanged){
+                iv_profilePhoto.sd_setImage(with: url!)
+            }
+        } else {
+                iv_profilePhoto.image = UIImage(named: "user_male")
+            
+        }
+
         iv_profilePhoto.setRounded()
         
        /*

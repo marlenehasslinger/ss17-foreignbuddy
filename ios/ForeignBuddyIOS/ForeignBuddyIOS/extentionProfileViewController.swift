@@ -38,7 +38,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         if let selectedImage = selectedImageFromPicker{
             
             let myThumb1 = selectedImage.resized(withPercentage: 0.3)
-            
+            imageChanged = true
             iv_profilePhoto.image = myThumb1
             
             uploadPhoto()
