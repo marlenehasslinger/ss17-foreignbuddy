@@ -53,6 +53,7 @@ import java.util.List;
 
 import de.hdm_stuttgart.foreignbuddy.Activities.LogInActivity;
 import de.hdm_stuttgart.foreignbuddy.Activities.UserDetailsActivity;
+import de.hdm_stuttgart.foreignbuddy.Database.Advertisement;
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.R;
 import de.hdm_stuttgart.foreignbuddy.Users.User;
@@ -111,6 +112,10 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         //Set Button Listener
         btn_choosePhoto.setOnClickListener(this);
         btn_takePhoto.setOnClickListener(this);
+
+        //Loading an Ad
+        Advertisement.getInstance().setAd(getContext());
+
 
         //Set filename for firebase up- and downloads and local files
         uploadName = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "_profilePhoto";

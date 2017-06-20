@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 //Set First Fragment
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment, chat);
+                transaction.add(R.id.fragment, profil);
                 //transaction.commit();
-                transaction.commitAllowingStateLoss();
+                transaction.commitAllowingStateLoss(); // TODO not sure yet!
                 progressDialog.dismiss();
             }
         }, new IntentFilter(DatabaseUser.FINISHED_LOADING));

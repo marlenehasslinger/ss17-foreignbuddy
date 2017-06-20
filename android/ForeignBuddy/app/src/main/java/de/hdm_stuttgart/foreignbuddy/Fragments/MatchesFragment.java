@@ -246,7 +246,7 @@ public class MatchesFragment extends Fragment {
 
                 btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
                 btn_chat.setTag(currentAd);
-                btn_chat.setText(currentAd.getCallToAction());
+                btn_chat.setText("Install");
                 btn_chat.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

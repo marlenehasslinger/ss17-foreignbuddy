@@ -34,7 +34,6 @@ import de.hdm_stuttgart.foreignbuddy.UtilityClasses.GPS;
 public class DatabaseUser {
 
     public static final String FINISHED_LOADING = "FINISHED_LOADING";
-
     private static DatabaseUser instance;
 
     //Create and get Instance of DatabaseUser
@@ -45,9 +44,17 @@ public class DatabaseUser {
         }
         return instance;
     }
+    //Remove Instance of DatabaseUser
     public static synchronized void removeActualInstance(){
         instance = null;
     }
+
+
+    //User Data
+    private User currentUser;
+    private List<Match> currentUsersMatches = new ArrayList<>();
+    private List<Conversation> currentUsersConversations = new ArrayList<>();
+
     private void InstanceCurrentUser() {
         loadCurrentUser();
     }
@@ -55,17 +62,11 @@ public class DatabaseUser {
         this.context = context;
     }
 
-    //User Data
-    private User currentUser;
-    private List<Match> currentUsersMatches = new ArrayList<>();
-    private List<Conversation> currentUsersConversations = new ArrayList<>();
-
     //Helper
     private StorageReference riversRef;
     private StorageReference storageReference;
     private Context context;
     private boolean initalLoading = true;
-    //private File localFile = null;
 
     public User getCurrentUser() {
         return currentUser;
@@ -87,15 +88,9 @@ public class DatabaseUser {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         currentUser = dataSnapshot.getValue(User.class);
-                        loadProfilePhoto(currentUser);
+                        loadProfilePhotoCurrentUser(currentUser);
                         loadCurrentUsersMatches();
                         loadCurrentUsersConversations();
-                        if (initalLoading == true) {
-                            initalLoading = false;
-                            Intent loadingIntent = new Intent();
-                            loadingIntent.setAction(DatabaseUser.FINISHED_LOADING);
-                            LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
-                        }
                     }
 
                     @Override
@@ -123,7 +118,7 @@ public class DatabaseUser {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Match match =  dataSnapshot.getValue(Match.class);
-                                    loadProfilePhoto(match);
+                                    loadProfilePhotoMatches(match);
                                     match.setCommonInterests(currentUser);
                                     match.setDistanceToMyUser(GPS.distanceInKm(currentUser, match));
                                     currentUsersMatches.add(match);
@@ -167,7 +162,46 @@ public class DatabaseUser {
                 });
     }
 
-    private void loadProfilePhoto(final User user) {
+    private void loadProfilePhotoCurrentUser(final User user) {
+        String downloadName = user.getEmail() + "_profilePhoto";
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = storageReference.child("images/" + downloadName);
+        try {
+            //localFile = File.createTempFile("images", downloadName);
+            user.setProfilePhoto(File.createTempFile("images", downloadName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Download profile photo via firebase database reference
+        riversRef.getFile(user.getProfilePhoto())
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Log.d("Download", "Profil photo successfully downloaded");
+                        user.setProfilePhoto(user.getProfilePhoto());
+                        if (initalLoading == true) {
+                            initalLoading = false;
+                            Intent loadingIntent = new Intent();
+                            loadingIntent.setAction(DatabaseUser.FINISHED_LOADING);
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("Download", "Profil photo download failed");
+                user.setProfilePhoto(null);
+                if (initalLoading == true) {
+                    initalLoading = false;
+                    Intent loadingIntent = new Intent();
+                    loadingIntent.setAction(DatabaseUser.FINISHED_LOADING);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(loadingIntent);
+                }
+            }
+        });
+    }
+    private void loadProfilePhotoMatches(final User user) {
         String downloadName = user.getEmail() + "_profilePhoto";
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference riversRef = storageReference.child("images/" + downloadName);

@@ -80,7 +80,7 @@ public class UserDetailRegistration extends AppCompatActivity {
         //Set Seekbar for selecting value for maximum distance to matches that will be displayed
         seekbar.setMax(200);
         seekbar.setProgress(100);
-        currentDistance.setText("100");
+        currentDistance.setText("100 km");
         seekbarprogess = 100;
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
@@ -91,7 +91,7 @@ public class UserDetailRegistration extends AppCompatActivity {
                 if(seekbarprogess<20){
                     seekbarprogess=20;
                 }
-                currentDistance.setText("" + seekbarprogess);
+                currentDistance.setText("" + seekbarprogess + " km");
 
             }
 

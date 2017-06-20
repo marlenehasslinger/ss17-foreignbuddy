@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_chats"
-        android:enabled="true"
-        android:icon="@drawable/ic_chats"
-        android:title="Chats"
-        app:showAsAction="ifRoom"/>
-    <item
         android:id="@+id/action_profil"
         android:enabled="true"
         android:icon="@drawable/ic_profil"
@@ -19,6 +13,13 @@
         android:enabled="true"
         android:icon="@drawable/ic_matches"
         android:title="Matches"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_chats"
+        android:enabled="true"
+        android:icon="@drawable/ic_chats"
+        android:title="Chats"
         app:showAsAction="ifRoom"/>
 
 </menu>

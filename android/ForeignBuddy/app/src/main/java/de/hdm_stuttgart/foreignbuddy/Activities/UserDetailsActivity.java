@@ -83,7 +83,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     seekbarprogess=20;
                 }
 
-                currentDistance.setText("" + seekbarprogess);
+                currentDistance.setText("" + seekbarprogess + " km");
 
             }
 
@@ -107,6 +107,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     public void getCurrentUserData(){
 
         //Get current User
+        //TODO because myUser should be get from DatabaseUserClass! Unnecessary network traffic
         mDatabase.child("users")
                 .child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -119,7 +120,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
 
                 //Get desired maximum distance to matches that will be displayed
-                currentDistance.setText("" + myUser.getDistanceToMatch());
+                currentDistance.setText("" + myUser.getDistanceToMatch() + " km");
                 seekbarprogess = myUser.getDistanceToMatch();
                 seekbar.setProgress(seekbarprogess);
 
