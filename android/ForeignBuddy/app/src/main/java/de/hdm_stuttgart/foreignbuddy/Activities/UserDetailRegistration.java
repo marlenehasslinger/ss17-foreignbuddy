@@ -72,7 +72,6 @@ public class UserDetailRegistration extends AppCompatActivity {
         name = getUserNameFromEmail(firebaseAuth.getInstance().getCurrentUser().getEmail());
         userName.setText(name);
 
-
         //Set default values for languages
         rB_English.setChecked(true);
         rB_native_German.setChecked(true);

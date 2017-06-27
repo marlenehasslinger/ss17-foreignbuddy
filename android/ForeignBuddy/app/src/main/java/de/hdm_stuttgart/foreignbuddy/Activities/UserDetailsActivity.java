@@ -64,7 +64,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         currentDistance = (TextView) findViewById(R.id.tv_currentDistance);
         seekbar = (SeekBar) findViewById (R.id.seekBar);
 
-
         //Database und firebase authentication initialization
         mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
