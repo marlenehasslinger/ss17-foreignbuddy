@@ -96,8 +96,20 @@ public class MatchesFragment extends Fragment {
         myUser = DatabaseUser.getInstance().getCurrentUser();
 
         //get Matches and set in TableView
+        matches.clear();
+        List<String> test = new ArrayList<>();
+        boolean matchExists = false;
         for (Match match : DatabaseUser.getInstance().getCurrentUsersMatches()) {
-            matches.add(match);
+            for (String s : test) {
+                if (s.equals(match.getUserID())) {
+                    matchExists = true;
+                }
+            }
+            if (matchExists == false) {
+                test.add(match.getUserID());
+                matches.add(match);
+            }
+            matchExists = false;
         }
         Collections.sort(matches, new SortInterests());
         if (Advertisement.getInstance().getAd() != null) {
@@ -107,6 +119,7 @@ public class MatchesFragment extends Fragment {
                 matches.add(new Match("Ad"));
             }
         }
+
 
         ArrayAdapter<Match> matchesAdapter = new UserListAdapter();
         listView.setAdapter(matchesAdapter);
@@ -138,18 +151,62 @@ public class MatchesFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        List<String> test = new ArrayList<>();
+        boolean matchExists = false;
         switch (item.getItemId()) {
             case R.id.tb_filterDistance_matches:
-                matches = DatabaseUser.getInstance().getCurrentUsersMatches();
+                matches.clear();
+                for (Match match : DatabaseUser.getInstance().getCurrentUsersMatches()) {
+                    for (String s : test) {
+                        if (s.equals(match.getUserID())) {
+                            matchExists = true;
+                        }
+                    }
+                    if (matchExists == false) {
+                        test.add(match.getUserID());
+                        matches.add(match);
+                    }
+                    matchExists = false;
+                }
                 Collections.sort(matches, new SortEntfernung());
+
+                Collections.sort(matches, new SortInterests());
+                if (Advertisement.getInstance().getAd() != null) {
+                    if (matches.size() > 4) {
+                        matches.add(3, new Match("Ad"));
+                    } else {
+                        matches.add(new Match("Ad"));
+                    }
+                }
                 ArrayAdapter<Match> matchesAdapter = new UserListAdapter();
                 listView.setAdapter(matchesAdapter);
                 break;
             case R.id.tb_filterInterests_matches:
-                matches = DatabaseUser.getInstance().getCurrentUsersMatches();
+                matches.clear();
+                for (Match match : DatabaseUser.getInstance().getCurrentUsersMatches()) {
+                    for (String s : test) {
+                        if (s.equals(match.getUserID())) {
+                            matchExists = true;
+                        }
+                    }
+                    if (matchExists == false) {
+                        test.add(match.getUserID());
+                        matches.add(match);
+                    }
+                    matchExists = false;
+                }
                 Collections.sort(matches, new SortInterests());
+                Collections.sort(matches, new SortInterests());
+                if (Advertisement.getInstance().getAd() != null) {
+                    if (matches.size() > 4) {
+                        matches.add(3, new Match("Ad"));
+                    } else {
+                        matches.add(new Match("Ad"));
+                    }
+                }
                 ArrayAdapter<Match> matchesAdapter2 = new UserListAdapter();
                 listView.setAdapter(matchesAdapter2);
+                break;
         }
         return true;
     }

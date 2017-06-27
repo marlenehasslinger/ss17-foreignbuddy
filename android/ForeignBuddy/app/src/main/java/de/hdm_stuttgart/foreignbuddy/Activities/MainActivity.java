@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int LOCATION_REQUEST_CODE = 609596;
 
+    private boolean firstLoading = true;
+
     //Declare Fragments
     final private ChatsFragment chat = new ChatsFragment();
     final private ProfilFragment profil = new ProfilFragment();
@@ -41,23 +43,27 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         //Load current User
         DatabaseUser.getInstance().setContext(getApplicationContext()); //Instance Database User and set current Context
 
         progressDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+        DatabaseUser.getInstance().setInitalLoading(true);
 
         LocalBroadcastManager.getInstance(this.getApplicationContext()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 //Set First Fragment
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment, profil);
-                //transaction.commit();
-                transaction.commitAllowingStateLoss(); // TODO not sure yet!
+                if (firstLoading == true) {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.add(R.id.fragment, profil);
+                    transaction.commit();
+                    firstLoading = false;
+                }
                 progressDialog.dismiss();
             }
         }, new IntentFilter(DatabaseUser.FINISHED_LOADING));
@@ -93,5 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
 
