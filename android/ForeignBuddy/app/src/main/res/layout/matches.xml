@@ -95,8 +95,10 @@
     <Button
         android:id="@+id/btn_chat_matches"
         style="@android:style/Widget.DeviceDefault.Light.Button.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="30dp"
+        android:background="@drawable/buttons"
+        android:textColor="#ffca00"
         android:text="Chat"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="15dp"

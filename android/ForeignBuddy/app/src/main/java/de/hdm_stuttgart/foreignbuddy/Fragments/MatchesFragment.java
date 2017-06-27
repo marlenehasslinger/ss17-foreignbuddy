@@ -299,7 +299,13 @@ public class MatchesFragment extends Fragment {
 
                 name.setText(currentAd.getHeadline());
                 img_user.setImageDrawable(currentAd.getIcon().getDrawable());
-                location.setText(currentAd.getBody());
+                String text;
+                if (currentAd.getBody().length() >= 45) {
+                    text = currentAd.getBody().toString().substring(0 , 45) + "...";
+                } else {
+                    text = currentAd.getBody().toString();
+                }
+                location.setText(text);
 
                 btn_chat = (Button) view.findViewById(R.id.btn_chat_matches);
                 btn_chat.setTag(currentAd);
@@ -307,7 +313,8 @@ public class MatchesFragment extends Fragment {
                 btn_chat.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.daimler.moovel.android"));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=pub:" + currentAd.getHeadline()));
+                        //market://details?id=com.daimler.moovel.android
                         NativeAppInstallAd ad = (NativeAppInstallAd) v.getTag();
                         startActivity(intent);
                     }

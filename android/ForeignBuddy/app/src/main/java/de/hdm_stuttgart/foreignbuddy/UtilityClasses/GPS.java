@@ -157,17 +157,17 @@ public class GPS implements LocationListener {
                 LocalBroadcastManager.getInstance(context).sendBroadcast(locationIntent);
 
                 //Upload new Location to Firebase if changed
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("latitude").setValue(location.getLatitude());
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("longitude").setValue(location.getLongitude());
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("lastKnownCity").setValue(city);
-
-
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    FirebaseDatabase.getInstance().getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("latitude").setValue(location.getLatitude());
+                    FirebaseDatabase.getInstance().getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("longitude").setValue(location.getLongitude());
+                    FirebaseDatabase.getInstance().getReference().child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("lastKnownCity").setValue(city);
+                }
             }
 
         } catch (IOException e) {
