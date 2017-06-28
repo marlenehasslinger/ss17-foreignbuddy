@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import de.hdm_stuttgart.foreignbuddy.Database.DatabaseUser;
 import de.hdm_stuttgart.foreignbuddy.Fragments.ChatsFragment;
@@ -40,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Progress Dialog
     private ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
