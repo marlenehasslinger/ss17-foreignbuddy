@@ -7,6 +7,7 @@
 
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="primary_dark_material_light">#757575</color>
     <!--
     <color name="NavBarGray">#ff9d9d</color>
     <color name="ProfileLayout">#ffffff</color>

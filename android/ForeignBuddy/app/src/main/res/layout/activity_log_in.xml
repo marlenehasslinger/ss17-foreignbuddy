@@ -35,7 +35,7 @@
         android:text="Log In"
         android:onClick="btn_login_login_clicked"
         android:layout_below="@+id/txt_password_login"
-        android:background="@color/colorWhite"
+        android:background="@drawable/button_login"
         android:layout_alignEnd="@+id/txt_password_login"
         android:layout_marginTop="23dp"
         android:layout_marginBottom="10dp"
@@ -45,10 +45,12 @@
         android:id="@+id/btn_register_login"
         android:layout_width="215dp"
         android:layout_height="45dp"
-        android:background="@color/colorWhite"
+        android:background="@drawable/buttons"
+        android:textColor="#ffca00"
         android:onClick="btn_register_clicked"
         android:text="Register Now"
-        android:layout_below="@+id/btn_login_login"
+        android:layout_marginBottom="33dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/btn_login_login"
         android:layout_alignEnd="@+id/btn_login_login" />
 
